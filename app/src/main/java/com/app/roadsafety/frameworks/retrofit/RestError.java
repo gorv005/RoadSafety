@@ -1,6 +1,5 @@
  package com.app.roadsafety.frameworks.retrofit;
 
- import com.cheersondemand.model.authentication.GuestUser;
  import com.google.gson.annotations.Expose;
  import com.google.gson.annotations.SerializedName;
 
@@ -25,9 +24,6 @@
      @SerializedName("error")
      @Expose
      private String error;
-     @SerializedName("data")
-     @Expose
-     private GuestUser data;
      @SerializedName("error_description")
      @Expose
      private String errorDescription;
@@ -79,11 +75,4 @@
          this.errorDescription = errorDescription;
      }
 
-     public GuestUser getData() {
-         return data;
-     }
-
-     public void setData(GuestUser data) {
-         this.data = data;
-     }
  }
