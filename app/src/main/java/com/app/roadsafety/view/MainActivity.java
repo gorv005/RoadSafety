@@ -1,7 +1,9 @@
-package com.app.roadsafety;
+package com.app.roadsafety.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.app.roadsafety.R;
 
 public class MainActivity extends AppCompatActivity {
 
