@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">RoadSafety</string>
     <string name="title_activity_incident_maps">Map</string>
+    <string name="watch_out_big_cars">Watch out for big cars</string>
+    <string name="stay_away">Stay away from big cars turning the corners</string>
+    <string name="skip">Skip</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
