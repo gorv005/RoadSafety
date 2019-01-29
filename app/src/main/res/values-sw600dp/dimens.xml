@@ -10,6 +10,6 @@
     <dimen name="slide_title">22sp</dimen>
     <dimen name="slide_desc">18sp</dimen>
     <dimen name="desc_padding">20dp</dimen>
-    <dimen name="guidelines_image_size">200dp</dimen>
-    <dimen name="guidelines_image_border">7dp</dimen>
+    <dimen name="guidelines_image_size">300dp</dimen>
+    <dimen name="guidelines_image_border">10dp</dimen>
 </resources>

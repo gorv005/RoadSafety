@@ -3,13 +3,16 @@ package com.app.roadsafety.view;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +34,7 @@ public class GuidlinesActivity extends AppCompatActivity {
     LinearLayout layoutDots;
     @BindView(R.id.btn_skip)
     Button btnSkip;
-    private TextView[] dots;
+    private ImageView[] dots;
     int size;
     GuidelinesAdapter guidelinesAdapter;
     List<Guidelines> guidelines;
@@ -50,24 +53,21 @@ public class GuidlinesActivity extends AppCompatActivity {
 
 
     private void addBottomDots(int size, int currentPage) {
-        dots = new TextView[size];
-
-        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
-        int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
-
+        dots = new ImageView[size];
         layoutDots.removeAllViews();
-        for (int i = 0; i < dots.length; i++) {
-            dots[i] = new TextView(this);
-            dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(35);
-            dots[i].setTextColor(colorsInactive[currentPage]);
-            layoutDots.addView(dots[i]);
+        for (int i = 0; i < size; i++) {
+            dots[i] = new ImageView(this);
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.default_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(8, 0, 8, 0);
+
+            layoutDots.addView(dots[i], params);
+
         }
-
         if (dots.length > 0)
-            dots[currentPage].setTextColor(colorsActive[currentPage]);
+            dots[currentPage].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.selected_dot));
     }
-
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -96,14 +96,15 @@ public class GuidlinesActivity extends AppCompatActivity {
 
     void setGuideLines() {
         guidelines = new ArrayList<>();
-        Guidelines g1 = new Guidelines(getString(R.string.watch_out_big_cars), "", getString(R.string.title_activity_incident_maps),"#1EB8DD");
+        Guidelines g1 = new Guidelines(getString(R.string.watch_out_big_cars), "children_road", getString(R.string.title_activity_incident_maps),"#1EB8DD");
         guidelines.add(g1);
-        Guidelines g2 = new Guidelines(getString(R.string.watch_out_big_cars), "", getString(R.string.title_activity_incident_maps),"#9E89FF");
+        Guidelines g2 = new Guidelines(getString(R.string.watch_out_big_cars), "drink_drive", getString(R.string.title_activity_incident_maps),"#9E89FF");
         guidelines.add(g2);
-        Guidelines g3 = new Guidelines(getString(R.string.watch_out_big_cars), "", getString(R.string.title_activity_incident_maps),"#FEDB61");
+        Guidelines g3 = new Guidelines(getString(R.string.watch_out_big_cars), "fast_drive", getString(R.string.title_activity_incident_maps),"#FEDB61");
         guidelines.add(g3);
         guidelinesAdapter = new GuidelinesAdapter(getSupportFragmentManager(),guidelines);
         viewPager.setAdapter(guidelinesAdapter);
-        addBottomDots(guidelines.size(),0);
+        size=guidelines.size();
+        addBottomDots(size,0);
     }
 }

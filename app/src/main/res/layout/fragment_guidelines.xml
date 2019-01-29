@@ -9,6 +9,7 @@
     android:background="@color/guideline_1">
 
     <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/watch_out_big_cars"
@@ -20,11 +21,11 @@
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/image_guideline"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="@dimen/guidelines_image_size"
+        android:layout_height="@dimen/guidelines_image_size"
         android:layout_centerInParent="true"
         android:src="@mipmap/ic_launcher"
-        app:civ_border_width="10dp"
+        app:civ_border_width="7dp"
         app:civ_border_color="#404040"/>
     <TextView
         android:layout_width="wrap_content"

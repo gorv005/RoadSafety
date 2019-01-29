@@ -3,6 +3,7 @@ package com.app.roadsafety.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.Guidelines;
 import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.ImageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +52,6 @@ public class GuidelinesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         guidelines = (Guidelines) getArguments().getSerializable(AppConstants.GUIDELINES_DATA);
-        rlGuideLineView.setBackgroundColor(Color.parseColor(guidelines.getColorCode()));
     }
 
     @Override
@@ -60,6 +61,13 @@ public class GuidelinesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_guidelines, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        rlGuideLineView.setBackgroundColor(Color.parseColor(guidelines.getColorCode()));
+        ImageUtils.loadImage(getActivity(),guidelines.getImage(),imageGuideline);
     }
 
     @Override

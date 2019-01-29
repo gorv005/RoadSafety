@@ -17,6 +17,7 @@
     <color name="dot_active_screen3">#3a67e0</color>
     <color name="guideline_1">#1EB8DD</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <array name="array_dot_active">
         <item>@color/dot_active_screen1</item>
         <item>@color/dot_active_screen2</item>
