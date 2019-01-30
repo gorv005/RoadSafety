@@ -28,4 +28,12 @@
         <item>@color/dot_inactive_screen2</item>
         <item>@color/dot_inactive_screen3</item>
     </array>
+
+    <color name="yellow">#FACA25</color>
+    <color name="blue">#27B5E0</color>
+    <color name="fb_color">#1956BC</color>
+    <color name="green">#1EB8DD</color>
+    <color name="green1">#6C9CF2</color>
+    <color name="violet">#9E89FF</color>
+    <color name="yellow_1">#FEDB64</color>
 </resources>

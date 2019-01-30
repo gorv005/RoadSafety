@@ -7,5 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="AppTheme.RoundedCornerMaterialButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/rounded_shape</item>
+    </style>
+    <style name="AppTheme.ShadowButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@color/yellow_1</item>
+    </style>
 </resources>
