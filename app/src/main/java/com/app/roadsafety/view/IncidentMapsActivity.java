@@ -291,7 +291,6 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
             mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
         }
     }
-
     public float getZoomLevel(Circle circle) {
         float zoomLevel=0;
         if (circle != null){
