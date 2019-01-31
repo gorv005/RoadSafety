@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.app.roadsafety.R;
@@ -32,6 +34,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -47,12 +51,14 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
     private boolean isGPS = false;
     Marker mCurrLocationMarker;
     GoogleApiClient mGoogleApiClient;
-
+    Circle circle;
+    CircleOptions circleOptions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incident_maps);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        circleOptions = new CircleOptions();
         setLocationRequest();
 
         locationCallback();
@@ -116,12 +122,14 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
     }
 
     void setMapLocation(Location location){
+
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
+        setGeoFence(latLng);
+       /* MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
        // markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
@@ -131,7 +139,7 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
 
         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15.0f).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        mMap.moveCamera(cameraUpdate);
+        mMap.moveCamera(cameraUpdate);*/
     }
     /**
      * Manipulates the map once available.
@@ -152,12 +160,12 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
+                mMap.setMyLocationEnabled(false);
             }
         }
         else {
             buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(false);
         }
     }
 
@@ -172,7 +180,7 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationUpdates();
-                    mMap.setMyLocationEnabled(true);
+                    mMap.setMyLocationEnabled(false);
 
                 } else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
@@ -245,5 +253,52 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
         mGoogleApiClient.connect();
+    }
+
+    void setGeoFence(LatLng point){
+        if(circle==null) {
+        // Specifying the center of the circle
+        circleOptions.center(point);
+
+        // Radius of the circle
+        circleOptions.radius(16.0934 *1609.34);// Converting Miles into Meters...
+
+        // Border color of the circle
+        circleOptions.strokeColor(Color.BLACK);
+
+        // Fill color of the circle
+        // 0x represents, this is an hexadecimal code
+        // 55 represents percentage of transparency. For 100% transparency, specify 00.
+        // For 0% transparency ( ie, opaque ) , specify ff
+        // The remaining 6 characters(00ff00) specify the fill color
+        circleOptions.fillColor(0x5500ff00);
+
+        // Border width of the circle
+        circleOptions.strokeWidth(5);
+
+           /* circle.remove();
+        }*/
+            // Adding the circle to the GoogleMap
+            circle = mMap.addCircle(circleOptions);
+
+            float currentZoomLevel = getZoomLevel(circle);
+            float animateZomm = currentZoomLevel+5 ;
+
+            Log.e("Zoom Level:", currentZoomLevel + "");
+            Log.e("Zoom Level Animate:", animateZomm + "");
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
+        }
+    }
+
+    public float getZoomLevel(Circle circle) {
+        float zoomLevel=0;
+        if (circle != null){
+            double radius = circle.getRadius();
+            double scale = radius / 500;
+            zoomLevel =(int) (16 - Math.log(scale) / Math.log(2));
+        }
+        return zoomLevel +.5f;
     }
 }

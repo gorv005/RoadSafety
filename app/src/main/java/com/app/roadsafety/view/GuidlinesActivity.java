@@ -1,20 +1,18 @@
 package com.app.roadsafety.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.Guidelines;
@@ -25,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class GuidlinesActivity extends AppCompatActivity {
 
@@ -38,6 +37,7 @@ public class GuidlinesActivity extends AppCompatActivity {
     int size;
     GuidelinesAdapter guidelinesAdapter;
     List<Guidelines> guidelines;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +68,7 @@ public class GuidlinesActivity extends AppCompatActivity {
         if (dots.length > 0)
             dots[currentPage].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.selected_dot));
     }
+
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -96,15 +97,24 @@ public class GuidlinesActivity extends AppCompatActivity {
 
     void setGuideLines() {
         guidelines = new ArrayList<>();
-        Guidelines g1 = new Guidelines(getString(R.string.watch_out_big_cars), "children_road", getString(R.string.title_activity_incident_maps),"#1EB8DD");
+        Guidelines g1 = new Guidelines(getString(R.string.watch_out_big_cars), "guideline_1", getString(R.string.title_activity_incident_maps), "#1EB8DD");
         guidelines.add(g1);
-        Guidelines g2 = new Guidelines(getString(R.string.watch_out_big_cars), "drink_drive", getString(R.string.title_activity_incident_maps),"#9E89FF");
+        Guidelines g2 = new Guidelines(getString(R.string.watch_out_big_cars), "guideline_2", getString(R.string.title_activity_incident_maps), "#9E89FF");
         guidelines.add(g2);
-        Guidelines g3 = new Guidelines(getString(R.string.watch_out_big_cars), "fast_drive", getString(R.string.title_activity_incident_maps),"#FEDB61");
+        Guidelines g3 = new Guidelines(getString(R.string.watch_out_big_cars), "guideline_1", getString(R.string.title_activity_incident_maps), "#FEDB61");
         guidelines.add(g3);
-        guidelinesAdapter = new GuidelinesAdapter(getSupportFragmentManager(),guidelines);
+        guidelinesAdapter = new GuidelinesAdapter(getSupportFragmentManager(), guidelines);
         viewPager.setAdapter(guidelinesAdapter);
-        size=guidelines.size();
-        addBottomDots(size,0);
+        size = guidelines.size();
+        addBottomDots(size, 0);
+    }
+
+    @OnClick(R.id.btn_skip)
+    public void onViewClicked() {
+        gotoIncidentMaps();
+    }
+    void gotoIncidentMaps() {
+        Intent intent = new Intent(this, IncidentMapsActivity.class);
+        startActivity(intent);
     }
 }

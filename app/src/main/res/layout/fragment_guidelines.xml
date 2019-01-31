@@ -13,6 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/watch_out_big_cars"
+        android:fontFamily="@font/calibri"
+
         android:textColor="@color/white"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/slide_title"
@@ -25,14 +27,17 @@
         android:layout_height="@dimen/guidelines_image_size"
         android:layout_centerInParent="true"
         android:src="@mipmap/ic_launcher"
-        app:civ_border_width="7dp"
+        app:civ_border_width="0dp"
+
         app:civ_border_color="#404040"/>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/stay_away"
         android:textAlignment="center"
+        android:fontFamily="@font/calibri"
+        android:gravity="center_horizontal"
         android:layout_below="@id/image_guideline"
         android:textColor="@android:color/black"
         android:textSize="@dimen/slide_desc" />

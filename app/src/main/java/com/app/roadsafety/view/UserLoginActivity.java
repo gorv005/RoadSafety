@@ -6,15 +6,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.greenhalolabs.facebooklogin.FacebookLoginActivity;
-
 
 import java.util.ArrayList;
 
@@ -26,6 +26,8 @@ public class UserLoginActivity extends AppCompatActivity {
 
     @BindView(R.id.facebook_button)
     Button facebookButton;
+    @BindView(R.id.tvGhuestLogin)
+    TextView tvGhuestLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +47,6 @@ public class UserLoginActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
-    @OnClick(R.id.facebook_button)
-    public void onViewClicked() {
-        String applicationId =  getResources().getString(R.string.facebook_app_id);
-        ArrayList<String> permissions = new ArrayList<String>();
-        permissions.add("public_profile");
-        FacebookLoginActivity.launch(this, applicationId, permissions);
-    }
 
 
 
@@ -62,13 +57,35 @@ public class UserLoginActivity extends AppCompatActivity {
 
             if (resultCode == Activity.RESULT_OK) {
                 String accessToken = data.getStringExtra(FacebookLoginActivity.EXTRA_FACEBOOK_ACCESS_TOKEN);
-                Toast.makeText(this, "Access Token: " + accessToken, Toast.LENGTH_LONG).show();
-            }
-            else {
+                Log.e("DEBUG", accessToken);
+                //Toast.makeText(this, "Access Token: " + accessToken, Toast.LENGTH_LONG).show();
+            } else {
                 String errorMessage = data.getStringExtra(FacebookLoginActivity.EXTRA_ERROR_MESSAGE);
-                Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                Log.e("DEBUG", errorMessage);
             }
+            gotoSelectRegion();
+        }
+    }
 
+    void gotoSelectRegion() {
+        Intent intent = new Intent(this, SelectRegionActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick({R.id.facebook_button, R.id.tvGhuestLogin})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.facebook_button:
+                String applicationId = getResources().getString(R.string.facebook_app_id);
+                ArrayList<String> permissions = new ArrayList<String>();
+                permissions.add("public_profile");
+                FacebookLoginActivity.launch(this,applicationId,permissions);
+
+                break;
+            case R.id.tvGhuestLogin:
+                gotoSelectRegion();
+                break;
         }
     }
 }

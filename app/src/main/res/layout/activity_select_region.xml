@@ -29,21 +29,27 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/select_region"
+            android:fontFamily="@font/calibri"
+
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:textSize="@dimen/slide_title" />
 
-            <RelativeLayout
-                android:id="@+id/rlPortugal"
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rlPortugal"
 
-                android:layout_below="@id/tv1"
-                android:background="@drawable/shadow_button"
-                android:layout_marginTop="50dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:layout_below="@id/tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="6dp"
+            card_view:contentPadding="6dp"
+            android:layout_marginTop="50dp"
+            card_view:cardElevation="4dp"
+            card_view:cardMaxElevation="6dp"
+            card_view:cardBackgroundColor="#FEDB64"
+            >
                 <ImageView
                     android:layout_marginLeft="15dp"
                     android:src="@drawable/portugal_logo"
@@ -53,23 +59,30 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal|center_vertical"
                     android:text="@string/portugal"
                     android:textAllCaps="true"
+                    android:fontFamily="@font/calibri"
+
                     android:layout_centerInParent="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/slide_title" />
-            </RelativeLayout>
-
-        <RelativeLayout
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rlBrazilView"
+
             android:layout_below="@id/rlPortugal"
-            android:background="@drawable/shadow_button"
-            android:layout_marginTop="20dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="6dp"
+            card_view:contentPadding="6dp"
+            android:layout_marginTop="20dp"
+            card_view:cardElevation="4dp"
+            card_view:cardMaxElevation="6dp"
+            card_view:cardBackgroundColor="#FEDB64"
+            >
+
             <ImageView
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/brazil_logo"
@@ -79,13 +92,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:text="@string/brazil"
                 android:textAllCaps="true"
+                android:fontFamily="@font/calibri"
                 android:layout_centerInParent="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/slide_title" />
-        </RelativeLayout>
-
+        </android.support.v7.widget.CardView>
     </RelativeLayout>
 </RelativeLayout>
