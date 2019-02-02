@@ -36,4 +36,6 @@
     <color name="green1">#6C9CF2</color>
     <color name="violet">#9E89FF</color>
     <color name="yellow_1">#FEDB64</color>
+    <color name="geofence_color">#F3EFDF</color>
+    <color name="geofence_stroke_color">#F6F1DC</color>
 </resources>

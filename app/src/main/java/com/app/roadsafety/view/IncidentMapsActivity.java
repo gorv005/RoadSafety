@@ -15,6 +15,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.app.roadsafety.R;
@@ -56,6 +59,9 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
         setContentView(R.layout.activity_incident_maps);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         circleOptions = new CircleOptions();
@@ -66,6 +72,7 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        changeStatusBarColor();
     }
 
     void setLocationRequest() {
@@ -74,7 +81,13 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
         locationRequest.setInterval(10 * 1000); // 10 seconds
         locationRequest.setFastestInterval(5 * 1000);
     }
-
+    private void changeStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
     void GpsEnable() {
         new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override
@@ -160,12 +173,12 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
-                mMap.setMyLocationEnabled(false);
+                mMap.setMyLocationEnabled(true);
             }
         }
         else {
             buildGoogleApiClient();
-            mMap.setMyLocationEnabled(false);
+            mMap.setMyLocationEnabled(true);
         }
     }
 
@@ -180,7 +193,7 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationUpdates();
-                    mMap.setMyLocationEnabled(false);
+                    mMap.setMyLocationEnabled(true);
 
                 } else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
@@ -264,17 +277,17 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
         circleOptions.radius(16.0934 *1609.34);// Converting Miles into Meters...
 
         // Border color of the circle
-        circleOptions.strokeColor(Color.BLACK);
+        circleOptions.strokeColor(Color.parseColor("#fff0f5"));
 
         // Fill color of the circle
         // 0x represents, this is an hexadecimal code
         // 55 represents percentage of transparency. For 100% transparency, specify 00.
         // For 0% transparency ( ie, opaque ) , specify ff
         // The remaining 6 characters(00ff00) specify the fill color
-        circleOptions.fillColor(0x5500ff00);
+        //circleOptions.fillColor(Color.parseColor("#F8F4E3"));
 
         // Border width of the circle
-        circleOptions.strokeWidth(5);
+        circleOptions.strokeWidth(150);
 
            /* circle.remove();
         }*/
@@ -295,7 +308,7 @@ public class IncidentMapsActivity extends FragmentActivity implements OnMapReady
         float zoomLevel=0;
         if (circle != null){
             double radius = circle.getRadius();
-            double scale = radius / 500;
+            double scale = radius / 400;
             zoomLevel =(int) (16 - Math.log(scale) / Math.log(2));
         }
         return zoomLevel +.5f;

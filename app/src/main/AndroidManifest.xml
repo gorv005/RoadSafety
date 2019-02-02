@@ -21,17 +21,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.SelectRegionActivity">
-
-        </activity>
-        <activity android:name=".view.UserLoginActivity">
+        <activity android:name=".view.FeedListActivity"></activity>
+        <activity
+            android:name=".view.SelectRegionActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.UserLoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.GuidlinesActivity"></activity>
+        <activity
+            android:name=".view.GuidlinesActivity"
+            android:screenOrientation="portrait" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -46,14 +51,17 @@
 
         <activity
             android:name=".view.IncidentMapsActivity"
-            android:label="@string/title_activity_incident_maps">
+            android:label="@string/title_activity_incident_maps"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity" />
+        <activity
+            android:name=".view.MainActivity"
+            android:screenOrientation="portrait" />
         <activity android:name="com.greenhalolabs.facebooklogin.FacebookLoginActivity" />
     </application>
 
