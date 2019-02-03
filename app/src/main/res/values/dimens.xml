@@ -12,4 +12,6 @@
     <dimen name="desc_padding">20dp</dimen>
     <dimen name="guidelines_image_size">200dp</dimen>
     <dimen name="guidelines_image_border">7dp</dimen>
+    <dimen name="bottom_tab_text">14sp</dimen>
+
 </resources>

@@ -114,7 +114,7 @@ public class GuidlinesActivity extends AppCompatActivity {
         gotoIncidentMaps();
     }
     void gotoIncidentMaps() {
-        Intent intent = new Intent(this, FeedListActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
