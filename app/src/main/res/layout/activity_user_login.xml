@@ -48,7 +48,6 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="32dp"
                 android:textAllCaps="false"
-                android:fontFamily="@font/calibri"
 
                 android:textSize="@dimen/slide_title"
                 android:text="@string/sign_in_with_fb" />
@@ -70,7 +69,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/guest_login"
-                    android:fontFamily="@font/calibri"
                     android:id="@+id/tvGhuestLogin"
                     android:textColor="@color/yellow"
                     android:textSize="@dimen/slide_title" />
@@ -90,8 +88,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/calibri"
-
                     android:text="@string/by_sign_up"
                     android:textColor="@color/white"
                     android:textSize="@dimen/slide_title" />
@@ -110,7 +106,6 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginRight="3dp"
                         android:text="@string/terms_of_service"
-                        android:fontFamily="@font/calibri"
 
                         android:textColor="@color/blue"
                         android:textSize="@dimen/slide_title" />
@@ -120,7 +115,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/and"
-                        android:fontFamily="@font/calibri"
 
                         android:textColor="@color/white"
                         android:textSize="@dimen/slide_title" />
@@ -131,8 +125,6 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
                         android:text="@string/privacy_policy"
-                        android:fontFamily="@font/calibri"
-
                         android:textColor="@color/blue"
                         android:textSize="@dimen/slide_title" />
                 </LinearLayout>

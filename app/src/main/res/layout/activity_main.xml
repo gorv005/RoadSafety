@@ -33,7 +33,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/calibri"
                 android:text="@string/feed"
                 android:textColor="@color/white"
                 android:textSize="@dimen/bottom_tab_text" />
@@ -70,7 +69,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/calibri"
                 android:text="@string/settings"
                 android:textColor="@color/white"
                 android:textSize="@dimen/bottom_tab_text" />
@@ -99,7 +97,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/calibri"
             android:text="@string/map"
             android:textColor="@color/white"
             android:textSize="@dimen/bottom_tab_text" />

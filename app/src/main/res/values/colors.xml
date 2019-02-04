@@ -38,4 +38,6 @@
     <color name="yellow_1">#FEDB64</color>
     <color name="geofence_color">#F3EFDF</color>
     <color name="geofence_stroke_color">#F6F1DC</color>
+    <color name="profile_text_color">#2F3A4B</color>
+    <color name="line">#C1C1C1</color>
 </resources>

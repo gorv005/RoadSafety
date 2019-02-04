@@ -6,4 +6,5 @@ public class AppConstants {
     public static final String GUIDELINES_DATA = "guidelines_data";
     public static final int FRAGMENT_MAP =2 ;
     public static final int FRAGMENT_FEED_LIST =1 ;
+    public static final int FRAGMENT_SETTINGS = 3;
 }

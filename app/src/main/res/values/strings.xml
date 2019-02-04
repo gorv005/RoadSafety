@@ -21,4 +21,9 @@
     <string name="feed">Feed</string>
     <string name="settings">Settings</string>
     <string name="map">Map</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="logout">Logout</string>
+    <string name="linked_acccount">Linked account</string>
+    <string name="notifications">Notifications</string>
+    <string name="location_services">Location services</string>
 </resources>

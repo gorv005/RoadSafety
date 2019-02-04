@@ -13,4 +13,6 @@
     <dimen name="guidelines_image_size">300dp</dimen>
     <dimen name="guidelines_image_border">10dp</dimen>
     <dimen name="bottom_tab_text">16sp</dimen>
+    <dimen name="margin_left">50dp</dimen>
+    <dimen name="item_size">100dp</dimen>
 </resources>
