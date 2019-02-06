@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rlProfile"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_size"
                 android:orientation="horizontal"
@@ -53,6 +54,7 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:id="@+id/rlLocationServices"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_size"
                 android:orientation="horizontal"
@@ -89,6 +91,7 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:id="@+id/rlNotifications"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_size"
                 android:orientation="horizontal"
@@ -125,6 +128,7 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:id="@+id/rlLinkedAccount"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_size"
                 android:orientation="horizontal"
@@ -162,6 +166,7 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:id="@+id/rlLogout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_size"
                 android:orientation="horizontal"

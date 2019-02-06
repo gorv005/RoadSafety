@@ -14,4 +14,10 @@
     <style name="AppTheme.ShadowButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@color/yellow_1</item>
     </style>
+    <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:titleTextColor"> @color/black</item>
+        <!-- Support library compatibility -->
+        <item name="windowActionBarOverlay">true</item>
+    </style>
 </resources>

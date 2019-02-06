@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentLoader(AppConstants.FRAGMENT_FEED_LIST, null);
                 break;
             case R.id.llSettings:
-              //  fragmentLoader(AppConstants.FRAGMENT_SETTINGS, null);
+                fragmentLoader(AppConstants.FRAGMENT_SETTINGS, null);
                 break;
             case R.id.llMap:
                 fragmentLoader(AppConstants.FRAGMENT_MAP, null);

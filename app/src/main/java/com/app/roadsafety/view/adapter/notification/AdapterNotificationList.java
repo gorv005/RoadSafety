@@ -1,7 +1,6 @@
-package com.app.roadsafety.view.adapter.feed;
+package com.app.roadsafety.view.adapter.notification;
 
 import android.app.Activity;
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,28 +13,25 @@ import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.Feed;
 import com.app.roadsafety.utility.ImageUtils;
 
-
 import java.util.List;
 
-public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private List<Feed> horizontalList;
     Activity context;
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvFeedTitle, tvFeedDesc;
-        public ImageView ivIncident;
-        RelativeLayout rlFeed;
+        public TextView  tvNotificationDesc,tvDate;
+        RelativeLayout rlNotifications;
 
         public ItemViewHolder(View view) {
             super(view);
-            tvFeedTitle = (TextView) view.findViewById(R.id.tvFeedTitle);
-            tvFeedDesc = (TextView) view.findViewById(R.id.tvFeedDesc);
-            ivIncident = (ImageView) view.findViewById(R.id.ivIncident);
-            rlFeed = (RelativeLayout) view.findViewById(R.id.rlFeed);
+            tvNotificationDesc = (TextView) view.findViewById(R.id.tvNotificationDesc);
+            tvDate = (TextView) view.findViewById(R.id.tvDate);
+            rlNotifications = (RelativeLayout) view.findViewById(R.id.rlNotifications);
         }
     }
 
-    public AdapterFeedList(List<Feed> horizontalList, Activity context) {
+    public AdapterNotificationList(List<Feed> horizontalList, Activity context) {
         this.horizontalList = horizontalList;
         this.context = context;
     }
@@ -48,7 +44,7 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.feed_item, parent, false);
+                    .inflate(R.layout.notification_item, parent, false);
 
             return new ItemViewHolder(itemView);
         } else
@@ -58,9 +54,7 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tvFeedTitle.setText(horizontalList.get(position).getHeading());
-            itemViewHolder.tvFeedDesc.setText(horizontalList.get(position).getDesc());
-            ImageUtils.loadImage(context, horizontalList.get(position).getImage(), itemViewHolder.ivIncident);
+            itemViewHolder.tvNotificationDesc.setText(horizontalList.get(position).getDesc());
 
         }
 

@@ -4,8 +4,9 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
-    android:background="@color/colorPrimary"
-    android:titleTextColor="@color/white"
-    app:subtitleTextColor="@color/white"
+    android:background="@color/toolbar_color"
+    android:titleTextColor="@color/black"
+    app:subtitleTextColor="@color/black"
+    app:theme="@style/CustomActionBar"
      />
 
