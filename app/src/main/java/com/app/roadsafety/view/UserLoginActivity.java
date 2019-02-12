@@ -1,8 +1,10 @@
 package com.app.roadsafety.view;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +40,7 @@ public class UserLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_login);
         ButterKnife.bind(this);
         changeStatusBarColor();
+        dialog();
     }
 
     private void changeStatusBarColor() {
@@ -87,5 +90,18 @@ public class UserLoginActivity extends AppCompatActivity {
                 gotoSelectRegion();
                 break;
         }
+    }
+
+    void dialog() {
+
+        final Dialog dialog = new Dialog(this, R.style.FullHeightDialog); //this is a reference to the style above
+        dialog.setContentView(R.layout.add_incident_location_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+//to set the message
+        dialog.show();
     }
 }

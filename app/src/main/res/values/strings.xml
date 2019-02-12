@@ -26,4 +26,7 @@
     <string name="linked_acccount">Linked account</string>
     <string name="notifications">Notifications</string>
     <string name="location_services">Location services</string>
+    <string name="add_incident_location">Add incident location</string>
+    <string name="add_your_current_location">Add your current location</string>
+    <string name="or">Or</string>
 </resources>

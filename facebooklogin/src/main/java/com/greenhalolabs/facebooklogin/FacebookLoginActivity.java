@@ -196,6 +196,7 @@ public class FacebookLoginActivity extends Activity {
     }
 
     private void handleResultOk(Intent data) {
+        Log.e("DEBUG","data="+data.toString());
         Bundle extras = data.getExtras();
         String error = extras.getString("error");
         if (error == null) {
