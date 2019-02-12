@@ -102,6 +102,7 @@ public class FacebookLoginActivity extends Activity {
 
     void onWebDialogComplete(Bundle values,
                              FacebookException error) {
+        Log.e("DEBUG","Data="+values.toString());
         if (values != null) {
             AccessToken token = AccessToken
                 .createFromWebBundle(permissions, values, AccessTokenSource.WEB_VIEW);

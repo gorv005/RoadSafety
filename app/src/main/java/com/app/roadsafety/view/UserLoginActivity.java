@@ -16,6 +16,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.model.authentication.FacebookLoginRequest;
+import com.app.roadsafety.model.authentication.LoginResponse;
+import com.app.roadsafety.presenter.AuthenticationPresenterImpl;
+import com.app.roadsafety.presenter.IAuthenticationPresenter;
+import com.app.roadsafety.utility.AppUtils;
 import com.greenhalolabs.facebooklogin.FacebookLoginActivity;
 
 import java.util.ArrayList;
@@ -24,12 +29,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserLoginActivity extends AppCompatActivity {
+public class UserLoginActivity extends AppCompatActivity implements IAuthenticationPresenter.IAuthenticationView {
 
     @BindView(R.id.facebook_button)
     Button facebookButton;
     @BindView(R.id.tvGhuestLogin)
     TextView tvGhuestLogin;
+    AppUtils util;
+    IAuthenticationPresenter iAuthenticationPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,8 @@ public class UserLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_login);
         ButterKnife.bind(this);
         changeStatusBarColor();
+        util = new AppUtils();
+        iAuthenticationPresenter = new AuthenticationPresenterImpl(this, this);
         dialog();
     }
 
@@ -52,7 +61,6 @@ public class UserLoginActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -62,6 +70,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 String accessToken = data.getStringExtra(FacebookLoginActivity.EXTRA_FACEBOOK_ACCESS_TOKEN);
                 Log.e("DEBUG", accessToken);
                 //Toast.makeText(this, "Access Token: " + accessToken, Toast.LENGTH_LONG).show();
+                facebookLogin(accessToken);
             } else {
                 String errorMessage = data.getStringExtra(FacebookLoginActivity.EXTRA_ERROR_MESSAGE);
                 //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
@@ -69,6 +78,12 @@ public class UserLoginActivity extends AppCompatActivity {
             }
             gotoSelectRegion();
         }
+    }
+
+    void facebookLogin(String token) {
+        FacebookLoginRequest facebookLoginRequest = new FacebookLoginRequest();
+        facebookLoginRequest.setAccessToken(token);
+        iAuthenticationPresenter.facebookLogin(facebookLoginRequest);
     }
 
     void gotoSelectRegion() {
@@ -83,7 +98,8 @@ public class UserLoginActivity extends AppCompatActivity {
                 String applicationId = getResources().getString(R.string.facebook_app_id);
                 ArrayList<String> permissions = new ArrayList<String>();
                 permissions.add("public_profile");
-                FacebookLoginActivity.launch(this,applicationId,permissions);
+                permissions.add("email");
+                FacebookLoginActivity.launch(this, applicationId, permissions);
 
                 break;
             case R.id.tvGhuestLogin:
@@ -95,7 +111,7 @@ public class UserLoginActivity extends AppCompatActivity {
     void dialog() {
 
         final Dialog dialog = new Dialog(this, R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.add_incident_location_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setContentView(R.layout.login_pop_up); //I saved the xml file above as yesnomessage.xml
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
@@ -104,4 +120,40 @@ public class UserLoginActivity extends AppCompatActivity {
 //to set the message
         dialog.show();
     }
+
+    @Override
+    public void getFacebookLoginResponse(LoginResponse response) {
+
+    }
+
+    @Override
+    public void getGuestUserResponse(LoginResponse response) {
+
+    }
+
+    @Override
+    public void getResponseError(String response) {
+
+    }
+
+    @Override
+    public void showProgress() {
+        util.showDialog(getString(R.string.please_wait), this);
+    }
+
+    @Override
+    public void hideProgress() {
+        util.hideDialog();
+    }
+
+    @Override
+    public void onDestroy() {
+        try {
+            super.onDestroy();
+            iAuthenticationPresenter.onDestroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -1,1 +1,1 @@
-package com.app.roadsafety.frameworks.retrofit;public interface WebServices {}
+package com.app.roadsafety.frameworks.retrofit;import com.app.roadsafety.model.authentication.FacebookLoginRequest;import com.app.roadsafety.model.authentication.LoginResponse;import retrofit2.Call;import retrofit2.http.Body;import retrofit2.http.POST;public interface WebServices {    @POST("/api/v1/users")    Call<LoginResponse> facebookLogin(@Body FacebookLoginRequest facebookLoginRequest);    @POST("/api/v1/oauth/token")    Call<LoginResponse> guestLogin();}

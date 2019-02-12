@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/ivCross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/cross" />
+
+        <RelativeLayout
+            android:layout_marginTop="150dp"
+            android:id="@+id/rlOrders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@drawable/dailog_bg">
+
+            <LinearLayout
+                android:weightSum="4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_weight="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_from_top_login_pop_up"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/desc_padding"
+                    android:paddingRight="@dimen/desc_padding">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/rsa_logo" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/rsa_title" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/margin_from_top_login_pop_up"
+                    android:paddingLeft="@dimen/desc_padding"
+                    android:paddingRight="@dimen/desc_padding">
+
+                    <Button
+                        android:id="@+id/facebook_button"
+                        style="@style/RoundedCornerMaterialButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="32dp"
+                        android:text="@string/sign_in_with_fb"
+                        android:textColor="@color/white"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/slide_title" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/margin_from_top_login_pop_up"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/desc_padding"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingRight="@dimen/desc_padding">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/by_sign_up"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/slide_title_dialog" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginRight="3dp"
+                                android:text="@string/terms_of_service"
+
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/slide_title_dialog" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="@string/and"
+
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/slide_title_dialog" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginLeft="3dp"
+                                android:text="@string/privacy_policy"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/slide_title_dialog" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <Button
+                    style="@style/RoundedCornerMaterialButtonBlue"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/margin_from_top_login_pop_up"
+                    android:text="@string/close"
+                    android:visibility="visible"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+
+                    android:textSize="@dimen/slide_title" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

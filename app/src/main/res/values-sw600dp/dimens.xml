@@ -17,4 +17,8 @@
     <dimen name="item_size">100dp</dimen>
     <dimen name="dialog_size_width">400dp</dimen>
     <dimen name="dialog_size_height">400dp</dimen>
+    <dimen name="margin_top">15dp</dimen>
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="slide_title_dialog">18sp</dimen>
+    <dimen name="margin_from_top_login_pop_up">40dp</dimen>
 </resources>
