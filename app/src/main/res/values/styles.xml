@@ -12,10 +12,16 @@
         <item name="android:background">@drawable/rounded_shape</item>
     </style>
     <style name="RoundedCornerMaterialButtonYellow" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:background">@drawable/rounded_shape_yellow</item>
-    </style>
+    <item name="android:background">@drawable/rounded_shape_yellow</item>
+</style>
     <style name="RoundedCornerMaterialButtonBlue" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/rounded_shape_blue</item>
+    </style>
+    <style name="RoundedCornerMaterialButtonYellowOneCorner" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/one_corner_rounded_shape_yellow</item>
+    </style>
+    <style name="RoundedCornerMaterialButtonBlueOneCorner" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/one_corner_rounded_shape_blue</item>
     </style>
     <style name="AppTheme.ShadowButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@color/yellow_1</item>

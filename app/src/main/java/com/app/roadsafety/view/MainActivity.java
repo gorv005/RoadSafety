@@ -17,6 +17,7 @@ import com.app.roadsafety.R;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.view.adapter.map.IncidentMapsFragment;
 import com.app.roadsafety.view.feed.FeedListFragment;
+import com.app.roadsafety.view.notification.NotificationFragment;
 import com.app.roadsafety.view.settings.SettingsFragment;
 
 import butterknife.BindView;
@@ -77,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.container, fragment);
                 //fragmentTransaction.addToBackStack(C.TAG_FRAGMENT_PRODUCTS_HOME);
                 break;
+            case AppConstants.FRAGMENT_NOTIFICATION:
+                fragment = new NotificationFragment();
+                fragmentTransaction.replace(R.id.container, fragment);
+                fragmentTransaction.addToBackStack(null);
+                break;
         }
         fragment.setArguments(bundle);
         fragmentTransaction.commit();
@@ -98,5 +104,13 @@ public class MainActivity extends AppCompatActivity {
                 fragmentLoader(AppConstants.FRAGMENT_MAP, null);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() > 0)
+            getFragmentManager().popBackStack();
+        else
+            super.onBackPressed();
     }
 }

@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.Guidelines;
-import com.app.roadsafety.view.adapter.GuidelinesAdapter;
+import com.app.roadsafety.view.adapter.guidelines.GuidelinesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

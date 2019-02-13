@@ -6,9 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.model.Guidelines;
 import com.app.roadsafety.model.feed.Feed;
-import com.app.roadsafety.view.adapter.GuidelinesAdapter;
 import com.app.roadsafety.view.adapter.feed.AdapterFeedList;
 
 import java.util.ArrayList;

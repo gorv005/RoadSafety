@@ -27,9 +27,15 @@
     <string name="notifications">Notifications</string>
     <string name="location_services">Location services</string>
     <string name="add_incident_location">Add incident location</string>
+    <string name="delete_alert_text">Are You Sure You Want To Delete This Post?</string>
+
     <string name="add_your_current_location">Add your current location</string>
     <string name="or">Or</string>
     <string name="select_location_from_map">Select location from map</string>
     <string name="close">Close</string>
     <string name="please_wait">Please Wait...</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="acidente">Acidente</string>
+    <string name="all_incidents">All incidents</string>
 </resources>

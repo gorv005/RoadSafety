@@ -7,4 +7,5 @@ public class AppConstants {
     public static final int FRAGMENT_MAP =2 ;
     public static final int FRAGMENT_FEED_LIST =1 ;
     public static final int FRAGMENT_SETTINGS = 3;
+    public static final int FRAGMENT_NOTIFICATION =4 ;
 }

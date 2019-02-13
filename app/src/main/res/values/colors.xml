@@ -44,4 +44,5 @@
     <color name="toolbar_color">#FCFCFC</color>
     <color name="title_color">#475261</color>
     <color name="dark_blue">#44B4C1</color>
+    <color name="grey">#A9A9A9</color>
 </resources>

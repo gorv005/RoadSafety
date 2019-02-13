@@ -21,5 +21,6 @@
     <dimen name="button_height">50dp</dimen>
     <dimen name="slide_title_dialog">14sp</dimen>
     <dimen name="margin_from_top_login_pop_up">20dp</dimen>
-
+    <dimen name="alert_dialog_size_height">230dp</dimen>
+    <dimen name="alert_margin_top">50dp</dimen>
 </resources>

@@ -21,55 +21,50 @@
     <RelativeLayout
         android:id="@+id/rlOrders"
         android:layout_centerInParent="true"
-        android:background="@drawable/dailog_bg"
+        android:background="@drawable/dailog_border"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dialog_size_height">
+        android:layout_height="@dimen/alert_dialog_size_height">
         <TextView
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:text="@string/add_incident_location"
+            android:text="@string/delete_alert_text"
             android:layout_width="wrap_content"
             android:textSize="@dimen/slide_desc"
+            android:padding="20dp"
+            android:gravity="center"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginTop="@dimen/alert_margin_top"
             android:textColor="@color/title_color"
             android:layout_height="wrap_content" />
 
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp">
-
+            android:weightSum="2"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content">
             <Button
-                style="@style/RoundedCornerMaterialButtonYellow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:textColor="@color/white"
-                android:textSize="@dimen/slide_desc"
-                android:textAllCaps="false"
-                android:layout_marginTop="@dimen/margin_top"
-                android:text="@string/add_your_current_location" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:text="@string/or"
-                android:textColor="@color/title_color"
-                android:textSize="@dimen/slide_desc" />
-
-            <Button
-                style="@style/RoundedCornerMaterialButtonBlue"
-                android:layout_width="match_parent"
+                style="@style/RoundedCornerMaterialButtonBlueOneCorner"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="@dimen/button_height"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
-
+                android:layout_alignParentBottom="true"
                 android:textSize="@dimen/slide_desc"
-                android:text="@string/select_location_from_map" />
+                android:text="@string/cancel" />
+            <Button
+                style="@style/RoundedCornerMaterialButtonYellowOneCorner"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/button_height"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_alignParentBottom="true"
+                android:textSize="@dimen/slide_desc"
+                android:text="@string/delete" />
         </LinearLayout>
     </RelativeLayout>
     </RelativeLayout>

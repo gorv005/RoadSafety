@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.view.IncidentListReported;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.NotificationActivity;
@@ -71,8 +72,9 @@ public class SettingsFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.rlNotifications:
-                 intent = new Intent(getActivity(), NotificationActivity.class);
-                startActivity(intent);
+                 /*intent = new Intent(getActivity(), NotificationActivity.class);
+                startActivity(intent);*/
+                ((MainActivity)getActivity()).fragmentLoader(AppConstants.FRAGMENT_NOTIFICATION,null);
                 break;
             case R.id.rlLinkedAccount:
                 break;

@@ -4,9 +4,13 @@ package com.app.roadsafety.view.adapter.map;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,9 +20,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.app.roadsafety.R;
@@ -38,11 +46,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +65,10 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
     @BindView(R.id.mapview)
     MapView mapview;
     Unbinder unbinder;
+    @BindView(R.id.llFilterIncident)
+    LinearLayout llFilterIncident;
+    @BindView(R.id.ivAddPost)
+    ImageView ivAddPost;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
@@ -105,7 +121,19 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.style_json));
 
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
@@ -282,7 +310,7 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
     }
 
     void setGeoFence(LatLng point) {
-        if (circle==null) {
+        if (circle == null) {
             // Specifying the center of the circle
             circleOptions.center(point);
 
@@ -334,18 +362,21 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
         mMap = null;
 
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         if (mapview != null)
             mapview.onLowMemory();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mapview != null)
             mapview.onDestroy();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -353,4 +384,51 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
         unbinder.unbind();
 
     }
+
+    @OnClick({R.id.llFilterIncident, R.id.ivAddPost})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.llFilterIncident:
+                int[] location = new int[2];
+
+                // Get the x, y location and store it in the location[] array
+                // location[0] = x, location[1] = y.
+                view.getLocationOnScreen(location);
+
+                //Initialize the Point with x, and y positions
+                Point point = new Point();
+                point.x = location[0];
+                point.y = location[1];
+                showIncidentPopup(getActivity(),point);
+                break;
+            case R.id.ivAddPost:
+                break;
+        }
+    }
+
+
+        private void showIncidentPopup(final Activity context, Point p) {
+
+            // Inflate the popup_layout.xml
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = layoutInflater.inflate(R.layout.incident_pop_up, null);
+
+            // Creating the PopupWindow
+            PopupWindow changeStatusPopUp = new PopupWindow(context);
+            changeStatusPopUp.setContentView(layout);
+           // changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+            //changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+            changeStatusPopUp.setFocusable(true);
+
+            // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+            int OFFSET_X = 0;
+            int OFFSET_Y = 60;
+
+            //Clear the default translucent background
+            changeStatusPopUp.setBackgroundDrawable(new BitmapDrawable());
+
+            // Displaying the popup at the specified location, + offsets.
+            changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+        }
+
 }

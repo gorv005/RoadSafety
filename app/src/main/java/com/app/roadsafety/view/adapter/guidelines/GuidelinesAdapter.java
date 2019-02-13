@@ -1,4 +1,4 @@
-package com.app.roadsafety.view.adapter;
+package com.app.roadsafety.view.adapter.guidelines;
 
 import android.app.Activity;
 import android.content.Context;

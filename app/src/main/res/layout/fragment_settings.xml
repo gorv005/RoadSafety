@@ -12,6 +12,7 @@
         android:scrollbars="none">
 
         <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -25,6 +26,7 @@
 
                 <ImageView
                     android:id="@+id/ivProfile"
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/profile" />
@@ -40,6 +42,7 @@
                     android:textSize="@dimen/slide_title" />
 
                 <ImageView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -61,6 +64,8 @@
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
+                    android:layout_centerVertical="true"
+
                     android:id="@+id/ivLocationService"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,6 +103,8 @@
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
+                    android:layout_centerVertical="true"
+
                     android:id="@+id/ivNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -135,6 +142,8 @@
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
+                    android:layout_centerVertical="true"
+
                     android:layout_marginLeft="5dp"
                     android:id="@+id/ivLinkedAccount"
                     android:layout_width="wrap_content"
@@ -173,6 +182,8 @@
                 android:padding="@dimen/activity_horizontal_margin">
 
                 <ImageView
+                    android:layout_centerVertical="true"
+
                     android:id="@+id/ivLogout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -111,7 +111,7 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
     void dialog() {
 
         final Dialog dialog = new Dialog(this, R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.login_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
