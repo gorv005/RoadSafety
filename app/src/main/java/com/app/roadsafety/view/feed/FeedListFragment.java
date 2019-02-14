@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.Feed;
+import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.feed.AdapterFeedList;
 
 import java.util.ArrayList;
@@ -57,6 +58,13 @@ public class FeedListFragment extends Fragment {
         setFeed();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ( (MainActivity)getActivity()).updateToolbarTitle(getString(R.string.road_safety_feed),true);
+
+    }
+
     void setFeed() {
         feeds = new ArrayList<>();
         Feed g1 = new Feed("login_back",getString(R.string.watch_out_big_cars) , getString(R.string.feed_desc));
@@ -65,6 +73,10 @@ public class FeedListFragment extends Fragment {
         feeds.add(g2);
         Feed g3 = new Feed("login_back",getString(R.string.watch_out_big_cars) , getString(R.string.feed_desc));
         feeds.add(g3);
+        Feed g4 = new Feed("login_back",getString(R.string.watch_out_big_cars) , getString(R.string.feed_desc));
+        feeds.add(g4);
+        Feed g5 = new Feed("login_back",getString(R.string.watch_out_big_cars) , getString(R.string.feed_desc));
+        feeds.add(g5);
         adapterFeedList = new AdapterFeedList(feeds, getActivity());
         rvFeed.setAdapter(adapterFeedList);
     }

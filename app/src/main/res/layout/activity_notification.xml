@@ -6,7 +6,9 @@
     android:background="@color/toolbar_color"
     android:layout_height="match_parent"
     >
+<!--
     <include layout="@layout/toolbar" />
+-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNotification"

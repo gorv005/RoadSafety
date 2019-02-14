@@ -1,4 +1,4 @@
-package com.app.roadsafety.view.notification;
+package com.app.roadsafety.view.fragments;
 
 
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.Feed;
+import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.notification.AdapterNotificationList;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.app.roadsafety.view.fragments.BaseFragment.ARGS_INSTANCE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,7 +45,13 @@ public class NotificationFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    public static NotificationFragment newInstance(int instance) {
+        Bundle args = new Bundle();
+        args.putInt(ARGS_INSTANCE, instance);
+        NotificationFragment fragment = new NotificationFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +59,13 @@ public class NotificationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ( (MainActivity)getActivity()).updateToolbarTitle(getString(R.string.notifications),true);
+
     }
 
     @Override

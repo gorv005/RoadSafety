@@ -8,5 +8,16 @@
     android:titleTextColor="@color/black"
     app:subtitleTextColor="@color/black"
     app:theme="@style/CustomActionBar"
-     />
+     >
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/margin_left"
+        android:layout_toRightOf="@id/ivProfile"
+        android:text="@string/profile_picture"
+        android:textColor="@color/profile_text_color"
+        android:textSize="@dimen/slide_title" />
+</android.support.v7.widget.Toolbar>
 

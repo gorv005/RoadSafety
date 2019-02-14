@@ -1,4 +1,4 @@
-package com.app.roadsafety.view.settings;
+package com.app.roadsafety.view.fragments;
 
 
 import android.content.Intent;
@@ -13,8 +13,6 @@ import com.app.roadsafety.R;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.view.IncidentListReported;
 import com.app.roadsafety.view.MainActivity;
-import com.app.roadsafety.view.NotificationActivity;
-import com.app.roadsafety.view.adapter.incidents.AdapterIncidentList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +22,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends BaseFragment {
 
 
     @BindView(R.id.rlProfile)
@@ -54,6 +52,12 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ( (MainActivity)getActivity()).updateToolbarTitle(getString(R.string.settings),false);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -74,7 +78,11 @@ public class SettingsFragment extends Fragment {
             case R.id.rlNotifications:
                  /*intent = new Intent(getActivity(), NotificationActivity.class);
                 startActivity(intent);*/
-                ((MainActivity)getActivity()).fragmentLoader(AppConstants.FRAGMENT_NOTIFICATION,null);
+             //   ((MainActivity)getActivity()).fragmentLoader(AppConstants.FRAGMENT_NOTIFICATION,null);
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(NotificationFragment.newInstance(1));
+
+                }
                 break;
             case R.id.rlLinkedAccount:
                 break;

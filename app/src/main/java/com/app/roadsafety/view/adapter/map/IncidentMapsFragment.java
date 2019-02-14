@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.app.roadsafety.R;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.GpsUtils;
+import com.app.roadsafety.view.MainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -103,6 +104,7 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        circle=null;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         setLocationRequest();
 
@@ -197,6 +199,7 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onResume() {
         super.onResume();
+        ( (MainActivity)getActivity()).updateToolbarTitle(getString(R.string.map),false);
         if (mapview != null)
             mapview.onResume();
         GpsEnable();
@@ -359,7 +362,7 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onStop() {
         super.onStop();
-        mMap = null;
+    //    mMap = null;
 
     }
 

@@ -38,4 +38,5 @@
     <string name="delete">Delete</string>
     <string name="acidente">Acidente</string>
     <string name="all_incidents">All incidents</string>
+    <string name="road_safety_feed">Road Safety Feed</string>
 </resources>
