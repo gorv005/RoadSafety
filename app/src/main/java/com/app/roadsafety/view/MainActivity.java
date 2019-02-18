@@ -19,10 +19,10 @@ import android.widget.TextView;
 import com.app.roadsafety.R;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.FragmentHistory;
-import com.app.roadsafety.view.adapter.map.IncidentMapsFragment;
 import com.app.roadsafety.view.feed.FeedListFragment;
 import com.app.roadsafety.view.fragmentnavigationcontroller.FragNavController;
 import com.app.roadsafety.view.fragments.BaseFragment;
+import com.app.roadsafety.view.fragments.IncidentMapsFragment;
 import com.app.roadsafety.view.fragments.NotificationFragment;
 import com.app.roadsafety.view.fragments.SettingsFragment;
 
@@ -283,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         else {
              getSupportActionBar().hide();
             toolbar.setVisibility(View.GONE);
+            changeStatusBarColor();
         }
 
     }

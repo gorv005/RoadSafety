@@ -49,7 +49,7 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
         changeStatusBarColor();
         util = new AppUtils();
         iAuthenticationPresenter = new AuthenticationPresenterImpl(this, this);
-        dialog();
+        //dialog();
     }
 
     private void changeStatusBarColor() {

@@ -1,4 +1,4 @@
-package com.app.roadsafety.view.adapter.map;
+package com.app.roadsafety.view.fragments;
 
 
 import android.Manifest;
@@ -60,7 +60,7 @@ import static android.support.constraint.Constraints.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.mapview)
@@ -405,6 +405,10 @@ public class IncidentMapsFragment extends Fragment implements OnMapReadyCallback
                 showIncidentPopup(getActivity(),point);
                 break;
             case R.id.ivAddPost:
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1));
+
+                }
                 break;
         }
     }
