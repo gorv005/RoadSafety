@@ -1,4 +1,4 @@
-package com.app.roadsafety.intractor;
+package com.app.roadsafety.intractor.authentication;
 
 import com.app.roadsafety.frameworks.retrofit.ResponseResolver;
 import com.app.roadsafety.frameworks.retrofit.RestError;

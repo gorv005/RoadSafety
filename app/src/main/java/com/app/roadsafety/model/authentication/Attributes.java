@@ -22,6 +22,9 @@ public class Attributes {
     @SerializedName("auth_token")
     @Expose
     private String authToken;
+    @SerializedName("region")
+    @Expose
+    private String region;
 
     public String getName() {
         return name;
@@ -71,4 +74,11 @@ public class Attributes {
         this.authToken = authToken;
     }
 
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
 }

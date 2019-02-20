@@ -1,5 +1,6 @@
 package com.app.roadsafety.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,7 +16,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.model.Guidelines;
+import com.app.roadsafety.intractor.guidelines.IGuidelinesIntractor;
+import com.app.roadsafety.model.authentication.FacebookLoginRequest;
+import com.app.roadsafety.model.guidelines.Guidelines;
+import com.app.roadsafety.model.guidelines.GuidelinesResponse;
+import com.app.roadsafety.presenter.guidelines.GuidelinesPresenterImpl;
+import com.app.roadsafety.presenter.guidelines.IGuidelinesPresenter;
+import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.AppUtils;
+import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.adapter.guidelines.GuidelinesAdapter;
 
 import java.util.ArrayList;
@@ -25,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GuidlinesActivity extends AppCompatActivity {
+public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesPresenter.IGuidelinesView {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -37,6 +46,8 @@ public class GuidlinesActivity extends AppCompatActivity {
     int size;
     GuidelinesAdapter guidelinesAdapter;
     List<Guidelines> guidelines;
+    IGuidelinesPresenter iGuidelinesPresenter;
+    AppUtils util;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +59,17 @@ public class GuidlinesActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
         changeStatusBarColor();
-        setGuideLines();
+        util = new AppUtils();
+        iGuidelinesPresenter=new GuidelinesPresenterImpl(this,this);
+        String page=SharedPreference.getInstance(this).getString(AppConstants.GUIDELINES_PAGE);
+        if(page!=null &&!page.equalsIgnoreCase("4")) {
+            getGuidelines(""+Integer.parseInt(page) + 1);
+        }
+        else {
+            if(page==null){
+                getGuidelines(""+ 1);
+            }
+        }
     }
 
 
@@ -95,7 +116,7 @@ public class GuidlinesActivity extends AppCompatActivity {
         }
     }
 
-    void setGuideLines() {
+  /*  void setGuideLines() {
         guidelines = new ArrayList<>();
         Guidelines g1 = new Guidelines(getString(R.string.watch_out_big_cars), "guideline_1", getString(R.string.title_activity_incident_maps), "#1EB8DD");
         guidelines.add(g1);
@@ -107,7 +128,7 @@ public class GuidlinesActivity extends AppCompatActivity {
         viewPager.setAdapter(guidelinesAdapter);
         size = guidelines.size();
         addBottomDots(size, 0);
-    }
+    }*/
 
     @OnClick(R.id.btn_skip)
     public void onViewClicked() {
@@ -116,5 +137,45 @@ public class GuidlinesActivity extends AppCompatActivity {
     void gotoIncidentMaps() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    void getGuidelines(String page) {
+        SharedPreference.getInstance(this).setString(AppConstants.GUIDELINES_PAGE,page);
+        iGuidelinesPresenter.getGuidelines(page);
+    }
+
+    @Override
+    public void onDestroy() {
+        try {
+            super.onDestroy();
+            iGuidelinesPresenter.onDestroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getGuidelinesResponse(GuidelinesResponse response) {
+        if(response!=null && response.getData()!=null && response.getData().getData().size()>0) {
+            guidelinesAdapter = new GuidelinesAdapter(getSupportFragmentManager(), response.getData().getData());
+            viewPager.setAdapter(guidelinesAdapter);
+            size = guidelines.size();
+            addBottomDots(size, 0);
+        }
+    }
+
+    @Override
+    public void getResponseError(String response) {
+
+    }
+
+    @Override
+    public void showProgress() {
+        util.showDialog(getString(R.string.please_wait), this);
+    }
+
+    @Override
+    public void hideProgress() {
+        util.hideDialog();
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +15,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.application.App;
 import com.app.roadsafety.model.authentication.FacebookLoginRequest;
 import com.app.roadsafety.model.authentication.LoginResponse;
-import com.app.roadsafety.presenter.AuthenticationPresenterImpl;
-import com.app.roadsafety.presenter.IAuthenticationPresenter;
+import com.app.roadsafety.presenter.authentication.AuthenticationPresenterImpl;
+import com.app.roadsafety.presenter.authentication.IAuthenticationPresenter;
+import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
+import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.greenhalolabs.facebooklogin.FacebookLoginActivity;
 
 import java.util.ArrayList;
@@ -76,7 +78,7 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
                 //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
                 Log.e("DEBUG", errorMessage);
             }
-            gotoSelectRegion();
+            //  gotoSelectRegion();
         }
     }
 
@@ -89,6 +91,7 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
     void gotoSelectRegion() {
         Intent intent = new Intent(this, SelectRegionActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnClick({R.id.facebook_button, R.id.tvGhuestLogin})
@@ -103,9 +106,16 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
 
                 break;
             case R.id.tvGhuestLogin:
-                gotoSelectRegion();
+                //  gotoSelectRegion();
+                guestLogin();
                 break;
         }
+    }
+
+
+    void guestLogin() {
+        iAuthenticationPresenter.guestLogin();
+
     }
 
     void dialog() {
@@ -123,12 +133,19 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
 
     @Override
     public void getFacebookLoginResponse(LoginResponse response) {
-
+        Log.e("DEBUG", "" + response);
+        SharedPreference.getInstance(this).setUser(AppConstants.LOGIN_USER, response);
+        SharedPreference.getInstance(this).setBoolean(AppConstants.IS_LOGIN,true);
+        SharedPreference.getInstance(this).setBoolean(AppConstants.IS_GUEST_LOGIN,false);
+        gotoSelectRegion();
     }
 
     @Override
     public void getGuestUserResponse(LoginResponse response) {
-
+        SharedPreference.getInstance(this).setUser(AppConstants.LOGIN_USER, response);
+        SharedPreference.getInstance(this).setBoolean(AppConstants.IS_LOGIN,true);
+        SharedPreference.getInstance(this).setBoolean(AppConstants.IS_GUEST_LOGIN,true);
+        gotoSelectRegion();
     }
 
     @Override

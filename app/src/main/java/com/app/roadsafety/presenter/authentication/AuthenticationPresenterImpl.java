@@ -1,9 +1,9 @@
-package com.app.roadsafety.presenter;
+package com.app.roadsafety.presenter.authentication;
 
 import android.content.Context;
 
-import com.app.roadsafety.intractor.AuthenticationIntractorImpl;
-import com.app.roadsafety.intractor.IAuthenticationIntractor;
+import com.app.roadsafety.intractor.authentication.AuthenticationIntractorImpl;
+import com.app.roadsafety.intractor.authentication.IAuthenticationIntractor;
 import com.app.roadsafety.model.authentication.FacebookLoginRequest;
 import com.app.roadsafety.model.authentication.LoginResponse;
 

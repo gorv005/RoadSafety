@@ -1,4 +1,4 @@
-package com.app.roadsafety.presenter;
+package com.app.roadsafety.presenter.authentication;
 
 import com.app.roadsafety.frameworks.basemvp.IBaseView;
 import com.app.roadsafety.model.authentication.FacebookLoginRequest;

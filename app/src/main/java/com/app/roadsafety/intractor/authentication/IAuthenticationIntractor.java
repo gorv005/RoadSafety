@@ -1,4 +1,4 @@
-package com.app.roadsafety.intractor;
+package com.app.roadsafety.intractor.authentication;
 
 import android.content.Context;
 

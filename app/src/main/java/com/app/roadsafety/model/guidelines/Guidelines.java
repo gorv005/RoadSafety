@@ -1,4 +1,4 @@
-package com.app.roadsafety.model;
+package com.app.roadsafety.model.guidelines;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

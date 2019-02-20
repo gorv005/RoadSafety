@@ -6,6 +6,7 @@ import android.content.Context;
 import com.app.roadsafety.R;
 
 public class AppUtils {
+
     ProgressDialog progressDialog=null;
 
     public void showDialog(String msg, Context context){

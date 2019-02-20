@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/watch_out_big_cars"
-
+         android:id="@+id/tvTitle"
         android:textColor="@color/white"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/slide_title"
@@ -30,6 +30,7 @@
 
         app:civ_border_color="#404040"/>
     <TextView
+        android:id="@+id/tvDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
