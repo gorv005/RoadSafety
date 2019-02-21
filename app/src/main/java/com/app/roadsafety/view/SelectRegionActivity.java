@@ -59,11 +59,12 @@ public class SelectRegionActivity extends AppCompatActivity implements IRegionPr
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rlPortugal:
-                gotoGuidelines();
-                setRegion(getString(R.string.portugal));
+              //  gotoGuidelines();
+                setRegion("portugal");
                 break;
             case R.id.rlBrazilView:
-                setRegion(getString(R.string.brazil));
+                setRegion("brazil");
+              //  gotoGuidelines();
                 break;
         }
     }

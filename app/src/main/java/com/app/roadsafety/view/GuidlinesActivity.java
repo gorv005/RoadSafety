@@ -20,6 +20,7 @@ import com.app.roadsafety.intractor.guidelines.IGuidelinesIntractor;
 import com.app.roadsafety.model.authentication.FacebookLoginRequest;
 import com.app.roadsafety.model.guidelines.Guidelines;
 import com.app.roadsafety.model.guidelines.GuidelinesResponse;
+import com.app.roadsafety.model.guidelines.GuidelinesResponseDataList;
 import com.app.roadsafety.presenter.guidelines.GuidelinesPresenterImpl;
 import com.app.roadsafety.presenter.guidelines.IGuidelinesPresenter;
 import com.app.roadsafety.utility.AppConstants;
@@ -45,7 +46,7 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
     private ImageView[] dots;
     int size;
     GuidelinesAdapter guidelinesAdapter;
-    List<Guidelines> guidelines;
+    List<GuidelinesResponseDataList> guidelines;
     IGuidelinesPresenter iGuidelinesPresenter;
     AppUtils util;
 
@@ -62,14 +63,17 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
         util = new AppUtils();
         iGuidelinesPresenter=new GuidelinesPresenterImpl(this,this);
         String page=SharedPreference.getInstance(this).getString(AppConstants.GUIDELINES_PAGE);
-        if(page!=null &&!page.equalsIgnoreCase("4")) {
-            getGuidelines(""+Integer.parseInt(page) + 1);
+      /*  if(page!=null &&!page.equalsIgnoreCase("4")) {
+            int p=Integer.parseInt(page)+1;
+            getGuidelines(""+p);
         }
         else {
             if(page==null){
                 getGuidelines(""+ 1);
             }
-        }
+        }*/
+      getGuidelines(""+ 1);
+
     }
 
 
@@ -159,7 +163,8 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
         if(response!=null && response.getData()!=null && response.getData().getData().size()>0) {
             guidelinesAdapter = new GuidelinesAdapter(getSupportFragmentManager(), response.getData().getData());
             viewPager.setAdapter(guidelinesAdapter);
-            size = guidelines.size();
+
+            size = response.getData().getData().size();
             addBottomDots(size, 0);
         }
     }
