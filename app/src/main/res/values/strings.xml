@@ -41,4 +41,5 @@
     <string name="road_safety_feed">Road Safety Feed</string>
     <string name="description">Discription</string>
     <string name="incident_location">Incident location</string>
+    <string name="incident_reported">incident reported</string>
 </resources>

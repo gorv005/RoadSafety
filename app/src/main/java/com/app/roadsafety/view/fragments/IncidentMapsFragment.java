@@ -16,9 +16,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,12 +30,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.model.feed.Feed;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.GpsUtils;
 import com.app.roadsafety.view.MainActivity;
+import com.app.roadsafety.view.adapter.incidents.AdapterIncidentHorizontalList;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -49,6 +55,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +79,13 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     LinearLayout llFilterIncident;
     @BindView(R.id.ivAddPost)
     ImageView ivAddPost;
+    @BindView(R.id.rvIncident)
+    RecyclerView rvIncident;
+    @BindView(R.id.tvIncidentCount)
+    TextView tvIncidentCount;
+    @BindView(R.id.ivIncidentArrow)
+    ImageView ivIncidentArrow;
+
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
@@ -80,6 +96,10 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     GoogleApiClient mGoogleApiClient;
     Circle circle;
     CircleOptions circleOptions;
+    BottomSheetBehavior mBottomSheetBehavior2;
+    AdapterIncidentHorizontalList adapterIncidentList;
+    LinearLayoutManager layoutManager;
+    List<Feed> feeds;
 
     public IncidentMapsFragment() {
         // Required empty public constructor
@@ -104,7 +124,12 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        circle=null;
+        final View bottomSheet2 = view.findViewById(R.id.bottom_sheet2);
+        mBottomSheetBehavior2 = BottomSheetBehavior.from(bottomSheet2);
+        mBottomSheetBehavior2.setHideable(false);
+        mBottomSheetBehavior2.setPeekHeight(150);
+        mBottomSheetBehavior2.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        circle = null;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         setLocationRequest();
 
@@ -115,10 +140,41 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             ex.printStackTrace();
         }
         mapview.getMapAsync(this);
+        setBehavior();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rvIncident.setLayoutManager(layoutManager);
+        rvIncident.setHasFixedSize(true);
+        mBottomSheetBehavior2.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    ivIncidentArrow.setImageResource(R.drawable.down_arrow);
+                }
+                else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    ivIncidentArrow.setImageResource(R.drawable.added_icon);
+                }
 
+            }
+
+            @Override
+            public void onSlide(View bottomSheet, float slideOffset) {
+            }
+        });
+        setFeed();
     }
 
+    void setFeed() {
+        feeds = new ArrayList<>();
+        for(int i=0;i<12;i++) {
+            Feed g1 = new Feed("login_back", getString(R.string.watch_out_big_cars), getString(R.string.feed_desc));
+            feeds.add(g1);
+        }
+
+        adapterIncidentList = new AdapterIncidentHorizontalList(feeds, getActivity());
+        rvIncident.setAdapter(adapterIncidentList);
+        tvIncidentCount.setText(""+feeds.size()+" "+getString(R.string.incident_reported));
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -199,7 +255,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onResume() {
         super.onResume();
-        ( (MainActivity)getActivity()).updateToolbarTitle(getString(R.string.map),false);
+        ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.map), false);
         if (mapview != null)
             mapview.onResume();
         GpsEnable();
@@ -362,7 +418,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onStop() {
         super.onStop();
-    //    mMap = null;
+        //    mMap = null;
 
     }
 
@@ -402,9 +458,10 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 Point point = new Point();
                 point.x = location[0];
                 point.y = location[1];
-                showIncidentPopup(getActivity(),point);
+                showIncidentPopup(getActivity(), point);
                 break;
-            case R.id.ivAddPost:
+
+           case R.id.ivAddPost:
                 if (mFragmentNavigation != null) {
                     mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1));
 
@@ -413,29 +470,45 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         }
     }
 
+    void setBehavior() {
+        ivIncidentArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mBottomSheetBehavior2.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    mBottomSheetBehavior2.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    ivIncidentArrow.setImageResource(R.drawable.added_icon);
+                } else if (mBottomSheetBehavior2.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    mBottomSheetBehavior2.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    ivIncidentArrow.setImageResource(R.drawable.down_arrow);
 
-        private void showIncidentPopup(final Activity context, Point p) {
+                }
+            }
+        });
+    }
 
-            // Inflate the popup_layout.xml
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = layoutInflater.inflate(R.layout.incident_pop_up, null);
+    private void showIncidentPopup(final Activity context, Point p) {
 
-            // Creating the PopupWindow
-            PopupWindow changeStatusPopUp = new PopupWindow(context);
-            changeStatusPopUp.setContentView(layout);
-           // changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
-            //changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-            changeStatusPopUp.setFocusable(true);
+        // Inflate the popup_layout.xml
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.incident_pop_up, null);
 
-            // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
-            int OFFSET_X = 0;
-            int OFFSET_Y = 60;
+        // Creating the PopupWindow
+        PopupWindow changeStatusPopUp = new PopupWindow(context);
+        changeStatusPopUp.setContentView(layout);
+        // changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        //changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        changeStatusPopUp.setFocusable(true);
 
-            //Clear the default translucent background
-            changeStatusPopUp.setBackgroundDrawable(new BitmapDrawable());
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int OFFSET_X = 0;
+        int OFFSET_Y = 60;
 
-            // Displaying the popup at the specified location, + offsets.
-            changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
-        }
+        //Clear the default translucent background
+        changeStatusPopUp.setBackgroundDrawable(new BitmapDrawable());
+
+        // Displaying the popup at the specified location, + offsets.
+        changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+    }
+
 
 }

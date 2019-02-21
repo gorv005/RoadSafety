@@ -24,4 +24,8 @@
     <dimen name="alert_dialog_size_height">230dp</dimen>
     <dimen name="alert_margin_top">50dp</dimen>
     <dimen name="detail_backdrop_height">250dp</dimen>
+    <dimen name="slide_title_min">14sp</dimen>
+    <dimen name="bottom_height">240dp</dimen>
+    <dimen name="bottom_width">180dp</dimen>
+    <dimen name="view_height">260dp</dimen>
 </resources>
