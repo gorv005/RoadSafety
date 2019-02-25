@@ -42,4 +42,5 @@
     <string name="description">Discription</string>
     <string name="incident_location">Incident location</string>
     <string name="incident_reported">incident reported</string>
+    <string name="view_more">View more</string>
 </resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/marker_popup_width"
+    android:id="@+id/rlIncident"
+    android:background="@drawable/marker_pop_up_border"
+    android:layout_height="@dimen/bottom_height_marker_pop_up">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_height_marker_pop">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ivIncident"
+                android:layout_height="@dimen/bottom_height_marker_pop_up_image"
+                android:layout_width="@dimen/marker_popup_image_width"
+                android:src="@drawable/login_back"
+                app:riv_mutate_background="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="10dip"
+                app:riv_border_width="0dip"
+                app:riv_oval="false"
+
+                />
+
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/tvIncidentDesc"
+                android:id="@+id/tvHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:maxLines="1"
+                android:textSize="@dimen/markr_pop_up_text_size"
+                android:text="09 hours ago"
+                android:textColor="@color/green"
+                />
+            <TextView
+                android:id="@+id/tvIncidentDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivIncident"
+                android:maxLines="4"
+                android:layout_marginTop="3dp"
+                android:text="@string/stay_away"
+                android:textColor="@color/title_color"
+                android:textSize="@dimen/markr_pop_up_text_size" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <Button
+            style="@style/RoundedCornerMaterialButtonBlue"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/margin_from_top_login_pop_up"
+            android:text="@string/view_more"
+            android:visibility="visible"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+
+            android:textSize="@dimen/slide_title" />
+    </RelativeLayout>
+
+</RelativeLayout>
