@@ -51,10 +51,10 @@ public class FeedListPresenterImpl implements IFeedListPresenter, IFeedListIntra
 
 
     @Override
-    public void getFeedList(String pageNo, String country) {
+    public void getFeedList(String auth_token,String pageNo, String country) {
         if(mView!=null) {
             mView.showProgress();
-            iFeedListIntractor.getFeedList(pageNo,country, this);
+            iFeedListIntractor.getFeedList(auth_token,pageNo,country, this);
         }
     }
 

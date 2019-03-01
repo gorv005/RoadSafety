@@ -1,7 +1,13 @@
 package com.app.roadsafety.utility;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.roadsafety.R;
 
@@ -42,4 +48,32 @@ public class AppUtils {
             e.printStackTrace();
         }
     }
+
+   public void resultDialog(Context context,String msg) {
+
+        final Dialog dialog = new Dialog(context, R.style.FullHeightDialog); //this is a reference to the style above
+        dialog.setContentView(R.layout.result_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        TextView textView=(TextView)dialog.findViewById(R.id.tvMsg);
+        textView.setText(msg);
+        Button btnOk=(Button)dialog.findViewById(R.id.btnOk);
+        ImageView ivCross=(ImageView)dialog.findViewById(R.id.ivCross);
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+//to set the message
+        dialog.show();
+    }
+
 }

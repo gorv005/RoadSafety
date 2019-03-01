@@ -31,7 +31,7 @@
     <dimen name="marker_popup_width">260dp</dimen>
     <dimen name="marker_popup_image_width">120dp</dimen>
     <dimen name="bottom_height_marker_pop_up">160dp</dimen>
-    <dimen name="bottom_height_marker_pop_up_image">100dp</dimen>
+    <dimen name="bottom_height_marker_pop_up_image">90dp</dimen>
     <dimen name="bottom_height_marker_pop">115dp</dimen>
     <dimen name="markr_pop_up_text_size">12sp</dimen>
 

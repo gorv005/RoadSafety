@@ -7,12 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.Feed;
+import com.app.roadsafety.model.feed.FeedListData;
 import com.app.roadsafety.model.feed.FeedResponse;
 import com.app.roadsafety.presenter.feed.FeedListPresenterImpl;
 import com.app.roadsafety.presenter.feed.IFeedListPresenter;
@@ -43,6 +45,11 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
     List<Feed> feeds;
     IFeedListPresenter iFeedListPresenter;
     AppUtils util;
+    private boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    List<FeedListData> feedListData;
+    int page = 1, totalPages;
+
     public FeedListFragment() {
         // Required empty public constructor
     }
@@ -50,8 +57,8 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        iFeedListPresenter=new FeedListPresenterImpl(this,getActivity());
-        util=new AppUtils();
+        iFeedListPresenter = new FeedListPresenterImpl(this, getActivity());
+        util = new AppUtils();
     }
 
     @Override
@@ -69,8 +76,9 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvFeed.setLayoutManager(layoutManager);
         rvFeed.setHasFixedSize(true);
-      //  setFeed();
-        getFeedList(""+1);
+        rvFeed.addOnScrollListener(recyclerViewOnScrollListener);
+        //  setFeed();
+        getFeedList("" + page);
     }
 
     @Override
@@ -80,11 +88,14 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
 
     }
 
-    void getFeedList(String page){
-        iFeedListPresenter.getFeedList(page,
+    void getFeedList(String page) {
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+
+        iFeedListPresenter.getFeedList(auth_token, page,
                 SharedPreference.getInstance(getActivity()).getString(AppConstants.REGION));
 
     }
+
     void setFeed() {
         feeds = new ArrayList<>();
         Feed g1 = new Feed("login_back", getString(R.string.watch_out_big_cars), getString(R.string.feed_desc));
@@ -97,10 +108,34 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
         feeds.add(g4);
         Feed g5 = new Feed("login_back", getString(R.string.watch_out_big_cars), getString(R.string.feed_desc));
         feeds.add(g5);
-      //  adapterFeedList = new AdapterFeedList(feeds, getActivity());
-      //  rvFeed.setAdapter(adapterFeedList);
+        //  adapterFeedList = new AdapterFeedList(feeds, getActivity());
+        //  rvFeed.setAdapter(adapterFeedList);
     }
 
+    private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (dy > 0) //check for scroll down
+            {
+                visibleItemCount = layoutManager.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+
+                if (loading && page <= totalPages && totalPages > 1) {
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        loading = false;
+                        getFeedList("" + page++);
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     public void onDestroyView() {
@@ -110,8 +145,33 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
 
     @Override
     public void onSuccessFeedListResponse(FeedResponse response) {
-        adapterFeedList = new AdapterFeedList(response.getData().getData(), getActivity());
-          rvFeed.setAdapter(adapterFeedList);
+        try {
+            if (feedListData != null && feedListData.size() > 0 && page != 1) {
+                feedListData.addAll(response.getData().getData());
+                adapterFeedList.notifyDataSetChanged();
+            }
+            else if(response.getData()==null && response.getErrors()!=null && response.getErrors().size()>0){
+                String error="";
+                for(int i=0;i<response.getErrors().size();i++){
+                    error=error+response.getErrors().get(i)+"\n";
+                }
+                util.resultDialog(getActivity(),error);
+            }
+            else {
+                if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
+
+                    if (response.getData().getMeta() != null && response.getData().getMeta().getPagination() != null) {
+                        totalPages = response.getData().getMeta().getPagination().getTotalPages();
+                    }
+                    feedListData = response.getData().getData();
+                    adapterFeedList = new AdapterFeedList(feedListData, getActivity());
+                    rvFeed.setAdapter(adapterFeedList);
+                }
+            }
+            loading = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

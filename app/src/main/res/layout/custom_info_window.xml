@@ -6,10 +6,10 @@
     android:background="@drawable/marker_pop_up_border"
     android:layout_height="@dimen/bottom_height_marker_pop_up">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/marker_popup_width"
+        android:layout_height="@dimen/bottom_height_marker_pop_up"
         android:layout_marginLeft="1dp"
         android:layout_marginRight="1dp">
 

@@ -86,7 +86,16 @@ public class SelectRegionActivity extends AppCompatActivity implements IRegionPr
 
     @Override
     public void onSuccessRegionResponse(LoginResponse response) {
-        gotoGuidelines();
+        if(response.getData()!=null) {
+            gotoGuidelines();
+        }
+        else if(response.getData()==null && response.getErrors()!=null && response.getErrors().size()>0){
+            String error="";
+            for(int i=0;i<response.getErrors().size();i++){
+                error=error+response.getErrors().get(i)+"\n";
+            }
+            utils.resultDialog(this,error);
+        }
     }
 
     @Override

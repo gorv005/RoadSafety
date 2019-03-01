@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -166,6 +167,13 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
 
             size = response.getData().getData().size();
             addBottomDots(size, 0);
+        }
+        else if(response.getData()==null && response.getErrors()!=null && response.getErrors().size()>0){
+            String error="";
+            for(int i=0;i<response.getErrors().size();i++){
+                error=error+response.getErrors().get(i)+"\n";
+            }
+            util.resultDialog(this,error);
         }
     }
 

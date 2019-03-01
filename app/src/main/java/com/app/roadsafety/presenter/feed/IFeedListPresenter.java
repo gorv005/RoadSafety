@@ -7,7 +7,7 @@ import com.app.roadsafety.model.guidelines.GuidelinesResponse;
 public interface IFeedListPresenter {
 
 
-    public void getFeedList(String pageNo,String country);
+    public void getFeedList(String auth_token,String pageNo,String country);
 
     void onDestroy();
     interface IFeedListView extends IBaseView {

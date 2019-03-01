@@ -37,6 +37,7 @@ import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.Feed;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.GpsUtils;
+import com.app.roadsafety.utility.ImageUtils;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.incidents.AdapterIncidentHorizontalList;
 import com.google.android.gms.common.ConnectionResult;
@@ -55,6 +56,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +102,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     AdapterIncidentHorizontalList adapterIncidentList;
     LinearLayoutManager layoutManager;
     List<Feed> feeds;
-
+    List<Feed> markerInfo;
+    public Marker marker;
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
@@ -150,8 +153,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             public void onStateChanged(View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     ivIncidentArrow.setImageResource(R.drawable.down_arrow);
-                }
-                else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     ivIncidentArrow.setImageResource(R.drawable.added_icon);
                 }
 
@@ -166,14 +168,29 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     void setFeed() {
         feeds = new ArrayList<>();
-        for(int i=0;i<12;i++) {
+        markerInfo = new ArrayList<>();
+
+        for (int i = 0; i < 12; i++) {
             Feed g1 = new Feed("login_back", getString(R.string.watch_out_big_cars), getString(R.string.feed_desc));
             feeds.add(g1);
+
         }
 
+        Feed m = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfjdkfjsg", 28.609170, 28.609170);
+        markerInfo.add(m);
+        Feed m1 = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfjdkfjsgvxdhdhdh", 28.616178, 77.351240);
+        markerInfo.add(m1);
+        Feed m2 = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfjhfjfjfjjdkfjsgvxdhdhdh", 28.620704, 77.372713);
+        markerInfo.add(m2);
+        Feed m3 = new Feed("login_back", getString(R.string.watch_out_big_cars),"hdhdh", 28.614978, 77.381881);
+        markerInfo.add(m3);
+        Feed m4 = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfj", 28.612567, 77.338555);
+        markerInfo.add(m4);
+        Feed m5 = new Feed("login_back", getString(R.string.watch_out_big_cars), "czxzczv", 28.624245, 77.361032);
+        markerInfo.add(m5);
         adapterIncidentList = new AdapterIncidentHorizontalList(feeds, getActivity());
         rvIncident.setAdapter(adapterIncidentList);
-        tvIncidentCount.setText(""+feeds.size()+" "+getString(R.string.incident_reported));
+        tvIncidentCount.setText("" + feeds.size() + " " + getString(R.string.incident_reported));
     }
 
     @Override
@@ -281,6 +298,17 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15.0f).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         mMap.moveCamera(cameraUpdate);*/
+
+        if ( mMap != null ) {
+
+            mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+
+            for(int i=0;i<markerInfo.size();i++) {
+                final Marker hamburg = mMap.addMarker(new MarkerOptions().position(new LatLng(markerInfo.get(i).getLat(),markerInfo.get(i).getLongi())).title(""+i));
+            //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
+
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -461,7 +489,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 showIncidentPopup(getActivity(), point);
                 break;
 
-           case R.id.ivAddPost:
+            case R.id.ivAddPost:
                 if (mFragmentNavigation != null) {
                     mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1));
 
@@ -510,5 +538,38 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
     }
 
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
+        private View view;
+
+        public CustomInfoWindowAdapter() {
+            view = getLayoutInflater().inflate(R.layout.custom_info_window,
+                    null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+
+            if (IncidentMapsFragment.this.marker != null
+                    && IncidentMapsFragment.this.marker.isInfoWindowShown()) {
+                IncidentMapsFragment.this.marker.hideInfoWindow();
+                IncidentMapsFragment.this.marker.showInfoWindow();
+            }
+            return null;
+        }
+
+        @Override
+        public View getInfoWindow(final Marker marker) {
+           Log.e( "DEBUG","pos"+marker.getTitle());
+            IncidentMapsFragment.this.marker = marker;
+
+            final ImageView image = ((ImageView) view.findViewById(R.id.ivIncident));
+            final TextView tvIncidentDesc = ((TextView) view.findViewById(R.id.tvIncidentDesc));
+            tvIncidentDesc.setText(markerInfo.get(Integer.parseInt(marker.getTitle())).getDesc());
+            ImageUtils.setImage(getActivity(),"http://www.yodot.com/images/jpeg-images-sm.png",image);
+
+
+            return view;
+        }
+    }
 }

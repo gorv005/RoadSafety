@@ -15,11 +15,38 @@ public class Feed implements Serializable {
     @SerializedName("desc")
     @Expose
     private String desc;
-
+    @SerializedName("lat")
+    @Expose
+    private double lat;
+    @SerializedName("longi")
+    @Expose
+    private double longi;
     public Feed(String image, String heading, String desc) {
         this.image = image;
         this.heading = heading;
         this.desc = desc;
+    }
+    public Feed(String image, String heading, String desc,double lat, double longi) {
+        this.image = image;
+        this.heading = heading;
+        this.desc = desc;
+        this.lat = lat;
+        this.longi = longi;
+    }
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLongi() {
+        return longi;
+    }
+
+    public void setLongi(double longi) {
+        this.longi = longi;
     }
 
     public String getImage() {

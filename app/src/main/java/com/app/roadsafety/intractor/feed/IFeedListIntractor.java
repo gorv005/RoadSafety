@@ -16,6 +16,6 @@ public interface IFeedListIntractor {
         Context getAPPContext();
     }
 
-    public void getFeedList(String pageNo,String country, OnFinishedListener listener);
+    public void getFeedList(String auth_token,String pageNo,String country, OnFinishedListener listener);
 
 }

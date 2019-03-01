@@ -13,7 +13,7 @@ import retrofit2.Response;
 public class FeedListIntractorImpl implements IFeedListIntractor {
 
     @Override
-    public void getFeedList(String pageNo, String country, final OnFinishedListener listener) {
+    public void getFeedList(String auth_token,String pageNo, String country, final OnFinishedListener listener) {
         try {
             WebServicesWrapper.getInstance().getFeedList(new ResponseResolver<FeedResponse>() {
                 @Override
@@ -35,7 +35,7 @@ public class FeedListIntractorImpl implements IFeedListIntractor {
                         listener.onError(error.getError());
                     }
                 }
-            }, pageNo,country);
+            }, auth_token,pageNo,country);
         } catch (Exception e) {
             e.printStackTrace();
         }

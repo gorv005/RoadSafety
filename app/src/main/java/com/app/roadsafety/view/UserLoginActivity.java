@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
@@ -118,18 +119,6 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
 
     }
 
-    void dialog() {
-
-        final Dialog dialog = new Dialog(this, R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
-        dialog.setCancelable(true);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-//to set the message
-        dialog.show();
-    }
 
     @Override
     public void getFacebookLoginResponse(LoginResponse response) {
@@ -142,10 +131,19 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
 
     @Override
     public void getGuestUserResponse(LoginResponse response) {
-        SharedPreference.getInstance(this).setUser(AppConstants.LOGIN_USER, response);
-        SharedPreference.getInstance(this).setBoolean(AppConstants.IS_LOGIN,true);
-        SharedPreference.getInstance(this).setBoolean(AppConstants.IS_GUEST_LOGIN,true);
-        gotoSelectRegion();
+        if(response.getData()!=null) {
+            SharedPreference.getInstance(this).setUser(AppConstants.LOGIN_USER, response);
+            SharedPreference.getInstance(this).setBoolean(AppConstants.IS_LOGIN, true);
+            SharedPreference.getInstance(this).setBoolean(AppConstants.IS_GUEST_LOGIN, true);
+            gotoSelectRegion();
+        }
+        else if(response.getData()==null && response.getErrors()!=null && response.getErrors().size()>0){
+            String error="";
+            for(int i=0;i<response.getErrors().size();i++){
+                error=error+response.getErrors().get(i)+"\n";
+            }
+            util.resultDialog(this,error);
+        }
     }
 
     @Override
