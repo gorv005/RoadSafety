@@ -30,19 +30,8 @@ public class FeedListActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvFeed.setLayoutManager(layoutManager);
         rvFeed.setHasFixedSize(true);
-        setFeed();
     }
 
 
-    void setFeed() {
-        feeds = new ArrayList<>();
-        Feed g1 = new Feed("login_back",getString(R.string.watch_out_big_cars) , getString(R.string.feed_desc));
-        feeds.add(g1);
-        Feed g2 = new Feed("login_back",getString(R.string.watch_out_big_cars) , getString(R.string.feed_desc));
-        feeds.add(g2);
-        Feed g3 = new Feed("login_back",getString(R.string.watch_out_big_cars) , getString(R.string.feed_desc));
-        feeds.add(g3);
-        adapterFeedList = new AdapterFeedList(feeds, this);
-        rvFeed.setAdapter(adapterFeedList);
-    }
+
 }

@@ -13,4 +13,5 @@ public class AppConstants {
     public static final String LOGIN_USER ="login_user" ;
     public static final String IS_LOGIN ="is_login" ;
     public static final String IS_GUEST_LOGIN ="guest_login" ;
+    public static final String REGION ="region" ;
 }

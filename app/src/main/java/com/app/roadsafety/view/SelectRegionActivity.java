@@ -70,6 +70,8 @@ public class SelectRegionActivity extends AppCompatActivity implements IRegionPr
     }
 
     void setRegion(String region) {
+        SharedPreference.getInstance(getApplicationContext()).setString(AppConstants.REGION,region);
+
         RegionUpdateRequest regionUpdateRequest=new RegionUpdateRequest();
         User user=new User();
         user.setRegion(region);

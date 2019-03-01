@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.Feed;
+import com.app.roadsafety.model.feed.FeedListData;
 import com.app.roadsafety.utility.ImageUtils;
 
 
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
-    private List<Feed> horizontalList;
+    private List<FeedListData> horizontalList;
     Activity context;
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView tvFeedTitle, tvFeedDesc;
@@ -35,7 +36,7 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public AdapterFeedList(List<Feed> horizontalList, Activity context) {
+    public AdapterFeedList(List<FeedListData> horizontalList, Activity context) {
         this.horizontalList = horizontalList;
         this.context = context;
     }
@@ -58,9 +59,9 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tvFeedTitle.setText(horizontalList.get(position).getHeading());
-            itemViewHolder.tvFeedDesc.setText(horizontalList.get(position).getDesc());
-            ImageUtils.loadImage(context, horizontalList.get(position).getImage(), itemViewHolder.ivIncident);
+            itemViewHolder.tvFeedTitle.setText(horizontalList.get(position).getAttributes().getTitle());
+            itemViewHolder.tvFeedDesc.setText(horizontalList.get(position).getAttributes().getDescription());
+            ImageUtils.setImage(context, horizontalList.get(position).getAttributes().getImageUrl(), itemViewHolder.ivIncident);
 
         }
 
