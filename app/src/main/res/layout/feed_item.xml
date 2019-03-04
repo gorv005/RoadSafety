@@ -28,23 +28,68 @@
                 android:scaleType="centerCrop"
                 />
 
+            <RelativeLayout
+                android:id="@+id/rlTitle"
+                android:layout_below="@+id/ivIncident"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tvFeedTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ivIncident"
                 android:maxLines="3"
                 android:padding="8dp"
                 android:text="@string/app_name"
                 android:textColor="#222"
+
+                android:gravity="left"
                 android:textStyle="bold"
+                android:layout_toLeftOf="@id/llView"
                 android:textSize="@dimen/slide_title" />
 
+                <LinearLayout
+                    android:id="@+id/llView"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tvHours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:text="09 hours ago"
+                    android:textColor="@color/dark_yellow"
+                    android:textSize="@dimen/bottom_tab_text" />
+
+                    <View
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/blue"
+                        android:layout_width="1dp"
+                        android:layout_height="30dp"/>
+
+                    <ImageView
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/ivShare"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:layout_width="match_parent"
+                        android:src="@drawable/setting"
+                        android:scaleType="centerCrop"
+                        />
+                </LinearLayout>
+            </RelativeLayout>
             <TextView
                 android:id="@+id/tvFeedDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvFeedTitle"
+                android:layout_below="@+id/rlTitle"
                 android:maxLines="3"
                 android:padding="8dp"
                 android:text="@string/feed_desc"
