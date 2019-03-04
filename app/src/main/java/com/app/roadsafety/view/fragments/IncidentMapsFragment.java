@@ -557,7 +557,6 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             }
             return null;
         }
-
         @Override
         public View getInfoWindow(final Marker marker) {
            Log.e( "DEBUG","pos"+marker.getTitle());
