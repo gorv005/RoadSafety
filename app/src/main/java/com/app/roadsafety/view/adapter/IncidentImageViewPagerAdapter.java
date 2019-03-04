@@ -4,18 +4,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.app.roadsafety.R;
+import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.view.fragments.IncidentImageViewPager;
 
+import java.util.List;
+
 public class IncidentImageViewPagerAdapter extends FragmentStatePagerAdapter {
-    public IncidentImageViewPagerAdapter(FragmentManager fm) {
+    List<String> imageList;
+    public IncidentImageViewPagerAdapter(FragmentManager fm,List<String> imageList) {
         super(fm);
+        this.imageList=imageList;
     }
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment=IncidentImageViewPager.newInstance(R.mipmap.ic_launcher,"Intialize");
+        Fragment  fragment=IncidentImageViewPager.newInstance(AppConstants.IS_FROM_INTERNAL_STORAGE,imageList.get(position));
 
+/*
         switch (position)
         {
             case 0:
@@ -32,11 +37,12 @@ public class IncidentImageViewPagerAdapter extends FragmentStatePagerAdapter {
                 break;
 
         }
+*/
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return imageList.size();
     }
 }

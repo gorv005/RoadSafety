@@ -2,17 +2,17 @@ package com.app.roadsafety.view.fragments;
 
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.view.MainActivity;
+import com.app.roadsafety.utility.AppConstants;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,15 +21,15 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.io.File;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class IncidentImageViewPager extends Fragment {
 
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private int mParam1;
     private String mParam2;
@@ -56,6 +56,8 @@ public class IncidentImageViewPager extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,7 +81,32 @@ public class IncidentImageViewPager extends Fragment {
 
         iv_adds=(ImageView)view.findViewById(R.id.iv_adds);
         pb_addsprogressBar=(ProgressBar)view.findViewById(R.id.pb_addsprogressBar);
+        if(mParam1== AppConstants.IS_FROM_INTERNAL_STORAGE){
+            fromInternalStorage();
+        }
+        else {
+            fromRemote();
+        }
+        //set the fetched image to imageview with round corner
 
+
+        // iv_adds.setImageResource(mParam1);
+
+        return view;
+    }
+
+
+    void fromInternalStorage(){
+        File imgFile = new  File(mParam2);
+        if(imgFile.exists()){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            iv_adds.setImageBitmap(myBitmap);
+
+        };
+    }
+
+    void fromRemote(){
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
                 // You can pass your own memory cache implementation
                 .diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
@@ -116,12 +143,7 @@ public class IncidentImageViewPager extends Fragment {
             }
         });
 
-        imageLoader.displayImage(mParam2,iv_adds,options );//set the fetched image to imageview with round corner
-
-
-        // iv_adds.setImageResource(mParam1);
-
-        return view;
+        imageLoader.displayImage(mParam2,iv_adds,options );
     }
 
 }
