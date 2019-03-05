@@ -5,30 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/fragment_add_incident">
 
     <EditText
-        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginTop="20dp"
 
         android:id="@+id/etDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:includeFontPadding="true"
+        android:paddingBottom="20dp"
         android:textColorHint="@color/title_color"
         android:hint="@string/description"
         android:textColor="@color/title_color" />
     <Spinner
-        android:layout_marginTop="@dimen/margin_top"
-
+        android:layout_marginTop="25dp"
+        android:includeFontPadding="true"
         android:id="@+id/spninner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"/>
     <EditText
-        android:layout_marginTop="@dimen/margin_top"
-
+        android:layout_marginTop="5dp"
+        android:includeFontPadding="true"
+        android:paddingBottom="20dp"
         android:id="@+id/etLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,10 +41,15 @@
         android:hint="@string/incident_location"
         android:textColor="@color/title_color" />
     <Spinner
-        android:layout_marginTop="@dimen/margin_top"
+        android:includeFontPadding="true"
+        android:paddingBottom="20dp"
+        android:layout_marginTop="25dp"
         android:id="@+id/spninner1"
+        android:paddingTop="10dp"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"/>
+
+
 </LinearLayout>

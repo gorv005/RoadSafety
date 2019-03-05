@@ -28,6 +28,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/vp_adds"
                 android:fitsSystemWindows="true"
+                android:background="@drawable/shaded_back"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/detail_backdrop_height"
                 android:layout_gravity="center_horizontal"
@@ -58,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/down_arrow" />
+                    android:src="@drawable/back" />
 
                 <TextView
                     android:id="@+id/tvFeedTitle"
@@ -92,4 +93,15 @@
 
     <include layout="@layout/add_incident_fields" />
 
+    <Button
+        style="@style/RoundedCornerMaterialButtonBlue"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/button_margin"
+        android:layout_height="@dimen/button_height"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/slide_desc" />
 </android.support.design.widget.CoordinatorLayout>

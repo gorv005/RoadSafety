@@ -71,7 +71,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@color/blue"
                         android:layout_width="1dp"
-                        android:layout_height="30dp"/>
+                        android:layout_height="20dp"/>
 
                     <ImageView
                         android:layout_marginRight="10dp"
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:layout_width="match_parent"
-                        android:src="@drawable/setting"
+                        android:src="@drawable/share"
                         android:scaleType="centerCrop"
                         />
                 </LinearLayout>

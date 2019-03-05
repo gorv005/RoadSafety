@@ -4,5 +4,6 @@
     android:innerRadius="0dp"
     android:thickness="6dp"
     android:useLevel="false">
-    <solid android:color="@android:color/white"/>
+    <stroke android:color="@color/white" android:width="2dp"/>
+    <solid android:color="@android:color/transparent"/>
 </shape>

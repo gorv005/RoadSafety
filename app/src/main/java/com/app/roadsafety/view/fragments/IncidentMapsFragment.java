@@ -154,7 +154,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     ivIncidentArrow.setImageResource(R.drawable.down_arrow);
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    ivIncidentArrow.setImageResource(R.drawable.added_icon);
+                    ivIncidentArrow.setImageResource(R.drawable.up_arrow);
                 }
 
             }
@@ -504,7 +504,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             public void onClick(View view) {
                 if (mBottomSheetBehavior2.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                     mBottomSheetBehavior2.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    ivIncidentArrow.setImageResource(R.drawable.added_icon);
+                    ivIncidentArrow.setImageResource(R.drawable.up_arrow);
                 } else if (mBottomSheetBehavior2.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                     mBottomSheetBehavior2.setState(BottomSheetBehavior.STATE_EXPANDED);
                     ivIncidentArrow.setImageResource(R.drawable.down_arrow);

@@ -1,8 +1,11 @@
 package com.app.roadsafety.view;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,10 +24,13 @@ import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.FragmentHistory;
 import com.app.roadsafety.view.feed.FeedListFragment;
 import com.app.roadsafety.view.fragmentnavigationcontroller.FragNavController;
+import com.app.roadsafety.view.fragments.AddIncidentFragment;
 import com.app.roadsafety.view.fragments.BaseFragment;
 import com.app.roadsafety.view.fragments.IncidentMapsFragment;
 import com.app.roadsafety.view.fragments.NotificationFragment;
 import com.app.roadsafety.view.fragments.SettingsFragment;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -286,5 +292,28 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             changeStatusBarColor();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+  /*  for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+        fragment.onActivityResult(requestCode, resultCode, data);
+    }*/
+        Fragment fragment=getVisibleFragment();
+        if(fragment!=null && fragment instanceof AddIncidentFragment){
+            ((AddIncidentFragment) fragment).onActivityResult(requestCode, resultCode, data);
+
+        }
+    }
+
+    private Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        @SuppressLint("RestrictedApi") List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible())
+                return fragment;
+        }
+        return null;
     }
 }
