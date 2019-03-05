@@ -67,7 +67,7 @@
                     android:paddingRight="@dimen/desc_padding">
 
                     <Button
-                        android:id="@+id/facebook_button"
+                        android:id="@+id/btnFacebook"
                         style="@style/RoundedCornerMaterialButton"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/button_height"
@@ -145,6 +145,7 @@
                 </RelativeLayout>
 
                 <Button
+                    android:id="@+id/btnClose"
                     style="@style/RoundedCornerMaterialButtonBlue"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_height"

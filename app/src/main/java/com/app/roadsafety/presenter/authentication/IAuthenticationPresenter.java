@@ -10,6 +10,8 @@ public interface IAuthenticationPresenter {
 
     public void facebookLogin(FacebookLoginRequest facebookLoginRequest);
 
+    public void connectGuestUserWithFacebook(String auth_token,FacebookLoginRequest loginRequest);
+
     void onDestroy();
     interface IAuthenticationView extends IBaseView {
 

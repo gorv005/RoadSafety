@@ -41,6 +41,36 @@ public class AuthenticationIntractorImpl implements IAuthenticationIntractor {
     }
 
     @Override
+    public void connectGuestUserWithFacebook(String auth_token, FacebookLoginRequest loginRequest, final OnFinishedListener listener) {
+        try {
+            WebServicesWrapper.getInstance().connectGuestUserWithFacebook(new ResponseResolver<LoginResponse>() {
+                @Override
+                public void onSuccess(LoginResponse loginResponse, Response response) {
+                    listener.onSuccessFacebookResponse(loginResponse);
+                }
+
+                @Override
+                public void onFailure(RestError error, String msg) {
+                    if (error == null || error.getError() == null) {
+                        try {
+                            Gson gson = new Gson();
+                            LoginResponse response = gson.fromJson(msg, LoginResponse.class);
+                            listener.onSuccessFacebookResponse(response);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        listener.onError(error.getError());
+                    }
+                }
+            }, auth_token,loginRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public void guestLogin(final OnFinishedListener listener) {
         try {
             WebServicesWrapper.getInstance().guestLogin(new ResponseResolver<LoginResponse>() {

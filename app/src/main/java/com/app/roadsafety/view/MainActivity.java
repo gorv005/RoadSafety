@@ -285,9 +285,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             toolbar.setVisibility(View.VISIBLE);
             getSupportActionBar().show();
             toolbarTitle.setText(title);
-        }
-        else {
-             getSupportActionBar().hide();
+        } else {
+            getSupportActionBar().hide();
             toolbar.setVisibility(View.GONE);
             changeStatusBarColor();
         }
@@ -300,9 +299,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
   /*  for (Fragment fragment : getSupportFragmentManager().getFragments()) {
         fragment.onActivityResult(requestCode, resultCode, data);
     }*/
-        Fragment fragment=getVisibleFragment();
-        if(fragment!=null && fragment instanceof AddIncidentFragment){
+        Fragment fragment = getVisibleFragment();
+        if (fragment != null && fragment instanceof AddIncidentFragment) {
             ((AddIncidentFragment) fragment).onActivityResult(requestCode, resultCode, data);
+
+        } else if (fragment != null && fragment instanceof IncidentMapsFragment) {
+            ((IncidentMapsFragment) fragment).onActivityResult(requestCode, resultCode, data);
 
         }
     }

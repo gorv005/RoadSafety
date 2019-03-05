@@ -4,6 +4,7 @@ package com.app.roadsafety.view.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +28,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -34,10 +37,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.model.authentication.FacebookLoginRequest;
+import com.app.roadsafety.model.authentication.LoginResponse;
 import com.app.roadsafety.model.feed.Feed;
+import com.app.roadsafety.presenter.authentication.AuthenticationPresenterImpl;
+import com.app.roadsafety.presenter.authentication.IAuthenticationPresenter;
 import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.GpsUtils;
 import com.app.roadsafety.utility.ImageUtils;
+import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.incidents.AdapterIncidentHorizontalList;
 import com.google.android.gms.common.ConnectionResult;
@@ -57,6 +66,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.greenhalolabs.facebooklogin.FacebookLoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +82,7 @@ import static android.support.constraint.Constraints.TAG;
  * A simple {@link Fragment} subclass.
  */
 public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView{
 
     @BindView(R.id.mapview)
     MapView mapview;
@@ -104,6 +114,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     List<Feed> feeds;
     List<Feed> markerInfo;
     public Marker marker;
+    IAuthenticationPresenter iAuthenticationPresenter;
+    AppUtils util;
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
@@ -113,6 +125,9 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         circleOptions = new CircleOptions();
+        iAuthenticationPresenter = new AuthenticationPresenterImpl(this, getActivity());
+        util = new AppUtils();
+
     }
 
     @Override
@@ -334,7 +349,21 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == FacebookLoginActivity.FACEBOOK_LOGIN_REQUEST_CODE) {
+
+            if (resultCode == Activity.RESULT_OK) {
+                String accessToken = data.getStringExtra(FacebookLoginActivity.EXTRA_FACEBOOK_ACCESS_TOKEN);
+                Log.e("DEBUG", accessToken);
+                //Toast.makeText(this, "Access Token: " + accessToken, Toast.LENGTH_LONG).show();
+                facebookLogin(accessToken);
+            } else {
+                String errorMessage = data.getStringExtra(FacebookLoginActivity.EXTRA_ERROR_MESSAGE);
+                //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                Log.e("DEBUG", errorMessage);
+            }
+            //  gotoSelectRegion();
+        }
+      else   if (resultCode == Activity.RESULT_OK) {
             if (requestCode == AppConstants.GPS_REQUEST) {
                 isGPS = true; // flag maintain before get location
             }
@@ -490,14 +519,98 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 break;
 
             case R.id.ivAddPost:
-                if (mFragmentNavigation != null) {
-                    mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1));
+                addIncidentDialog();
 
-                }
                 break;
         }
     }
 
+
+    public void addIncidentDialog() {
+
+        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+        dialog.setContentView(R.layout.add_incident_location_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Button btnAddLocation=(Button)dialog.findViewById(R.id.btnAddLocation);
+        Button btnSelectLocationOnMap=(Button)dialog.findViewById(R.id.btnSelectLocationOnMap);
+
+        ImageView ivCross=(ImageView)dialog.findViewById(R.id.ivCross);
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                if(SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
+                   loginDialog();
+                }
+                else {
+                   gotoAddIncident();
+                }
+            }
+        });
+        btnSelectLocationOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+//to set the message
+        dialog.show();
+    }
+
+    public void loginDialog() {
+
+        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+        dialog.setContentView(R.layout.login_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Button btnFacebook=(Button)dialog.findViewById(R.id.btnFacebook);
+        Button btnClose=(Button)dialog.findViewById(R.id.btnClose);
+
+        ImageView ivCross=(ImageView)dialog.findViewById(R.id.ivCross);
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                String applicationId = getResources().getString(R.string.facebook_app_id);
+                ArrayList<String> permissions = new ArrayList<String>();
+                permissions.add("public_profile");
+                permissions.add("email");
+                FacebookLoginActivity.launch(getActivity(), applicationId, permissions);
+
+            }
+        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+//to set the message
+        dialog.show();
+    }
+    void facebookLogin(String token) {
+        FacebookLoginRequest facebookLoginRequest = new FacebookLoginRequest();
+        facebookLoginRequest.setAccessToken(token);
+        String auth_token= SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iAuthenticationPresenter.connectGuestUserWithFacebook(auth_token,facebookLoginRequest);
+    }
     void setBehavior() {
         ivIncidentArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -513,6 +626,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             }
         });
     }
+
 
     private void showIncidentPopup(final Activity context, Point p) {
 
@@ -536,6 +650,40 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
         // Displaying the popup at the specified location, + offsets.
         changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+    }
+
+    void gotoAddIncident(){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1));
+        }
+    }
+    @Override
+    public void getFacebookLoginResponse(LoginResponse response) {
+        Log.e("DEBUG", "" + response);
+        SharedPreference.getInstance(getActivity()).setUser(AppConstants.LOGIN_USER, response);
+        SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN,true);
+        SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_GUEST_LOGIN,false);
+        gotoAddIncident();
+    }
+
+    @Override
+    public void getGuestUserResponse(LoginResponse response) {
+
+    }
+
+    @Override
+    public void getResponseError(String response) {
+
+    }
+
+    @Override
+    public void showProgress() {
+        util.showDialog(getString(R.string.please_wait), getActivity());
+    }
+
+    @Override
+    public void hideProgress() {
+        util.hideDialog();
     }
 
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {

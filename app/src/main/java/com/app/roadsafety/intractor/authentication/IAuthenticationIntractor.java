@@ -19,6 +19,8 @@ public interface IAuthenticationIntractor {
 
     public void facebookLogin(FacebookLoginRequest loginRequest, OnFinishedListener listener);
 
+    public void connectGuestUserWithFacebook(String auth_token,FacebookLoginRequest loginRequest, OnFinishedListener listener);
+
     public void guestLogin( OnFinishedListener listener);
 
 }

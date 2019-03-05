@@ -66,6 +66,14 @@ public class AuthenticationPresenterImpl implements IAuthenticationPresenter, IA
     }
 
     @Override
+    public void connectGuestUserWithFacebook(String auth_token, FacebookLoginRequest loginRequest) {
+        if(mView!=null) {
+            mView.showProgress();
+            iAuthnicationIntractor.connectGuestUserWithFacebook(auth_token,loginRequest, this);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         try {
             mView = null;

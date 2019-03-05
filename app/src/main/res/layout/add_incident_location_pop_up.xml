@@ -43,6 +43,7 @@
             android:padding="20dp">
 
             <Button
+                android:id="@+id/btnAddLocation"
                 style="@style/RoundedCornerMaterialButtonYellow"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
@@ -62,6 +63,7 @@
                 android:textSize="@dimen/slide_desc" />
 
             <Button
+                android:id="@+id/btnSelectLocationOnMap"
                 style="@style/RoundedCornerMaterialButtonBlue"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
