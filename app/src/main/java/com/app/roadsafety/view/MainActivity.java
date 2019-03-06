@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,10 +23,10 @@ import android.widget.TextView;
 import com.app.roadsafety.R;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.FragmentHistory;
-import com.app.roadsafety.view.feed.FeedListFragment;
 import com.app.roadsafety.view.fragmentnavigationcontroller.FragNavController;
 import com.app.roadsafety.view.fragments.AddIncidentFragment;
 import com.app.roadsafety.view.fragments.BaseFragment;
+import com.app.roadsafety.view.fragments.FeedListFragment;
 import com.app.roadsafety.view.fragments.IncidentMapsFragment;
 import com.app.roadsafety.view.fragments.NotificationFragment;
 import com.app.roadsafety.view.fragments.SettingsFragment;
@@ -73,7 +74,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         //  fragmentLoader(AppConstants.FRAGMENT_FEED_LIST, null);
         changeStatusBarColor();
         switchTab(0);
-        fragmentHistory.push(0);
+       // fragmentHistory.push(0);
+        updateTabSelection(0);
+
     }
 
     private void initToolbar() {
@@ -294,6 +297,15 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
   /*  for (Fragment fragment : getSupportFragmentManager().getFragments()) {
@@ -317,5 +329,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 return fragment;
         }
         return null;
+    }
+    public void gotoWebPage(String url){
+        Fragment fragment = getVisibleFragment();
+        if (fragment != null && fragment instanceof FeedListFragment) {
+            ((FeedListFragment) fragment).gotoWebPage(url);
+
+        }
     }
 }

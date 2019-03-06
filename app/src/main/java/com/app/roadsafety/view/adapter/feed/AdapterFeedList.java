@@ -1,7 +1,6 @@
 package com.app.roadsafety.view.adapter.feed;
 
 import android.app.Activity;
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.model.feed.Feed;
 import com.app.roadsafety.model.feed.FeedListData;
 import com.app.roadsafety.utility.ImageUtils;
-
+import com.app.roadsafety.view.MainActivity;
 
 import java.util.List;
 
@@ -62,7 +60,12 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemViewHolder.tvFeedTitle.setText(horizontalList.get(position).getAttributes().getTitle());
             itemViewHolder.tvFeedDesc.setText(horizontalList.get(position).getAttributes().getDescription());
             ImageUtils.setImage(context, horizontalList.get(position).getAttributes().getImageUrl(), itemViewHolder.ivIncident);
-
+            itemViewHolder.rlFeed.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity)context).gotoWebPage(horizontalList.get(position).getAttributes().getUrl());
+                }
+            });
         }
 
     }

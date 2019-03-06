@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.view.MainActivity;
@@ -64,8 +65,13 @@ public class AddIncidentFragment extends Fragment {
     TabLayout tabLayout;
     @BindView(R.id.ivAddImage)
     ImageView ivAddImage;
+    @BindView(R.id.ivback)
+    ImageView ivback;
+    @BindView(R.id.tvFeedTitle)
+    TextView tvFeedTitle;
     private Menu menu;
     List<String> mImageList;
+
     public AddIncidentFragment() {
         // Required empty public constructor
     }
@@ -81,7 +87,7 @@ public class AddIncidentFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mImageList=new ArrayList<>();
+        mImageList = new ArrayList<>();
 
     }
 
@@ -107,7 +113,7 @@ public class AddIncidentFragment extends Fragment {
 
     }
 
-    void init(){
+    void init() {
         new ImagePicker.Builder(getActivity())
                 .mode(ImagePicker.Mode.CAMERA)
                 .compressLevel(ImagePicker.ComperesLevel.MEDIUM)
@@ -124,12 +130,12 @@ public class AddIncidentFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ImagePicker.IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
-            List<String> mPaths =  data.getStringArrayListExtra(ImagePicker.EXTRA_IMAGE_PATH);
+            List<String> mPaths = data.getStringArrayListExtra(ImagePicker.EXTRA_IMAGE_PATH);
             mImageList.add(mPaths.get(0));
             //Your Code
         }
 
-        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(),mImageList));
+        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList));
         tabLayout.setupWithViewPager(vpAdds, true);
     }
 
@@ -139,10 +145,20 @@ public class AddIncidentFragment extends Fragment {
         unbinder.unbind();
     }
 
+    @OnClick({R.id.ivAddImage, R.id.ivback})
+    public void onViewClicked(View view) {
 
-    @OnClick(R.id.ivAddImage)
-    public void onViewClicked() {
-        init();
+        switch (view.getId()) {
+            case R.id.ivAddImage:
+                init();
+                break;
+            case R.id.ivback:
+                getActivity().onBackPressed();
+                break;
+
+        }
+
     }
+
 
 }

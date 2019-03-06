@@ -145,7 +145,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         final View bottomSheet2 = view.findViewById(R.id.bottom_sheet2);
         mBottomSheetBehavior2 = BottomSheetBehavior.from(bottomSheet2);
         mBottomSheetBehavior2.setHideable(false);
-        mBottomSheetBehavior2.setPeekHeight(150);
+        mBottomSheetBehavior2.setPeekHeight(170);
         mBottomSheetBehavior2.setState(BottomSheetBehavior.STATE_COLLAPSED);
         circle = null;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -519,8 +519,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 break;
 
             case R.id.ivAddPost:
-                addIncidentDialog();
-
+               // addIncidentDialog();
+                gotoAddIncident();
                 break;
         }
     }
@@ -714,8 +714,6 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             final TextView tvIncidentDesc = ((TextView) view.findViewById(R.id.tvIncidentDesc));
             tvIncidentDesc.setText(markerInfo.get(Integer.parseInt(marker.getTitle())).getDesc());
             ImageUtils.setImage(getActivity(),"http://www.yodot.com/images/jpeg-images-sm.png",image);
-
-
             return view;
         }
     }

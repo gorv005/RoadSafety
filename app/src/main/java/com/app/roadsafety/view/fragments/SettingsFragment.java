@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.utility.AppConstants;
-import com.app.roadsafety.view.IncidentListReported;
 import com.app.roadsafety.view.MainActivity;
 
 import butterknife.BindView;
@@ -72,8 +70,8 @@ public class SettingsFragment extends BaseFragment {
             case R.id.rlProfile:
                 break;
             case R.id.rlLocationServices:
-                intent = new Intent(getActivity(), IncidentListReported.class);
-                startActivity(intent);
+               /* intent = new Intent(getActivity(), IncidentListReported.class);
+                startActivity(intent);*/
                 break;
             case R.id.rlNotifications:
                  /*intent = new Intent(getActivity(), NotificationActivity.class);

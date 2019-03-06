@@ -1,6 +1,5 @@
 package com.app.roadsafety.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -17,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.intractor.guidelines.IGuidelinesIntractor;
-import com.app.roadsafety.model.authentication.FacebookLoginRequest;
-import com.app.roadsafety.model.guidelines.Guidelines;
 import com.app.roadsafety.model.guidelines.GuidelinesResponse;
 import com.app.roadsafety.model.guidelines.GuidelinesResponseDataList;
 import com.app.roadsafety.presenter.guidelines.GuidelinesPresenterImpl;
@@ -29,7 +25,6 @@ import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.adapter.guidelines.GuidelinesAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,21 +54,27 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
         }
         setContentView(R.layout.activity_guidlines);
         ButterKnife.bind(this);
+
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+
         changeStatusBarColor();
         util = new AppUtils();
         iGuidelinesPresenter=new GuidelinesPresenterImpl(this,this);
         String page=SharedPreference.getInstance(this).getString(AppConstants.GUIDELINES_PAGE);
-      /*  if(page!=null &&!page.equalsIgnoreCase("4")) {
+        if(page!=null &&!page.equalsIgnoreCase("4")) {
             int p=Integer.parseInt(page)+1;
             getGuidelines(""+p);
+        }
+       else if(page!=null &&page.equalsIgnoreCase("4")) {
+            getGuidelines(""+ 1);
+
         }
         else {
             if(page==null){
                 getGuidelines(""+ 1);
             }
-        }*/
-      getGuidelines(""+ 1);
+        }
+     // getGuidelines(""+ 1);
 
     }
 
@@ -95,20 +96,26 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
             dots[currentPage].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.selected_dot));
     }
 
+
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageSelected(int position) {
+
             addBottomDots(size, position);
         }
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-
+            Log.e("DEBUG","gg000"+arg0);
+            if(arg0==(size-1)){
+                btnSkip.setText(getText(R.string.next));
+            }
         }
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
+            Log.e("DEBUG","gg"+arg0);
 
         }
     };

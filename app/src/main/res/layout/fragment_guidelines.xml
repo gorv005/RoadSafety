@@ -9,17 +9,20 @@
     android:background="@color/guideline_1">
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/watch_out_big_cars"
          android:id="@+id/tvTitle"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/slide_title"
-        android:textSize="@dimen/slide_title"
+        android:textSize="@dimen/heading"
         />
-    <de.hdodenhof.circleimageview.CircleImageView
+<!--    <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/image_guideline"
         android:layout_width="@dimen/guidelines_image_size"
@@ -28,7 +31,24 @@
         android:src="@mipmap/ic_launcher"
         app:civ_border_width="0dp"
 
-        app:civ_border_color="#404040"/>
+        app:civ_border_color="#404040"/>-->
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/image_guideline"
+        android:layout_width="@dimen/guidelines_image_size"
+        android:layout_height="@dimen/guidelines_image_size"
+        android:src="@drawable/login_back"
+        app:riv_mutate_background="true"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="10dip"
+        app:riv_border_width="2dip"
+        app:riv_border_color="#404040"
+        app:riv_oval="false"
+
+        />
+
     <TextView
         android:id="@+id/tvDesc"
         android:layout_width="match_parent"

@@ -16,11 +16,11 @@ import com.app.roadsafety.R;
 import com.app.roadsafety.model.guidelines.GuidelinesResponseDataList;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.ImageUtils;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +29,7 @@ public class GuidelinesFragment extends Fragment {
 
 
     @BindView(R.id.image_guideline)
-    CircleImageView imageGuideline;
+    RoundedImageView imageGuideline;
     Unbinder unbinder;
 
     GuidelinesResponseDataList guidelines;

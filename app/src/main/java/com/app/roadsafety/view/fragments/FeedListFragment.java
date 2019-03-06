@@ -1,4 +1,4 @@
-package com.app.roadsafety.view.feed;
+package com.app.roadsafety.view.fragments;
 
 
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FeedListFragment extends Fragment implements IFeedListPresenter.IFeedListView {
+public class FeedListFragment extends BaseFragment implements IFeedListPresenter.IFeedListView {
 
 
     @BindView(R.id.rvFeed)
@@ -78,7 +77,9 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
         rvFeed.setHasFixedSize(true);
         rvFeed.addOnScrollListener(recyclerViewOnScrollListener);
         //  setFeed();
-        getFeedList("" + page);
+               page=1;
+            getFeedList("" + page);
+
     }
 
     @Override
@@ -127,10 +128,11 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
                 totalItemCount = layoutManager.getItemCount();
                 pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
 
-                if (loading && page <= totalPages && totalPages > 1) {
+                if (loading && page <totalPages && totalPages > 1) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                         loading = false;
-                        getFeedList("" + page++);
+                        page=page+1;
+                        getFeedList("" + page);
                     }
                 }
             }
@@ -179,6 +181,11 @@ public class FeedListFragment extends Fragment implements IFeedListPresenter.IFe
 
     }
 
+    public void gotoWebPage(String url){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(WepPageFragment.newInstance(url,1));
+        }
+    }
     @Override
     public void showProgress() {
         util.showDialog(getString(R.string.please_wait), getActivity());
