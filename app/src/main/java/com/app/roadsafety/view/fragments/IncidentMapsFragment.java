@@ -116,6 +116,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     public Marker marker;
     IAuthenticationPresenter iAuthenticationPresenter;
     AppUtils util;
+    LatLng latLng;
+    String latitude,longitude;
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
@@ -127,6 +129,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         circleOptions = new CircleOptions();
         iAuthenticationPresenter = new AuthenticationPresenterImpl(this, getActivity());
         util = new AppUtils();
+
 
     }
 
@@ -276,6 +279,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 }
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
+
                         setMapLocation(location);
 
                     }
@@ -295,7 +299,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     }
 
     void setMapLocation(Location location) {
-
+        latitude=""+location.getLatitude();
+        longitude=""+location.getLongitude();
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
@@ -519,8 +524,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 break;
 
             case R.id.ivAddPost:
-                addIncidentDialog();
-               // gotoAddIncident();
+              //  addIncidentDialog();
+                gotoAddIncident();
                 break;
         }
     }
@@ -654,7 +659,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     void gotoAddIncident(){
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1));
+            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude));
         }
     }
     @Override

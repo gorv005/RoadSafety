@@ -51,7 +51,16 @@ public class SharedPreference {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putString(key, data).apply();
     }
-
+    public void setInt(String key, int data)
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putInt(key, data).apply();
+    }
+    public int getInt(String key)
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return  prefs.getInt(key, 1);
+    }
     public void setBoolean(String key, boolean status)
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

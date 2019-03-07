@@ -2,16 +2,13 @@ package com.app.roadsafety.presenter.createIncident;
 
 import android.content.Context;
 
-import com.app.roadsafety.intractor.authentication.AuthenticationIntractorImpl;
-import com.app.roadsafety.intractor.authentication.IAuthenticationIntractor;
 import com.app.roadsafety.intractor.createincident.CreateIncidentntractorImpl;
 import com.app.roadsafety.intractor.createincident.ICreateIncidentIntractor;
-import com.app.roadsafety.model.authentication.FacebookLoginRequest;
-import com.app.roadsafety.model.authentication.LoginResponse;
 import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
-import com.app.roadsafety.presenter.authentication.IAuthenticationPresenter;
+import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
+import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
 
 public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, ICreateIncidentIntractor.OnFinishedListener {
 
@@ -33,6 +30,22 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
         if(mView!=null){
             mView.hideProgress();
             mView.onSuccessCreateIncidentResponse(response);
+        }
+    }
+
+    @Override
+    public void onSuccessUpdateIncidentResponse(CreateIncidentResponse response) {
+        if(mView!=null){
+            mView.hideProgress();
+            mView.onSuccessUpdateIncidentResponse(response);
+        }
+    }
+
+    @Override
+    public void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response) {
+        if(mView!=null){
+            mView.hideProgress();
+            mView.onSuccessReportAbuseIncidentResponse(response);
         }
     }
 
@@ -74,6 +87,22 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
         if(mView!=null) {
             mView.showProgress();
             iCreateIncidentIntractor.createIncident(auth_token,createIncidentRequest,this);
+        }
+    }
+
+    @Override
+    public void updateIncident(String auth_token, String id, CreateIncidentRequest createIncidentRequest) {
+        if(mView!=null) {
+            mView.showProgress();
+            iCreateIncidentIntractor.updateIncident(auth_token,id,createIncidentRequest,this);
+        }
+    }
+
+    @Override
+    public void reportAbuseIncident(String auth_token, String id, ReportAbuseIncidentRequest reportAbuseIncidentRequest) {
+        if(mView!=null) {
+            mView.showProgress();
+            iCreateIncidentIntractor.reportAbuseIncident(auth_token,id,reportAbuseIncidentRequest,this);
         }
     }
 

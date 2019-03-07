@@ -16,4 +16,6 @@ public class AppConstants {
     public static final String REGION ="region" ;
     public static final int IS_FROM_INTERNAL_STORAGE =0 ;
     public static final String URL = "url";
+    public static final String LATITUDE ="latitude" ;
+    public static final String LONGITUDE ="longitude" ;
 }

@@ -15,12 +15,21 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.model.cityhall.CityHallResponse;
+import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
+import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.presenter.createIncident.CreateIncidentPresenterImpl;
+import com.app.roadsafety.presenter.createIncident.ICreateIncidentPresenter;
+import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.IncidentImageViewPagerAdapter;
 
@@ -35,12 +44,11 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
-import static com.app.roadsafety.view.fragments.BaseFragment.ARGS_INSTANCE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddIncidentFragment extends Fragment {
+public class AddIncidentFragment extends BaseFragment implements ICreateIncidentPresenter.ICreateIncidentView {
 
 
     @BindView(R.id.vp_adds)
@@ -52,12 +60,12 @@ public class AddIncidentFragment extends Fragment {
     AppBarLayout appbar;
     @BindView(R.id.etDescription)
     EditText etDescription;
-    @BindView(R.id.spninner)
-    Spinner spninner;
+    @BindView(R.id.spninnerCityHall)
+    Spinner spninnerCityHall;
     @BindView(R.id.etLocation)
     EditText etLocation;
-    @BindView(R.id.spninner1)
-    Spinner spninner1;
+    @BindView(R.id.spninnerType)
+    Spinner spninnerType;
     @BindView(R.id.main_content)
     CoordinatorLayout mainContent;
     Unbinder unbinder;
@@ -69,16 +77,25 @@ public class AddIncidentFragment extends Fragment {
     ImageView ivback;
     @BindView(R.id.tvFeedTitle)
     TextView tvFeedTitle;
-    private Menu menu;
     List<String> mImageList;
-
+    ICreateIncidentPresenter iCreateIncidentPresenter;
+    ArrayAdapter<String> spinnerArrayAdapter;
+    ArrayList<String> cityHallList;
+    ArrayList<String> type;
+    private Menu menu;
+    String mType,mCityHallId;
+    AppUtils util;
+    String latitude,longitude;
+    CityHallResponse cityHallResponse;
     public AddIncidentFragment() {
         // Required empty public constructor
     }
 
-    public static AddIncidentFragment newInstance(int instance) {
+    public static AddIncidentFragment newInstance(int instance,String latitude, String longitude) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
+        args.putString(AppConstants.LATITUDE,latitude);
+        args.putString(AppConstants.LONGITUDE,longitude);
         AddIncidentFragment fragment = new AddIncidentFragment();
         fragment.setArguments(args);
         return fragment;
@@ -88,6 +105,10 @@ public class AddIncidentFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mImageList = new ArrayList<>();
+        cityHallList = new ArrayList<>();
+        type = new ArrayList<>();
+        util=new AppUtils();
+        iCreateIncidentPresenter = new CreateIncidentPresenterImpl(this, getActivity());
 
     }
 
@@ -110,7 +131,53 @@ public class AddIncidentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getCityHall();
 
+        latitude=getArguments().getString(AppConstants.LATITUDE);
+        longitude=getArguments().getString(AppConstants.LONGITUDE);
+        initValues();
+        spninnerCityHall.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                mCityHallId=cityHallResponse.getData().getData().get(position).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spninnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position==0){
+                    mType="accident";
+                }
+                else {
+                    mType="necessary_intervention";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+    void initValues() {
+        type.add(getString(R.string.accident));
+        type.add(getString(R.string.necessary_intervention));
+        spinnerArrayAdapter = new ArrayAdapter<String>
+                (getActivity(), android.R.layout.simple_spinner_item,
+                        type);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spninnerType.setAdapter(spinnerArrayAdapter);
+
+        etLocation.setText("Lati. "+latitude+"   "+"Long. "+longitude);
     }
 
     void init() {
@@ -161,4 +228,51 @@ public class AddIncidentFragment extends Fragment {
     }
 
 
+    void getCityHall() {
+        iCreateIncidentPresenter.getCityHall();
+
+    }
+
+    @Override
+    public void onSuccessCreateIncidentResponse(CreateIncidentResponse response) {
+    }
+
+    @Override
+    public void onSuccessCityHallResponse(CityHallResponse response) {
+        cityHallResponse=response;
+        for (int i = 0; i < response.getData().getData().size(); i++) {
+            cityHallList.add(response.getData().getData().get(i).getAttributes().getName());
+        }
+        spinnerArrayAdapter = new ArrayAdapter<String>
+                (getActivity(), android.R.layout.simple_spinner_item,
+                        cityHallList);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spninnerCityHall.setAdapter(spinnerArrayAdapter);
+    }
+
+    @Override
+    public void getResponseError(String response) {
+
+    }
+
+    @Override
+    public void onSuccessUpdateIncidentResponse(CreateIncidentResponse response) {
+
+    }
+
+    @Override
+    public void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response) {
+
+    }
+
+    @Override
+    public void showProgress() {
+        util.showDialog(getString(R.string.please_wait), getActivity());
+    }
+
+    @Override
+    public void hideProgress() {
+        util.hideDialog();
+    }
 }

@@ -1,17 +1,19 @@
 package com.app.roadsafety.presenter.createIncident;
 
 import com.app.roadsafety.frameworks.basemvp.IBaseView;
-import com.app.roadsafety.model.authentication.FacebookLoginRequest;
-import com.app.roadsafety.model.authentication.LoginResponse;
 import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
+import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
+import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
 
 public interface ICreateIncidentPresenter {
 
     public void getCityHall();
 
     public void createIncident(String auth_token, CreateIncidentRequest createIncidentRequest);
+    public void updateIncident(String auth_token,String id, CreateIncidentRequest createIncidentRequest);
+    public void reportAbuseIncident(String auth_token, String id, ReportAbuseIncidentRequest reportAbuseIncidentRequest);
 
 
     void onDestroy();
@@ -22,6 +24,10 @@ public interface ICreateIncidentPresenter {
         void onSuccessCityHallResponse(CityHallResponse response);
 
         public void getResponseError(String response);
+
+        void onSuccessUpdateIncidentResponse(CreateIncidentResponse response);
+
+        void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response);
 
 
     }

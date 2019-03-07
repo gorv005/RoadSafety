@@ -68,10 +68,10 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:maxLines="1"
-                    android:text="@string/app_name"
+                    android:text="@string/marcar_local"
                     android:textColor="#222"
                     android:textSize="@dimen/slide_title"
-                    android:textStyle="bold" />
+                     />
 
                 <ImageView
                     android:layout_width="20dp"
