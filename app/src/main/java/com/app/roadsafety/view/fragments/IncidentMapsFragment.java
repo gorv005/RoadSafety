@@ -519,8 +519,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 break;
 
             case R.id.ivAddPost:
-               // addIncidentDialog();
-                gotoAddIncident();
+                addIncidentDialog();
+               // gotoAddIncident();
                 break;
         }
     }
