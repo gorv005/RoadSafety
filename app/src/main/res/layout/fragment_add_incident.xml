@@ -95,6 +95,7 @@
     <include layout="@layout/add_incident_fields" />
 
     <Button
+        android:id="@+id/btnDone"
         style="@style/RoundedCornerMaterialButtonBlue"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/button_margin"

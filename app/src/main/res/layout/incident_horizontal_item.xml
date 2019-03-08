@@ -48,7 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ivIncident"
-                android:maxLines="3"
+                android:lines="3"
+                android:ellipsize="end"
                 android:text="@string/stay_away"
                 android:textColor="#222"
                 android:textSize="@dimen/slide_title_min" />

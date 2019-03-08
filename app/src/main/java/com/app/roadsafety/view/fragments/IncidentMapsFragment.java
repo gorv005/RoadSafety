@@ -40,8 +40,13 @@ import com.app.roadsafety.R;
 import com.app.roadsafety.model.authentication.FacebookLoginRequest;
 import com.app.roadsafety.model.authentication.LoginResponse;
 import com.app.roadsafety.model.feed.Feed;
+import com.app.roadsafety.model.incidents.IncidentDataRes;
+import com.app.roadsafety.model.incidents.IncidentDetailResponse;
+import com.app.roadsafety.model.incidents.IncidentResponse;
 import com.app.roadsafety.presenter.authentication.AuthenticationPresenterImpl;
 import com.app.roadsafety.presenter.authentication.IAuthenticationPresenter;
+import com.app.roadsafety.presenter.incident.IIncidentListPresenter;
+import com.app.roadsafety.presenter.incident.IncidentListPresenterPresenterImpl;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.GpsUtils;
@@ -60,6 +65,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -82,7 +88,7 @@ import static android.support.constraint.Constraints.TAG;
  * A simple {@link Fragment} subclass.
  */
 public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView{
+        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView, IIncidentListPresenter.IIncidentView {
 
     @BindView(R.id.mapview)
     MapView mapview;
@@ -115,9 +121,11 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     List<Feed> markerInfo;
     public Marker marker;
     IAuthenticationPresenter iAuthenticationPresenter;
+    IIncidentListPresenter iIncidentListPresenter;
     AppUtils util;
     LatLng latLng;
     String latitude,longitude;
+    List<IncidentDataRes>  incidentDataResList;
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
@@ -128,6 +136,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         super.onCreate(savedInstanceState);
         circleOptions = new CircleOptions();
         iAuthenticationPresenter = new AuthenticationPresenterImpl(this, getActivity());
+        iIncidentListPresenter=new IncidentListPresenterPresenterImpl(this,getActivity());
         util = new AppUtils();
 
 
@@ -181,7 +190,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             public void onSlide(View bottomSheet, float slideOffset) {
             }
         });
-        setFeed();
+    //    setFeed();
     }
 
     void setFeed() {
@@ -206,9 +215,9 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         markerInfo.add(m4);
         Feed m5 = new Feed("login_back", getString(R.string.watch_out_big_cars), "czxzczv", 28.624245, 77.361032);
         markerInfo.add(m5);
-        adapterIncidentList = new AdapterIncidentHorizontalList(feeds, getActivity());
-        rvIncident.setAdapter(adapterIncidentList);
-        tvIncidentCount.setText("" + feeds.size() + " " + getString(R.string.incident_reported));
+     //  adapterIncidentList = new AdapterIncidentHorizontalList(feeds, getActivity());
+      //  rvIncident.setAdapter(adapterIncidentList);
+      //  tvIncidentCount.setText("" + feeds.size() + " " + getString(R.string.incident_reported));
     }
 
     @Override
@@ -319,7 +328,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         mMap.moveCamera(cameraUpdate);*/
 
-        if ( mMap != null ) {
+       /* if ( mMap != null ) {
 
             mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
@@ -328,7 +337,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
 
             }
-        }
+        }*/
     }
 
     @SuppressLint("MissingPermission")
@@ -358,9 +367,11 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
             if (resultCode == Activity.RESULT_OK) {
                 String accessToken = data.getStringExtra(FacebookLoginActivity.EXTRA_FACEBOOK_ACCESS_TOKEN);
-                Log.e("DEBUG", accessToken);
-                //Toast.makeText(this, "Access Token: " + accessToken, Toast.LENGTH_LONG).show();
-                facebookLogin(accessToken);
+                if(accessToken!=null) {
+                    Log.e("DEBUG", accessToken);
+                    //Toast.makeText(this, "Access Token: " + accessToken, Toast.LENGTH_LONG).show();
+                    facebookLogin(accessToken);
+                }
             } else {
                 String errorMessage = data.getStringExtra(FacebookLoginActivity.EXTRA_ERROR_MESSAGE);
                 //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
@@ -464,6 +475,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
+            getAllIncidentList();
         }
     }
 
@@ -610,6 +622,12 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 //to set the message
         dialog.show();
     }
+
+    void getAllIncidentList(){
+        String auth_token= SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+
+        iIncidentListPresenter.getAllIncidents(auth_token,latitude,longitude,""+10,""+1);
+    }
     void facebookLogin(String token) {
         FacebookLoginRequest facebookLoginRequest = new FacebookLoginRequest();
         facebookLoginRequest.setAccessToken(token);
@@ -677,6 +695,37 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     }
 
     @Override
+    public void onSuccessIncidentListResponse(IncidentResponse response) {
+        if(response.getData()!=null && response.getData().getData()!=null && response.getData().getData().size()>0) {
+            incidentDataResList=response.getData().getData();
+            if (mMap != null) {
+
+                mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+
+                for (int i = 0; i < incidentDataResList.size(); i++) {
+                     mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
+                    //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
+
+                }
+
+            }
+            adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
+              rvIncident.setAdapter(adapterIncidentList);
+            tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
+        }
+    }
+
+    public void gotoIncidentList(){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(IncidentListFragment.newInstance(1,latitude,longitude));
+        }
+    }
+    @Override
+    public void onSuccessIncidentDetailsResponse(IncidentDetailResponse response) {
+
+    }
+
+    @Override
     public void getResponseError(String response) {
 
     }
@@ -717,8 +766,12 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
             final ImageView image = ((ImageView) view.findViewById(R.id.ivIncident));
             final TextView tvIncidentDesc = ((TextView) view.findViewById(R.id.tvIncidentDesc));
-            tvIncidentDesc.setText(markerInfo.get(Integer.parseInt(marker.getTitle())).getDesc());
-            ImageUtils.setImage(getActivity(),"http://www.yodot.com/images/jpeg-images-sm.png",image);
+            final TextView tvHours = ((TextView) view.findViewById(R.id.tvHours));
+            final Button btnViewMore = ((Button) view.findViewById(R.id.btnViewMore));
+
+            tvHours.setText(AppUtils.getDate(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getCreatedAt()));
+            tvIncidentDesc.setText(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getDescription());
+            ImageUtils.setImage(getActivity(),incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0),image);
             return view;
         }
     }

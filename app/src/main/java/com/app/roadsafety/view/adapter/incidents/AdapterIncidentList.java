@@ -10,14 +10,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.model.feed.Feed;
+import com.app.roadsafety.model.incidents.IncidentDataRes;
+import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.ImageUtils;
 
 import java.util.List;
 
 public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
-    private List<Feed> horizontalList;
+    private List<IncidentDataRes> horizontalList;
     Activity context;
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView  tvIncidentDesc,tvHours;
@@ -33,7 +34,7 @@ public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public AdapterIncidentList(List<Feed> horizontalList, Activity context) {
+    public AdapterIncidentList(List<IncidentDataRes> horizontalList, Activity context) {
         this.horizontalList = horizontalList;
         this.context = context;
     }
@@ -56,8 +57,12 @@ public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tvIncidentDesc.setText(horizontalList.get(position).getDesc());
-            ImageUtils.loadImage(context, horizontalList.get(position).getImage(), itemViewHolder.ivIncident);
+            itemViewHolder.tvIncidentDesc.setText(horizontalList.get(position).getAttributes().getDescription());
+            if(horizontalList.get(position).getAttributes().getImages()!=null && horizontalList.get(position).getAttributes().getImages().size()>0) {
+
+                ImageUtils.setImage(context, horizontalList.get(position).getAttributes().getImages().get(0), itemViewHolder.ivIncident);
+            }
+            itemViewHolder.tvHours.setText(AppUtils.getDate(horizontalList.get(position).getAttributes().getCreatedAt()));
 
         }
 

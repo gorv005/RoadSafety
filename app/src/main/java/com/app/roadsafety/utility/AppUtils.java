@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.app.roadsafety.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AppUtils {
 
     ProgressDialog progressDialog=null;
@@ -76,4 +80,22 @@ public class AppUtils {
         dialog.show();
     }
 
+   public static String getDate(String utcDate){
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat output = new SimpleDateFormat("MMM d, yyyy, h:mm a");
+
+        Date d = null;
+        String formatted="";
+        try
+        {
+            d = input.parse(utcDate);
+             formatted = output.format(d);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        return formatted;
+    }
 }

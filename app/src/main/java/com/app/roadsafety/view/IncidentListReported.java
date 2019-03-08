@@ -1,11 +1,8 @@
 package com.app.roadsafety.view;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,8 +72,8 @@ public class IncidentListReported extends AppCompatActivity {
         feeds.add(g2);
         Feed g3 = new Feed("login_back", getString(R.string.watch_out_big_cars), getString(R.string.feed_desc));
         feeds.add(g3);
-        adapterIncidentList = new AdapterIncidentList(feeds, this);
-        rvIncident.setAdapter(adapterIncidentList);
+      /*  adapterIncidentList = new AdapterIncidentList(feeds, this);
+        rvIncident.setAdapter(adapterIncidentList);*/
     }
 
 }

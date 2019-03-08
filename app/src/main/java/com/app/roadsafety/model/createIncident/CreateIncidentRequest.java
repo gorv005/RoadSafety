@@ -17,7 +17,7 @@ public class CreateIncidentRequest {
     private String latitude;
     @SerializedName("longitude")
     @Expose
-    private Float longitude;
+    private String longitude;
     @SerializedName("city_hall_id")
     @Expose
     private Integer cityHallId;
@@ -49,11 +49,11 @@ public class CreateIncidentRequest {
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 

@@ -11,12 +11,14 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -24,12 +26,14 @@ import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.cityhall.CityHallResponse;
+import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
 import com.app.roadsafety.presenter.createIncident.CreateIncidentPresenterImpl;
 import com.app.roadsafety.presenter.createIncident.ICreateIncidentPresenter;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
+import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.IncidentImageViewPagerAdapter;
 
@@ -82,20 +86,23 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     ArrayAdapter<String> spinnerArrayAdapter;
     ArrayList<String> cityHallList;
     ArrayList<String> type;
+    @BindView(R.id.btnDone)
+    Button btnDone;
     private Menu menu;
-    String mType,mCityHallId;
+    String mType, mCityHallId;
     AppUtils util;
-    String latitude,longitude;
+    String latitude, longitude;
     CityHallResponse cityHallResponse;
+
     public AddIncidentFragment() {
         // Required empty public constructor
     }
 
-    public static AddIncidentFragment newInstance(int instance,String latitude, String longitude) {
+    public static AddIncidentFragment newInstance(int instance, String latitude, String longitude) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
-        args.putString(AppConstants.LATITUDE,latitude);
-        args.putString(AppConstants.LONGITUDE,longitude);
+        args.putString(AppConstants.LATITUDE, latitude);
+        args.putString(AppConstants.LONGITUDE, longitude);
         AddIncidentFragment fragment = new AddIncidentFragment();
         fragment.setArguments(args);
         return fragment;
@@ -107,7 +114,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         mImageList = new ArrayList<>();
         cityHallList = new ArrayList<>();
         type = new ArrayList<>();
-        util=new AppUtils();
+        util = new AppUtils();
         iCreateIncidentPresenter = new CreateIncidentPresenterImpl(this, getActivity());
 
     }
@@ -133,14 +140,14 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         super.onViewCreated(view, savedInstanceState);
         getCityHall();
 
-        latitude=getArguments().getString(AppConstants.LATITUDE);
-        longitude=getArguments().getString(AppConstants.LONGITUDE);
+        latitude = getArguments().getString(AppConstants.LATITUDE);
+        longitude = getArguments().getString(AppConstants.LONGITUDE);
         initValues();
         spninnerCityHall.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                mCityHallId=cityHallResponse.getData().getData().get(position).getId();
+                mCityHallId = cityHallResponse.getData().getData().get(position).getId();
             }
 
             @Override
@@ -151,11 +158,10 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         spninnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
-                    mType="accident";
-                }
-                else {
-                    mType="necessary_intervention";
+                if (position == 0) {
+                    mType = "accident";
+                } else {
+                    mType = "necessary_intervention";
                 }
             }
 
@@ -177,7 +183,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
         spninnerType.setAdapter(spinnerArrayAdapter);
 
-        etLocation.setText("Lati. "+latitude+"   "+"Long. "+longitude);
+        etLocation.setText("Lati. " + latitude + "   " + "Long. " + longitude);
     }
 
     void init() {
@@ -212,7 +218,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ivAddImage, R.id.ivback})
+    @OnClick({R.id.ivAddImage, R.id.ivback,R.id.btnDone})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -222,7 +228,9 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             case R.id.ivback:
                 getActivity().onBackPressed();
                 break;
-
+            case R.id.btnDone:
+                createIncident();
+                break;
         }
 
     }
@@ -233,13 +241,29 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     }
 
+    void createIncident() {
+        CreateIncidentRequest createIncidentRequest = new CreateIncidentRequest();
+        createIncidentRequest.setDescription(etDescription.getText().toString());
+        createIncidentRequest.setCityHallId(Integer.parseInt(mCityHallId));
+        createIncidentRequest.setLatitude(latitude);
+        createIncidentRequest.setLongitude(longitude);
+        List<String> strings=new ArrayList<>();
+        strings.add("http://placehold.it/120x120&text=image1");
+        createIncidentRequest.setImages(strings);
+        createIncidentRequest.setType(mType);
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+
+        iCreateIncidentPresenter.createIncident(auth_token, createIncidentRequest);
+    }
+
     @Override
     public void onSuccessCreateIncidentResponse(CreateIncidentResponse response) {
+        Log.e("DEBUG", "Incident Created");
     }
 
     @Override
     public void onSuccessCityHallResponse(CityHallResponse response) {
-        cityHallResponse=response;
+        cityHallResponse = response;
         for (int i = 0; i < response.getData().getData().size(); i++) {
             cityHallList.add(response.getData().getData().get(i).getAttributes().getName());
         }

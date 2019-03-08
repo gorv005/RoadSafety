@@ -18,4 +18,5 @@ public class AppConstants {
     public static final String URL = "url";
     public static final String LATITUDE ="latitude" ;
     public static final String LONGITUDE ="longitude" ;
+    public static final String DISTANCE ="10" ;
 }

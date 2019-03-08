@@ -337,4 +337,11 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
         }
     }
+    public void gotoIncidentList(){
+        Fragment fragment = getVisibleFragment();
+        if (fragment != null && fragment instanceof IncidentMapsFragment) {
+            ((IncidentMapsFragment) fragment).gotoIncidentList();
+
+        }
+    }
 }
