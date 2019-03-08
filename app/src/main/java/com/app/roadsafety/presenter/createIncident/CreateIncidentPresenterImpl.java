@@ -42,6 +42,14 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
     }
 
     @Override
+    public void onSuccessDeleteIncidentResponse(CreateIncidentResponse response) {
+        if(mView!=null){
+            mView.hideProgress();
+            mView.onSuccessDeleteIncidentResponse(response);
+        }
+    }
+
+    @Override
     public void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response) {
         if(mView!=null){
             mView.hideProgress();
@@ -103,6 +111,14 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
         if(mView!=null) {
             mView.showProgress();
             iCreateIncidentIntractor.reportAbuseIncident(auth_token,id,reportAbuseIncidentRequest,this);
+        }
+    }
+
+    @Override
+    public void deleteIncident(String auth_token, String id) {
+        if(mView!=null) {
+            mView.showProgress();
+            iCreateIncidentIntractor.deleteIncident(auth_token,id,this);
         }
     }
 

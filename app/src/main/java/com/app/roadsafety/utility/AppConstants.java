@@ -15,8 +15,10 @@ public class AppConstants {
     public static final String IS_GUEST_LOGIN ="guest_login" ;
     public static final String REGION ="region" ;
     public static final int IS_FROM_INTERNAL_STORAGE =0 ;
+    public static final int IS_FROM_REMOTE=1 ;
     public static final String URL = "url";
     public static final String LATITUDE ="latitude" ;
     public static final String LONGITUDE ="longitude" ;
     public static final String DISTANCE ="10" ;
+    public static final String INCIDENT_ID ="incidentId" ;
 }

@@ -50,4 +50,6 @@
     <string name="necessary_intervention">Necessary Intervention</string>
     <string name="marcar_local">Marcar Local</string>
     <string name="incidents">Incidents</string>
+    <string name="add_location">Add location</string>
+    <string name="add_location_error">Please add incident location on map using long press</string>
 </resources>

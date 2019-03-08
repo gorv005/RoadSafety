@@ -102,6 +102,35 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
     }
 
     @Override
+    public void deleteIncident(String auth_token, String id, final OnFinishedListener listener) {
+        try {
+            WebServicesWrapper.getInstance().deleteIncident(new ResponseResolver<CreateIncidentResponse>() {
+                @Override
+                public void onSuccess(CreateIncidentResponse loginResponse, Response response) {
+                    listener.onSuccessCreateIncidentResponse(loginResponse);
+                }
+
+                @Override
+                public void onFailure(RestError error, String msg) {
+                    if (error == null || error.getError() == null) {
+                        try {
+                            Gson gson = new Gson();
+                            CreateIncidentResponse response = gson.fromJson(msg, CreateIncidentResponse.class);
+                            listener.onSuccessCreateIncidentResponse(response);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        listener.onError(error.getError());
+                    }
+                }
+            }, auth_token,id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void reportAbuseIncident(String auth_token, String id, ReportAbuseIncidentRequest reportAbuseIncidentRequest, final OnFinishedListener listener) {
         try {
             WebServicesWrapper.getInstance().reportAbuseIncident(new ResponseResolver<ReportAbuseIncidentResponse>() {

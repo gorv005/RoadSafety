@@ -4,21 +4,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.view.fragments.IncidentImageViewPager;
 
 import java.util.List;
 
 public class IncidentImageViewPagerAdapter extends FragmentStatePagerAdapter {
     List<String> imageList;
-    public IncidentImageViewPagerAdapter(FragmentManager fm,List<String> imageList) {
+    int mediaLoadType;
+    public IncidentImageViewPagerAdapter(FragmentManager fm,List<String> imageList, int mediaLoadType) {
         super(fm);
         this.imageList=imageList;
+        this.mediaLoadType=mediaLoadType;
     }
 
     @Override
     public Fragment getItem(int position) {
-        Fragment  fragment=IncidentImageViewPager.newInstance(AppConstants.IS_FROM_INTERNAL_STORAGE,imageList.get(position));
+        Fragment  fragment=IncidentImageViewPager.newInstance(mediaLoadType,imageList.get(position));
 
 /*
         switch (position)

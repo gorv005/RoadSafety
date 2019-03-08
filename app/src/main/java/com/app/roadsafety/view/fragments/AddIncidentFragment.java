@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -88,7 +87,6 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     ArrayList<String> type;
     @BindView(R.id.btnDone)
     Button btnDone;
-    private Menu menu;
     String mType, mCityHallId;
     AppUtils util;
     String latitude, longitude;
@@ -208,7 +206,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             //Your Code
         }
 
-        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList));
+        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList,AppConstants.IS_FROM_INTERNAL_STORAGE));
         tabLayout.setupWithViewPager(vpAdds, true);
     }
 
@@ -287,6 +285,11 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     @Override
     public void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response) {
+
+    }
+
+    @Override
+    public void onSuccessDeleteIncidentResponse(CreateIncidentResponse response) {
 
     }
 

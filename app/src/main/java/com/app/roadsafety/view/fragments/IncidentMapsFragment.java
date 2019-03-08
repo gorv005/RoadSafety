@@ -126,6 +126,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     LatLng latLng;
     String latitude,longitude;
     List<IncidentDataRes>  incidentDataResList;
+    boolean isAddLocationOnMap=false;
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
@@ -536,8 +537,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 break;
 
             case R.id.ivAddPost:
-              //  addIncidentDialog();
-                gotoAddIncident();
+                addIncidentDialog();
+                //gotoAddIncident();
                 break;
         }
     }
@@ -564,6 +565,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                isAddLocationOnMap=false;
                 if(SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
                    loginDialog();
                 }
@@ -576,6 +578,14 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                isAddLocationOnMap=true;
+
+                if(SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
+                    loginDialog();
+                }
+                else {
+                    gotoAddIncidentOnMap();
+                }
             }
         });
 
@@ -680,13 +690,24 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude));
         }
     }
+
+    void gotoAddIncidentOnMap(){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(AddIncidentLocationFragment.newInstance(1));
+        }
+    }
     @Override
     public void getFacebookLoginResponse(LoginResponse response) {
         Log.e("DEBUG", "" + response);
         SharedPreference.getInstance(getActivity()).setUser(AppConstants.LOGIN_USER, response);
         SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN,true);
         SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_GUEST_LOGIN,false);
-        gotoAddIncident();
+        if(isAddLocationOnMap){
+         gotoAddIncidentOnMap();
+        }
+        else {
+            gotoAddIncident();
+        }
     }
 
     @Override
@@ -718,6 +739,18 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     public void gotoIncidentList(){
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(IncidentListFragment.newInstance(1,latitude,longitude));
+        }
+    }
+
+
+    void gotoAddIncidentFromMap(String latitude, String longitude){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude));
+        }
+    }
+    public void gotoIncidentDescription(String id){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1,id));
         }
     }
     @Override

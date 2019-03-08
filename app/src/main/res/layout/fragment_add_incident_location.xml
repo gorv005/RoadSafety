@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bgLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible" />
+
+                <Button
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/btnAddLocation"
+                    style="@style/RoundedCornerMaterialButtonBlue"
+                    android:layout_width="match_parent"
+                    android:layout_margin="@dimen/button_margin"
+                    android:layout_height="@dimen/button_height"
+                    android:fitsSystemWindows="true"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:text="@string/add_location"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/slide_desc" />
+            </RelativeLayout>
+
+</RelativeLayout>

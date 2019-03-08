@@ -14,6 +14,7 @@ public interface ICreateIncidentPresenter {
     public void createIncident(String auth_token, CreateIncidentRequest createIncidentRequest);
     public void updateIncident(String auth_token,String id, CreateIncidentRequest createIncidentRequest);
     public void reportAbuseIncident(String auth_token, String id, ReportAbuseIncidentRequest reportAbuseIncidentRequest);
+    public void deleteIncident(String auth_token,String id);
 
 
     void onDestroy();
@@ -29,6 +30,7 @@ public interface ICreateIncidentPresenter {
 
         void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response);
 
+        void onSuccessDeleteIncidentResponse(CreateIncidentResponse response);
 
     }
 }

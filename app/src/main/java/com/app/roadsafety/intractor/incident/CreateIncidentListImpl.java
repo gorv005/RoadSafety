@@ -43,7 +43,7 @@ public class CreateIncidentListImpl implements IIncidentListIntractor {
     @Override
     public void getIncidentDetails(String auth_token, String id, final OnFinishedListener listener) {
         try {
-            WebServicesWrapper.getInstance().getAllIncidents(new ResponseResolver<IncidentDetailResponse>() {
+            WebServicesWrapper.getInstance().getIncidentDetails(new ResponseResolver<IncidentDetailResponse>() {
                 @Override
                 public void onSuccess(IncidentDetailResponse loginResponse, Response response) {
                     listener.onSuccessIncidentDetailsResponse(loginResponse);

@@ -15,6 +15,8 @@ public interface ICreateIncidentIntractor {
 
         void onSuccessUpdateIncidentResponse(CreateIncidentResponse response);
 
+        void onSuccessDeleteIncidentResponse(CreateIncidentResponse response);
+
         void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response);
 
         void onSuccessCityHallResponse(CityHallResponse response);
@@ -29,6 +31,8 @@ public interface ICreateIncidentIntractor {
     public void createIncident(String auth_token, CreateIncidentRequest createIncidentRequest, OnFinishedListener listener);
 
     public void updateIncident(String auth_token,String id, CreateIncidentRequest createIncidentRequest, OnFinishedListener listener);
+
+    public void deleteIncident(String auth_token,String id, OnFinishedListener listener);
 
     public void reportAbuseIncident(String auth_token, String id, ReportAbuseIncidentRequest reportAbuseIncidentRequest, OnFinishedListener listener);
 

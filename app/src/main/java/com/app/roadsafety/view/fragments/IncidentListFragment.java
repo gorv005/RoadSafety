@@ -179,12 +179,12 @@ public class IncidentListFragment extends BaseFragment implements IIncidentListP
     }
 
     @Override
-    public void hideProgress() {
-
+    public void showProgress() {
+        util.showDialog(getString(R.string.please_wait), getActivity());
     }
 
     @Override
-    public void showProgress() {
-
+    public void hideProgress() {
+        util.hideDialog();
     }
 }
