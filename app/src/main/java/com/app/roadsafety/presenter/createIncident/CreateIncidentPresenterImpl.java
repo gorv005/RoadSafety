@@ -10,6 +10,8 @@ import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
 
+import okhttp3.ResponseBody;
+
 public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, ICreateIncidentIntractor.OnFinishedListener {
 
 
@@ -42,7 +44,7 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
     }
 
     @Override
-    public void onSuccessDeleteIncidentResponse(CreateIncidentResponse response) {
+    public void onSuccessDeleteIncidentResponse(ResponseBody response) {
         if(mView!=null){
             mView.hideProgress();
             mView.onSuccessDeleteIncidentResponse(response);

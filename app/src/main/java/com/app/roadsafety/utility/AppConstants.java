@@ -21,4 +21,9 @@ public class AppConstants {
     public static final String LONGITUDE ="longitude" ;
     public static final String DISTANCE ="10" ;
     public static final String INCIDENT_ID ="incidentId" ;
+    public static final String TAB_SELECTION = "tab_selection";
+    public static final String INCIDENT_ACTION ="incident_action" ;
+    public static final String INCIDENT_ACTION_EDIT = "edit";
+    public static final String INCIDENT_ACTION_ADD = "add";
+    public static final String INCIDENT_DATA = "incident_data";
 }

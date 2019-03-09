@@ -3,9 +3,10 @@ package com.app.roadsafety.model.incidents;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class IncidentDetailAttribute {
+public class IncidentDetailAttribute implements Serializable {
     @SerializedName("description")
     @Expose
     private String description;

@@ -148,6 +148,7 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
     }
     void gotoIncidentMaps() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(AppConstants.TAB_SELECTION,0);
         startActivity(intent);
     }
 

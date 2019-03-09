@@ -27,6 +27,7 @@ import com.app.roadsafety.view.fragmentnavigationcontroller.FragNavController;
 import com.app.roadsafety.view.fragments.AddIncidentFragment;
 import com.app.roadsafety.view.fragments.BaseFragment;
 import com.app.roadsafety.view.fragments.FeedListFragment;
+import com.app.roadsafety.view.fragments.IncidentListFragment;
 import com.app.roadsafety.view.fragments.IncidentMapsFragment;
 import com.app.roadsafety.view.fragments.NotificationFragment;
 import com.app.roadsafety.view.fragments.SettingsFragment;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     private Fragment fragment;
+    int selection=0;
     private FragNavController mNavController;
 
     private FragmentHistory fragmentHistory;
@@ -73,9 +75,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         init(savedInstanceState);
         //  fragmentLoader(AppConstants.FRAGMENT_FEED_LIST, null);
         changeStatusBarColor();
-        switchTab(0);
+        selection=getIntent().getIntExtra(AppConstants.TAB_SELECTION,0);
+        switchTab(selection);
        // fragmentHistory.push(0);
-        updateTabSelection(0);
+        updateTabSelection(selection);
 
     }
 
@@ -349,6 +352,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         Fragment fragment = getVisibleFragment();
         if (fragment != null && fragment instanceof IncidentMapsFragment) {
             ((IncidentMapsFragment) fragment).gotoIncidentDescription(id);
+
+        }
+       else if (fragment != null && fragment instanceof IncidentListFragment) {
+            ((IncidentListFragment) fragment).gotoIncidentDescription(id);
 
         }
     }

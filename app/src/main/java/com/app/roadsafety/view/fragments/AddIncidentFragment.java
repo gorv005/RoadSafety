@@ -22,12 +22,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.model.incidents.IncidentDetailResponse;
 import com.app.roadsafety.presenter.createIncident.CreateIncidentPresenterImpl;
 import com.app.roadsafety.presenter.createIncident.ICreateIncidentPresenter;
 import com.app.roadsafety.utility.AppConstants;
@@ -45,6 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.ResponseBody;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -87,19 +90,22 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     ArrayList<String> type;
     @BindView(R.id.btnDone)
     Button btnDone;
-    String mType, mCityHallId;
+    String mType, mCityHallId, incidentAction;
     AppUtils util;
     String latitude, longitude;
     CityHallResponse cityHallResponse;
+    IncidentDetailResponse incidentDetailResponse;
 
     public AddIncidentFragment() {
         // Required empty public constructor
     }
 
-    public static AddIncidentFragment newInstance(int instance, String latitude, String longitude) {
+    public static AddIncidentFragment newInstance(int instance, String latitude, String longitude, String action, IncidentDetailResponse incidentDetailResponse) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
         args.putString(AppConstants.LATITUDE, latitude);
+        args.putSerializable(AppConstants.INCIDENT_DATA, incidentDetailResponse);
+        args.putString(AppConstants.INCIDENT_ACTION, action);
         args.putString(AppConstants.LONGITUDE, longitude);
         AddIncidentFragment fragment = new AddIncidentFragment();
         fragment.setArguments(args);
@@ -140,6 +146,10 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
         latitude = getArguments().getString(AppConstants.LATITUDE);
         longitude = getArguments().getString(AppConstants.LONGITUDE);
+        incidentAction = getArguments().getString(AppConstants.INCIDENT_ACTION);
+        if (incidentAction.endsWith(AppConstants.INCIDENT_ACTION_EDIT)) {
+            incidentDetailResponse = (IncidentDetailResponse) getArguments().getSerializable(AppConstants.INCIDENT_DATA);
+        }
         initValues();
         spninnerCityHall.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -169,6 +179,21 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             }
         });
 
+    }
+
+    void setEditValue() {
+        etDescription.setText(incidentDetailResponse.getData().getAttributes().getDescription());
+        etLocation.setText("Lati. " + latitude + "   " + "Long. " + longitude);
+        if (incidentDetailResponse.getData().getAttributes().getType().equals("accident")) {
+            spninnerType.setSelection(0);
+        } else {
+            spninnerType.setSelection(1);
+        }
+        for (int i = 0; i < incidentDetailResponse.getData().getAttributes().getImages().size(); i++) {
+            mImageList.add(incidentDetailResponse.getData().getAttributes().getImages().get(i));
+        }
+        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
+        tabLayout.setupWithViewPager(vpAdds, true);
     }
 
     void initValues() {
@@ -206,7 +231,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             //Your Code
         }
 
-        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList,AppConstants.IS_FROM_INTERNAL_STORAGE));
+        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
         tabLayout.setupWithViewPager(vpAdds, true);
     }
 
@@ -216,7 +241,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ivAddImage, R.id.ivback,R.id.btnDone})
+    @OnClick({R.id.ivAddImage, R.id.ivback, R.id.btnDone})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -227,7 +252,18 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
                 getActivity().onBackPressed();
                 break;
             case R.id.btnDone:
-                createIncident();
+                if(etDescription.getText().toString().length()>0) {
+
+                    if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
+                        updateIncident();
+                    } else {
+                        createIncident();
+
+                    }
+                }
+                else {
+                    Toast.makeText(getActivity(),getString(R.string.description_error),Toast.LENGTH_LONG).show();
+                }
                 break;
         }
 
@@ -240,23 +276,52 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     }
 
     void createIncident() {
+            CreateIncidentRequest createIncidentRequest = new CreateIncidentRequest();
+            createIncidentRequest.setDescription(etDescription.getText().toString());
+            createIncidentRequest.setCityHallId(Integer.parseInt(mCityHallId));
+            createIncidentRequest.setLatitude(latitude);
+            createIncidentRequest.setLongitude(longitude);
+            List<String> strings = new ArrayList<>();
+            strings.add("http://placehold.it/120x120&text=image1");
+            createIncidentRequest.setImages(strings);
+            createIncidentRequest.setType(mType);
+            String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+
+            iCreateIncidentPresenter.createIncident(auth_token, createIncidentRequest);
+
+    }
+
+    void updateIncident() {
         CreateIncidentRequest createIncidentRequest = new CreateIncidentRequest();
         createIncidentRequest.setDescription(etDescription.getText().toString());
         createIncidentRequest.setCityHallId(Integer.parseInt(mCityHallId));
         createIncidentRequest.setLatitude(latitude);
         createIncidentRequest.setLongitude(longitude);
-        List<String> strings=new ArrayList<>();
+        List<String> strings = new ArrayList<>();
         strings.add("http://placehold.it/120x120&text=image1");
         createIncidentRequest.setImages(strings);
         createIncidentRequest.setType(mType);
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
-
-        iCreateIncidentPresenter.createIncident(auth_token, createIncidentRequest);
+        iCreateIncidentPresenter.updateIncident(auth_token, incidentDetailResponse.getData().getId(), createIncidentRequest);
     }
 
     @Override
     public void onSuccessCreateIncidentResponse(CreateIncidentResponse response) {
         Log.e("DEBUG", "Incident Created");
+          if(response.getData()==null && response.getErrors()!=null && response.getErrors().size()>0){
+            String error="";
+            for(int i=0;i<response.getErrors().size();i++){
+                error=error+response.getErrors().get(i)+"\n";
+            }
+            util.resultDialog(getActivity(),error);
+        }
+        else {
+              Toast.makeText(getActivity(),getString(R.string.incident_created),Toast.LENGTH_LONG).show();
+              Intent intent = new Intent(getActivity(), MainActivity.class);
+              intent.putExtra(AppConstants.TAB_SELECTION,1);
+              intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+              startActivity(intent);
+          }
     }
 
     @Override
@@ -271,6 +336,10 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spninnerCityHall.setAdapter(spinnerArrayAdapter);
+
+        if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
+            setEditValue();
+        }
     }
 
     @Override
@@ -280,7 +349,17 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     @Override
     public void onSuccessUpdateIncidentResponse(CreateIncidentResponse response) {
-
+        if(response.getData()==null && response.getErrors()!=null && response.getErrors().size()>0){
+            String error="";
+            for(int i=0;i<response.getErrors().size();i++){
+                error=error+response.getErrors().get(i)+"\n";
+            }
+            util.resultDialog(getActivity(),error);
+        }
+        else {
+            Toast.makeText(getActivity(), getString(R.string.incident_update), Toast.LENGTH_LONG).show();
+            getActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -289,7 +368,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     }
 
     @Override
-    public void onSuccessDeleteIncidentResponse(CreateIncidentResponse response) {
+    public void onSuccessDeleteIncidentResponse(ResponseBody response) {
 
     }
 

@@ -52,4 +52,14 @@
     <string name="incidents">Incidents</string>
     <string name="add_location">Add location</string>
     <string name="add_location_error">Please add incident location on map using long press</string>
+    <string name="edit">Edit</string>
+    <string name="incident_deleted_success">Incident has been deleted</string>
+    <string name="incident_update">Incident has been updated</string>
+    <string name="report_abuse">Report abuse</string>
+    <string name="comment">Comment</string>
+    <string name="submit">Submit</string>
+    <string name="incident_created">Incident has been created</string>
+    <string name="report_abuse_msg">Abuse report has been submit</string>
+    <string name="description_error">Please add description</string>
+    <string name="comment_error">Please add your comment</string>
 </resources>

@@ -687,7 +687,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     void gotoAddIncident(){
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude));
+            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude,AppConstants.INCIDENT_ACTION_ADD,null));
         }
     }
 
@@ -743,11 +743,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     }
 
 
-    void gotoAddIncidentFromMap(String latitude, String longitude){
-        if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude));
-        }
-    }
+
     public void gotoIncidentDescription(String id){
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1,id));

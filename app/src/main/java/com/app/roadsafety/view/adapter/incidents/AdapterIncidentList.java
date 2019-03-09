@@ -13,6 +13,7 @@ import com.app.roadsafety.R;
 import com.app.roadsafety.model.incidents.IncidentDataRes;
 import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.ImageUtils;
+import com.app.roadsafety.view.MainActivity;
 
 import java.util.List;
 
@@ -63,7 +64,13 @@ public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewH
                 ImageUtils.setImage(context, horizontalList.get(position).getAttributes().getImages().get(0), itemViewHolder.ivIncident);
             }
             itemViewHolder.tvHours.setText(AppUtils.getDate(horizontalList.get(position).getAttributes().getCreatedAt()));
+            itemViewHolder.rlIncident.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity)context).gotoIncidentDescription(horizontalList.get(position).getId());
 
+                }
+            });
         }
 
     }

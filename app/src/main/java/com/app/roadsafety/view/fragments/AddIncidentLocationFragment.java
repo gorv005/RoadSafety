@@ -336,7 +336,7 @@ public class AddIncidentLocationFragment extends BaseFragment implements OnMapRe
 
     void gotoAddIncident(){
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude));
+            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude,AppConstants.INCIDENT_ACTION_ADD,null));
         }
     }
 }

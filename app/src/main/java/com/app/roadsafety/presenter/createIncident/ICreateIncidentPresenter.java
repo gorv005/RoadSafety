@@ -7,6 +7,8 @@ import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
 
+import okhttp3.ResponseBody;
+
 public interface ICreateIncidentPresenter {
 
     public void getCityHall();
@@ -30,7 +32,7 @@ public interface ICreateIncidentPresenter {
 
         void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response);
 
-        void onSuccessDeleteIncidentResponse(CreateIncidentResponse response);
+        void onSuccessDeleteIncidentResponse(ResponseBody response);
 
     }
 }

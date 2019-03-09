@@ -97,7 +97,11 @@ public class IncidentListFragment extends BaseFragment implements IIncidentListP
         page=1;
         getAllIncidentList( page);
     }
-
+    public void gotoIncidentDescription(String id){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1,id));
+        }
+    }
     private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

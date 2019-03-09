@@ -8,6 +8,8 @@ import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
 
+import okhttp3.ResponseBody;
+
 public interface ICreateIncidentIntractor {
     interface OnFinishedListener {
 
@@ -15,7 +17,7 @@ public interface ICreateIncidentIntractor {
 
         void onSuccessUpdateIncidentResponse(CreateIncidentResponse response);
 
-        void onSuccessDeleteIncidentResponse(CreateIncidentResponse response);
+        void onSuccessDeleteIncidentResponse(ResponseBody response);
 
         void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response);
 
