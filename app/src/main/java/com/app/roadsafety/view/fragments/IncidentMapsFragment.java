@@ -88,7 +88,7 @@ import static android.support.constraint.Constraints.TAG;
  * A simple {@link Fragment} subclass.
  */
 public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView, IIncidentListPresenter.IIncidentView, GoogleMap.OnInfoWindowClickListener {
+        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView, IIncidentListPresenter.IIncidentView {
 
     public Marker marker;
     @BindView(R.id.mapview)
@@ -201,7 +201,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         try {
             mMap.getUiSettings().setMapToolbarEnabled(false);
             mMap.getUiSettings().setZoomControlsEnabled(false);
-            mMap.setOnInfoWindowClickListener(this);
+
 
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
@@ -778,11 +778,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         util.hideDialog();
     }
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
 
-    }
 
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
