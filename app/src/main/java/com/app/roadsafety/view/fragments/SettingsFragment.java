@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 
 import butterknife.BindView;
@@ -52,7 +54,7 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ( (MainActivity)getActivity()).updateToolbarTitle(getString(R.string.settings),false);
+        ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.settings), false);
     }
 
     @Override
@@ -63,11 +65,16 @@ public class SettingsFragment extends BaseFragment {
 
     @OnClick({R.id.rlProfile, R.id.rlLocationServices, R.id.rlNotifications, R.id.rlLinkedAccount, R.id.rlLogout})
     public void onViewClicked(View view) {
-        Intent intent ;
+        Intent intent;
         switch (view.getId()) {
 
 
             case R.id.rlProfile:
+                if (!SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
+                    if (mFragmentNavigation != null) {
+                        mFragmentNavigation.pushFragment(FragmentProfile.newInstance(1));
+                    }
+                }
                 break;
             case R.id.rlLocationServices:
                /* intent = new Intent(getActivity(), IncidentListReported.class);
@@ -76,13 +83,16 @@ public class SettingsFragment extends BaseFragment {
             case R.id.rlNotifications:
                  /*intent = new Intent(getActivity(), NotificationActivity.class);
                 startActivity(intent);*/
-             //   ((MainActivity)getActivity()).fragmentLoader(AppConstants.FRAGMENT_NOTIFICATION,null);
+                //   ((MainActivity)getActivity()).fragmentLoader(AppConstants.FRAGMENT_NOTIFICATION,null);
                 if (mFragmentNavigation != null) {
                     mFragmentNavigation.pushFragment(NotificationFragment.newInstance(1));
 
                 }
                 break;
             case R.id.rlLinkedAccount:
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(FragmentLinkedAccounts.newInstance(1));
+                }
                 break;
             case R.id.rlLogout:
                 break;

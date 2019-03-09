@@ -88,8 +88,9 @@ import static android.support.constraint.Constraints.TAG;
  * A simple {@link Fragment} subclass.
  */
 public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView, IIncidentListPresenter.IIncidentView {
+        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView, IIncidentListPresenter.IIncidentView, GoogleMap.OnInfoWindowClickListener {
 
+    public Marker marker;
     @BindView(R.id.mapview)
     MapView mapview;
     Unbinder unbinder;
@@ -103,13 +104,6 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     TextView tvIncidentCount;
     @BindView(R.id.ivIncidentArrow)
     ImageView ivIncidentArrow;
-
-    private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    private boolean isContinue = false;
-    private boolean isGPS = false;
     Marker mCurrLocationMarker;
     GoogleApiClient mGoogleApiClient;
     Circle circle;
@@ -119,25 +113,33 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     LinearLayoutManager layoutManager;
     List<Feed> feeds;
     List<Feed> markerInfo;
-    public Marker marker;
     IAuthenticationPresenter iAuthenticationPresenter;
     IIncidentListPresenter iIncidentListPresenter;
     AppUtils util;
     LatLng latLng;
-    String latitude,longitude;
-    List<IncidentDataRes>  incidentDataResList;
-    boolean isAddLocationOnMap=false;
+    String latitude, longitude;
+    List<IncidentDataRes> incidentDataResList;
+    boolean isAddLocationOnMap = false;
+    float animateZomm, currentZoomLevel;
+    @BindView(R.id.ivCurrentLocation)
+    ImageView ivCurrentLocation;
+    private GoogleMap mMap;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private boolean isContinue = false;
+    private boolean isGPS = false;
+
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         circleOptions = new CircleOptions();
         iAuthenticationPresenter = new AuthenticationPresenterImpl(this, getActivity());
-        iIncidentListPresenter=new IncidentListPresenterPresenterImpl(this,getActivity());
+        iIncidentListPresenter = new IncidentListPresenterPresenterImpl(this, getActivity());
         util = new AppUtils();
 
 
@@ -191,40 +193,16 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             public void onSlide(View bottomSheet, float slideOffset) {
             }
         });
-    //    setFeed();
-    }
-
-    void setFeed() {
-        feeds = new ArrayList<>();
-        markerInfo = new ArrayList<>();
-
-        for (int i = 0; i < 12; i++) {
-            Feed g1 = new Feed("login_back", getString(R.string.watch_out_big_cars), getString(R.string.feed_desc));
-            feeds.add(g1);
-
-        }
-
-        Feed m = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfjdkfjsg", 28.609170, 28.609170);
-        markerInfo.add(m);
-        Feed m1 = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfjdkfjsgvxdhdhdh", 28.616178, 77.351240);
-        markerInfo.add(m1);
-        Feed m2 = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfjhfjfjfjjdkfjsgvxdhdhdh", 28.620704, 77.372713);
-        markerInfo.add(m2);
-        Feed m3 = new Feed("login_back", getString(R.string.watch_out_big_cars),"hdhdh", 28.614978, 77.381881);
-        markerInfo.add(m3);
-        Feed m4 = new Feed("login_back", getString(R.string.watch_out_big_cars), "dkfj", 28.612567, 77.338555);
-        markerInfo.add(m4);
-        Feed m5 = new Feed("login_back", getString(R.string.watch_out_big_cars), "czxzczv", 28.624245, 77.361032);
-        markerInfo.add(m5);
-     //  adapterIncidentList = new AdapterIncidentHorizontalList(feeds, getActivity());
-      //  rvIncident.setAdapter(adapterIncidentList);
-      //  tvIncidentCount.setText("" + feeds.size() + " " + getString(R.string.incident_reported));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         try {
+            mMap.getUiSettings().setMapToolbarEnabled(false);
+            mMap.getUiSettings().setZoomControlsEnabled(false);
+            mMap.setOnInfoWindowClickListener(this);
+
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
@@ -242,11 +220,11 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
+                //   mMap.setMyLocationEnabled(true);
             }
         } else {
             buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+            //   mMap.setMyLocationEnabled(true);
         }
     }
 
@@ -256,7 +234,6 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         locationRequest.setInterval(10 * 1000); // 10 seconds
         locationRequest.setFastestInterval(5 * 1000);
     }
-
 
     void GpsEnable() {
         new GpsUtils(getActivity()).turnGPSOn(new GpsUtils.onGpsListener() {
@@ -306,39 +283,17 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             mapview.onResume();
         GpsEnable();
         getLocation();
+        behavior();
     }
 
     void setMapLocation(Location location) {
-        latitude=""+location.getLatitude();
-        longitude=""+location.getLongitude();
+        latitude = "" + location.getLatitude();
+        longitude = "" + location.getLongitude();
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
-        //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         setGeoFence(latLng);
-       /* MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-       // markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
-
-        //move map camera
-
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15.0f).build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        mMap.moveCamera(cameraUpdate);*/
-
-       /* if ( mMap != null ) {
-
-            mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
-
-            for(int i=0;i<markerInfo.size();i++) {
-                final Marker hamburg = mMap.addMarker(new MarkerOptions().position(new LatLng(markerInfo.get(i).getLat(),markerInfo.get(i).getLongi())).title(""+i));
-            //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
-
-            }
-        }*/
     }
 
     @SuppressLint("MissingPermission")
@@ -368,7 +323,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
             if (resultCode == Activity.RESULT_OK) {
                 String accessToken = data.getStringExtra(FacebookLoginActivity.EXTRA_FACEBOOK_ACCESS_TOKEN);
-                if(accessToken!=null) {
+                if (accessToken != null) {
                     Log.e("DEBUG", accessToken);
                     //Toast.makeText(this, "Access Token: " + accessToken, Toast.LENGTH_LONG).show();
                     facebookLogin(accessToken);
@@ -379,8 +334,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 Log.e("DEBUG", errorMessage);
             }
             //  gotoSelectRegion();
-        }
-      else   if (resultCode == Activity.RESULT_OK) {
+        } else if (resultCode == Activity.RESULT_OK) {
             if (requestCode == AppConstants.GPS_REQUEST) {
                 isGPS = true; // flag maintain before get location
             }
@@ -442,6 +396,44 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         mGoogleApiClient.connect();
     }
 
+    void setCircle(LatLng point) {
+        if (circle == null) {
+            // Specifying the center of the circle
+            circleOptions.center(point);
+
+            // Radius of the circle
+            circleOptions.radius(16.0934 * 1609.34);// Converting Miles into Meters...
+
+            // Border color of the circle
+            circleOptions.strokeColor(Color.parseColor("#fff0f5"));
+
+            // Fill color of the circle
+            // 0x represents, this is an hexadecimal code
+            // 55 represents percentage of transparency. For 100% transparency, specify 00.
+            // For 0% transparency ( ie, opaque ) , specify ff
+            // The remaining 6 characters(00ff00) specify the fill color
+            //circleOptions.fillColor(Color.parseColor("#F8F4E3"));
+
+            // Border width of the circle
+            circleOptions.strokeWidth(150);
+
+           /* circle.remove();
+        }*/
+            // Adding the circle to the GoogleMap
+            circle = mMap.addCircle(circleOptions);
+
+            currentZoomLevel = getZoomLevel(circle);
+            animateZomm = currentZoomLevel + 5;
+
+            Log.e("Zoom Level:", currentZoomLevel + "");
+            Log.e("Zoom Level Animate:", animateZomm + "");
+            latLng = point;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
+
+        }
+    }
+
     void setGeoFence(LatLng point) {
         if (circle == null) {
             // Specifying the center of the circle
@@ -468,12 +460,12 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             // Adding the circle to the GoogleMap
             circle = mMap.addCircle(circleOptions);
 
-            float currentZoomLevel = getZoomLevel(circle);
-            float animateZomm = currentZoomLevel + 5;
+            currentZoomLevel = getZoomLevel(circle);
+            animateZomm = currentZoomLevel + 5;
 
             Log.e("Zoom Level:", currentZoomLevel + "");
             Log.e("Zoom Level Animate:", animateZomm + "");
-
+            latLng = point;
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
             getAllIncidentList();
@@ -519,7 +511,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     }
 
-    @OnClick({R.id.llFilterIncident, R.id.ivAddPost})
+    @OnClick({R.id.llFilterIncident, R.id.ivAddPost,R.id.ivCurrentLocation})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llFilterIncident:
@@ -537,9 +529,16 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 break;
 
             case R.id.ivAddPost:
-                addIncidentDialog();
+
+                      addIncidentDialog();
                 //gotoAddIncident();
                 break;
+            case R.id.ivCurrentLocation:
+                circle.remove();
+                circle = null;
+                setCircle(latLng);
+                break;
+
         }
     }
 
@@ -551,10 +550,10 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        Button btnAddLocation=(Button)dialog.findViewById(R.id.btnAddLocation);
-        Button btnSelectLocationOnMap=(Button)dialog.findViewById(R.id.btnSelectLocationOnMap);
+        Button btnAddLocation = (Button) dialog.findViewById(R.id.btnAddLocation);
+        Button btnSelectLocationOnMap = (Button) dialog.findViewById(R.id.btnSelectLocationOnMap);
 
-        ImageView ivCross=(ImageView)dialog.findViewById(R.id.ivCross);
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
         ivCross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -565,12 +564,11 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                isAddLocationOnMap=false;
-                if(SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
-                   loginDialog();
-                }
-                else {
-                   gotoAddIncident();
+                isAddLocationOnMap = false;
+                if (SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
+                    loginDialog();
+                } else {
+                    gotoAddIncident();
                 }
             }
         });
@@ -578,12 +576,11 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                isAddLocationOnMap=true;
+                isAddLocationOnMap = true;
 
-                if(SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
+                if (SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
                     loginDialog();
-                }
-                else {
+                } else {
                     gotoAddIncidentOnMap();
                 }
             }
@@ -600,10 +597,10 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        Button btnFacebook=(Button)dialog.findViewById(R.id.btnFacebook);
-        Button btnClose=(Button)dialog.findViewById(R.id.btnClose);
+        Button btnFacebook = (Button) dialog.findViewById(R.id.btnFacebook);
+        Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
 
-        ImageView ivCross=(ImageView)dialog.findViewById(R.id.ivCross);
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
         ivCross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -633,17 +630,19 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         dialog.show();
     }
 
-    void getAllIncidentList(){
-        String auth_token= SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+    void getAllIncidentList() {
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
 
-        iIncidentListPresenter.getAllIncidents(auth_token,latitude,longitude,""+10,""+1);
+        iIncidentListPresenter.getAllIncidents(auth_token, latitude, longitude, "" + 10, "" + 1);
     }
+
     void facebookLogin(String token) {
         FacebookLoginRequest facebookLoginRequest = new FacebookLoginRequest();
         facebookLoginRequest.setAccessToken(token);
-        String auth_token= SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
-        iAuthenticationPresenter.connectGuestUserWithFacebook(auth_token,facebookLoginRequest);
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iAuthenticationPresenter.connectGuestUserWithFacebook(auth_token, facebookLoginRequest);
     }
+
     void setBehavior() {
         ivIncidentArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -660,6 +659,16 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         });
     }
 
+
+    void behavior() {
+        if (mBottomSheetBehavior2.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            ivIncidentArrow.setImageResource(R.drawable.down_arrow);
+
+        } else if (mBottomSheetBehavior2.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            ivIncidentArrow.setImageResource(R.drawable.up_arrow);
+
+        }
+    }
 
     private void showIncidentPopup(final Activity context, Point p) {
 
@@ -685,27 +694,27 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
     }
 
-    void gotoAddIncident(){
+    void gotoAddIncident() {
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1,latitude,longitude,AppConstants.INCIDENT_ACTION_ADD,null));
+            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1, latitude, longitude, AppConstants.INCIDENT_ACTION_ADD, null));
         }
     }
 
-    void gotoAddIncidentOnMap(){
+    void gotoAddIncidentOnMap() {
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(AddIncidentLocationFragment.newInstance(1));
         }
     }
+
     @Override
     public void getFacebookLoginResponse(LoginResponse response) {
         Log.e("DEBUG", "" + response);
         SharedPreference.getInstance(getActivity()).setUser(AppConstants.LOGIN_USER, response);
-        SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN,true);
-        SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_GUEST_LOGIN,false);
-        if(isAddLocationOnMap){
-         gotoAddIncidentOnMap();
-        }
-        else {
+        SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN, true);
+        SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_GUEST_LOGIN, false);
+        if (isAddLocationOnMap) {
+            gotoAddIncidentOnMap();
+        } else {
             gotoAddIncident();
         }
     }
@@ -717,38 +726,38 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     @Override
     public void onSuccessIncidentListResponse(IncidentResponse response) {
-        if(response.getData()!=null && response.getData().getData()!=null && response.getData().getData().size()>0) {
-            incidentDataResList=response.getData().getData();
+        if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
+            incidentDataResList = response.getData().getData();
             if (mMap != null) {
 
                 mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
                 for (int i = 0; i < incidentDataResList.size(); i++) {
-                     mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
                     //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
 
                 }
 
             }
             adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
-              rvIncident.setAdapter(adapterIncidentList);
+            rvIncident.setAdapter(adapterIncidentList);
             tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
         }
     }
 
-    public void gotoIncidentList(){
+    public void gotoIncidentList() {
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(IncidentListFragment.newInstance(1,latitude,longitude));
+            mFragmentNavigation.pushFragment(IncidentListFragment.newInstance(1, latitude, longitude));
         }
     }
 
 
-
-    public void gotoIncidentDescription(String id){
+    public void gotoIncidentDescription(String id) {
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1,id));
+            mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1, id));
         }
     }
+
     @Override
     public void onSuccessIncidentDetailsResponse(IncidentDetailResponse response) {
 
@@ -767,6 +776,12 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void hideProgress() {
         util.hideDialog();
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
+
     }
 
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -788,19 +803,25 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             }
             return null;
         }
+
         @Override
         public View getInfoWindow(final Marker marker) {
-           Log.e( "DEBUG","pos"+marker.getTitle());
+            Log.e("DEBUG", "pos" + marker.getTitle());
             IncidentMapsFragment.this.marker = marker;
 
             final ImageView image = ((ImageView) view.findViewById(R.id.ivIncident));
             final TextView tvIncidentDesc = ((TextView) view.findViewById(R.id.tvIncidentDesc));
             final TextView tvHours = ((TextView) view.findViewById(R.id.tvHours));
             final Button btnViewMore = ((Button) view.findViewById(R.id.btnViewMore));
-
+            btnViewMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
+                }
+            });
             tvHours.setText(AppUtils.getDate(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getCreatedAt()));
             tvIncidentDesc.setText(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getDescription());
-            ImageUtils.setImage(getActivity(),incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0),image);
+            ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), image);
             return view;
         }
     }

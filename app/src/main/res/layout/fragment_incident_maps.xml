@@ -60,6 +60,16 @@ android:layout_height="match_parent"
             android:src="@drawable/add_post_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/ivCurrentLocation"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/ivAddPost"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/green_marker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 </RelativeLayout>
     </ScrollView>

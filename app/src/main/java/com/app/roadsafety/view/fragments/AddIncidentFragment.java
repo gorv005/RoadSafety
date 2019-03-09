@@ -319,7 +319,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
               Toast.makeText(getActivity(),getString(R.string.incident_created),Toast.LENGTH_LONG).show();
               Intent intent = new Intent(getActivity(), MainActivity.class);
               intent.putExtra(AppConstants.TAB_SELECTION,1);
-              intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
               startActivity(intent);
           }
     }

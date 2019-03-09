@@ -343,7 +343,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                 point.y = location[1];
                 String id = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getId();
 
-                if (id.equals(incidentDetailResponse.getData().getAttributes().getUserId())) {
+                if (id.equals(""+incidentDetailResponse.getData().getAttributes().getUserId())) {
                     showCrudPopup(getActivity(), point);
                 } else {
                     showReportAbusePopup(getActivity(), point);

@@ -36,5 +36,5 @@
     <dimen name="bottom_height_marker_pop">115dp</dimen>
     <dimen name="markr_pop_up_text_size">12sp</dimen>
     <dimen name="button_margin">28dp</dimen>
-
+    <dimen name="profile_image_size">200dp</dimen>
 </resources>

@@ -104,6 +104,7 @@ public class AddIncidentLocationFragment extends BaseFragment implements OnMapRe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        isZoomed = false;
         setLocationRequest();
 
         locationCallback();

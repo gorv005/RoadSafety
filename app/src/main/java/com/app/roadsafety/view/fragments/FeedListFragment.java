@@ -77,8 +77,14 @@ public class FeedListFragment extends BaseFragment implements IFeedListPresenter
         rvFeed.setHasFixedSize(true);
         rvFeed.addOnScrollListener(recyclerViewOnScrollListener);
         //  setFeed();
-               page=1;
-            getFeedList("" + page);
+              // page=1;
+               if(feedListData!=null && feedListData.size()>0){
+                   adapterFeedList = new AdapterFeedList(feedListData, getActivity());
+                   rvFeed.setAdapter(adapterFeedList);
+               }
+               else {
+                   getFeedList("" + page);
+               }
 
     }
 

@@ -1,0 +1,157 @@
+package com.app.roadsafety.view.fragments;
+
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.app.roadsafety.R;
+import com.app.roadsafety.model.profile.ProfileResponse;
+import com.app.roadsafety.presenter.profile.IProfilePresenter;
+import com.app.roadsafety.presenter.profile.ProfilePresenterImpl;
+import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.AppUtils;
+import com.app.roadsafety.utility.ImageUtils;
+import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
+import com.app.roadsafety.view.MainActivity;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class FragmentLinkedAccounts extends BaseFragment implements IProfilePresenter.IProfileView {
+
+
+    @BindView(R.id.ivback)
+    ImageView ivback;
+    @BindView(R.id.tvFeedTitle)
+    TextView tvFeedTitle;
+    @BindView(R.id.ivProfile)
+    CircleImageView ivProfile;
+    @BindView(R.id.tvName)
+    TextView tvName;
+    @BindView(R.id.tvEmail)
+    TextView tvEmail;
+    @BindView(R.id.rlLinkedAccount)
+    RelativeLayout rlLinkedAccount;
+    @BindView(R.id.ivNoLinkedAcc)
+    ImageView ivNoLinkedAcc;
+    @BindView(R.id.rlNoLinkedAcc)
+    RelativeLayout rlNoLinkedAcc;
+    @BindView(R.id.rlGuideLineView)
+    RelativeLayout rlGuideLineView;
+    Unbinder unbinder;
+    IProfilePresenter iProfilePresenter;
+    AppUtils util;
+    public FragmentLinkedAccounts() {
+        // Required empty public constructor
+    }
+
+    public static FragmentLinkedAccounts newInstance(int instance) {
+        Bundle args = new Bundle();
+        args.putInt(ARGS_INSTANCE, instance);
+        FragmentLinkedAccounts fragment = new FragmentLinkedAccounts();
+        fragment.setArguments(args);
+        return fragment;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        iProfilePresenter=new ProfilePresenterImpl(this,getActivity());
+        util=new AppUtils();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_linked_accounts, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+       if( SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
+            rlNoLinkedAcc.setVisibility(View.VISIBLE);
+            rlLinkedAccount.setVisibility(View.GONE);
+            rlGuideLineView.setBackgroundColor(Color.GRAY);
+        }
+        else {
+
+           getProfile();
+       }
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.map), false);
+
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    void getProfile(){
+        String id = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getId();
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iProfilePresenter.getProfile(auth_token,id);
+    }
+    @Override
+    public void onSuccessProfileResponse(ProfileResponse response) {
+         if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
+             rlNoLinkedAcc.setVisibility(View.VISIBLE);
+             rlLinkedAccount.setVisibility(View.GONE);
+            String error = "";
+            for (int i = 0; i < response.getErrors().size(); i++) {
+                error = error + response.getErrors().get(i) + "\n";
+            }
+            util.resultDialog(getActivity(), error);
+        }
+        else {
+             rlNoLinkedAcc.setVisibility(View.GONE);
+             rlLinkedAccount.setVisibility(View.VISIBLE);
+             ImageUtils.setImage(getActivity(),response.getData().getLinks().getProfilePicture(),ivProfile);
+             tvName.setText(response.getData().getAttributes().getName());
+             tvEmail.setText(response.getData().getAttributes().getEmail());
+
+         }
+    }
+
+    @Override
+    public void getResponseError(String response) {
+
+    }
+    @Override
+    public void showProgress() {
+        util.showDialog(getString(R.string.please_wait), getActivity());
+    }
+
+    @Override
+    public void hideProgress() {
+        util.hideDialog();
+    }
+
+    @OnClick(R.id.ivback)
+    public void onViewClicked() {
+        getActivity().onBackPressed();
+    }
+
+}

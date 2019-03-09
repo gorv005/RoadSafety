@@ -62,4 +62,6 @@
     <string name="report_abuse_msg">Abuse report has been submit</string>
     <string name="description_error">Please add description</string>
     <string name="comment_error">Please add your comment</string>
+    <string name="profile">Profile</string>
+    <string name="no_linked_account">No account linked.</string>
 </resources>

@@ -12,7 +12,7 @@
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:paddingTop="20dp"
-            android:paddingBottom="40dp"
+            android:paddingBottom="20dp"
             android:orientation="vertical"
             android:layout_width="170dp"
             android:layout_height="wrap_content">
@@ -28,11 +28,6 @@
             android:textSize="@dimen/slide_desc" />
 
 
-            <ImageView
-                android:background="@color/grey"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                />
         </LinearLayout>
 
 </RelativeLayout>
