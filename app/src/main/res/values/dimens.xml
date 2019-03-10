@@ -37,4 +37,5 @@
     <dimen name="markr_pop_up_text_size">12sp</dimen>
     <dimen name="button_margin">28dp</dimen>
     <dimen name="profile_image_size">200dp</dimen>
+    <dimen name="abuse_dialog_size">300dp</dimen>
 </resources>

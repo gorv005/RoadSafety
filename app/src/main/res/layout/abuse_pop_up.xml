@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:text="@string/report_abuse"
+            android:text="@string/report_abuse_"
             android:textColor="@color/dark_yellow"
             android:textSize="@dimen/slide_desc" />
 

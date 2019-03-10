@@ -23,6 +23,9 @@
     <style name="RoundedCornerMaterialButtonBlueOneCorner" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/one_corner_rounded_shape_blue</item>
     </style>
+    <style name="RoundedCornerMaterialButtonBluetwoCorner" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/two_corner_rounded_shape_blue</item>
+    </style>
     <style name="AppTheme.ShadowButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@color/yellow_1</item>
     </style>

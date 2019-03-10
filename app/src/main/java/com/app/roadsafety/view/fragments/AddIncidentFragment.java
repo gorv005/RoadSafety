@@ -24,6 +24,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
@@ -40,6 +46,7 @@ import com.app.roadsafety.view.adapter.IncidentImageViewPagerAdapter;
 
 import net.alhazmy13.mediapicker.Image.ImagePicker;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +102,11 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     String latitude, longitude;
     CityHallResponse cityHallResponse;
     IncidentDetailResponse incidentDetailResponse;
-
+    AmazonS3Client s3;
+    BasicAWSCredentials credentials;
+    TransferUtility transferUtility;
+    TransferObserver observer;
+    List<String> awsImagesList;
     public AddIncidentFragment() {
         // Required empty public constructor
     }
@@ -119,6 +130,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         cityHallList = new ArrayList<>();
         type = new ArrayList<>();
         util = new AppUtils();
+        awsImagesList = new ArrayList<>();
         iCreateIncidentPresenter = new CreateIncidentPresenterImpl(this, getActivity());
 
     }
@@ -190,9 +202,9 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             spninnerType.setSelection(1);
         }
         for (int i = 0; i < incidentDetailResponse.getData().getAttributes().getImages().size(); i++) {
-            mImageList.add(incidentDetailResponse.getData().getAttributes().getImages().get(i));
+            awsImagesList.add(incidentDetailResponse.getData().getAttributes().getImages().get(i));
         }
-        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
+        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), awsImagesList, AppConstants.IS_FROM_REMOTE));
         tabLayout.setupWithViewPager(vpAdds, true);
     }
 
@@ -228,11 +240,9 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         if (requestCode == ImagePicker.IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
             List<String> mPaths = data.getStringArrayListExtra(ImagePicker.EXTRA_IMAGE_PATH);
             mImageList.add(mPaths.get(0));
+            uploadImage(mPaths.get(0));
             //Your Code
         }
-
-        vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
-        tabLayout.setupWithViewPager(vpAdds, true);
     }
 
     @Override
@@ -246,18 +256,31 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
         switch (view.getId()) {
             case R.id.ivAddImage:
-                init();
+                if(awsImagesList!=null && awsImagesList.size()<3) {
+                    init();
+                }
+                else {
+                    Toast.makeText(getActivity(),getString(R.string.add_image_validation),Toast.LENGTH_LONG).show();
+
+                }
+
                 break;
             case R.id.ivback:
                 getActivity().onBackPressed();
                 break;
             case R.id.btnDone:
                 if(etDescription.getText().toString().length()>0) {
+                    if(awsImagesList!=null && awsImagesList.size()>0) {
 
-                    if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
-                        updateIncident();
-                    } else {
-                        createIncident();
+                        if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
+                            updateIncident();
+                        } else {
+                            createIncident();
+
+                        }
+                    }
+                    else {
+                        Toast.makeText(getActivity(),getString(R.string.image_error),Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -281,9 +304,8 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             createIncidentRequest.setCityHallId(Integer.parseInt(mCityHallId));
             createIncidentRequest.setLatitude(latitude);
             createIncidentRequest.setLongitude(longitude);
-            List<String> strings = new ArrayList<>();
-            strings.add("http://placehold.it/120x120&text=image1");
-            createIncidentRequest.setImages(strings);
+
+            createIncidentRequest.setImages(awsImagesList);
             createIncidentRequest.setType(mType);
             String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
 
@@ -297,9 +319,8 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         createIncidentRequest.setCityHallId(Integer.parseInt(mCityHallId));
         createIncidentRequest.setLatitude(latitude);
         createIncidentRequest.setLongitude(longitude);
-        List<String> strings = new ArrayList<>();
-        strings.add("http://placehold.it/120x120&text=image1");
-        createIncidentRequest.setImages(strings);
+
+        createIncidentRequest.setImages(awsImagesList);
         createIncidentRequest.setType(mType);
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
         iCreateIncidentPresenter.updateIncident(auth_token, incidentDetailResponse.getData().getId(), createIncidentRequest);
@@ -342,6 +363,58 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         }
     }
 
+    void uploadImage(final String path){
+        credentials = new BasicAWSCredentials(AppConstants.AWS_KEY,AppConstants.AWS_SECRET);
+        s3 = new AmazonS3Client(credentials);
+        transferUtility = new TransferUtility(s3, getActivity());
+
+
+        File file = new File(path);
+        if(!file.exists()) {
+            Toast.makeText(getActivity(), getString(R.string.file_not_found), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        observer = transferUtility.upload(
+                AppConstants.AWS_BUCKET,
+                path.substring(path.lastIndexOf("/")+1),
+                file
+        );
+
+        showProgress();
+        observer.setTransferListener(new TransferListener() {
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+
+                if (state.COMPLETED.equals(observer.getState())) {
+                    hideProgress();
+                    awsImagesList.add(AppConstants.AWS_IMAGE_BASE_URL+path.substring(path.lastIndexOf("/")+1));
+                    vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
+                    tabLayout.setupWithViewPager(vpAdds, true);
+                    Toast.makeText(getActivity(), getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                hideProgress();
+              /*  long _bytesCurrent = bytesCurrent;
+                long _bytesTotal = bytesTotal;
+
+                float percentage =  ((float)_bytesCurrent /(float)_bytesTotal * 100);
+                Log.d("percentage","" +percentage);
+                pb.setProgress((int) percentage);
+                _status.setText(percentage + "%");*/
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                hideProgress();
+                Toast.makeText(getActivity(), "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
     @Override
     public void getResponseError(String response) {
 

@@ -61,6 +61,10 @@
             android:name=".view.MainActivity"
             android:screenOrientation="portrait" />
         <activity android:name="com.greenhalolabs.facebooklogin.FacebookLoginActivity" />
+
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
     </application>
 
 </manifest>

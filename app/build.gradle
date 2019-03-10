@@ -42,4 +42,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'net.alhazmy13.MediaPicker:libary:2.4.4'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.6.31'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.31'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.3.3'
 }
