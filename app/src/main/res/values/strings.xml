@@ -69,4 +69,5 @@
     <string name="image_error">Please upload atleast one image</string>
     <string name="add_image_validation">You can add only maximum three images</string>
     <string name="add_description">Add description</string>
+    <string name="logout_confirm">Are You Sure You Want To logout?</string>
 </resources>

@@ -45,4 +45,6 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-core:2.6.31'
     implementation 'com.amazonaws:aws-android-sdk-s3:2.6.31'
     implementation 'com.amazonaws:aws-android-sdk-ddb:2.3.3'
+    compile 'com.github.zcweng:switch-button:0.0.3@aar'
+
 }

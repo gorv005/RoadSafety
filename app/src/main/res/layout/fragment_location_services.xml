@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragments.FragmentLocationServices">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:layout_marginTop="50dp"
+        android:id="@+id/llNotification"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
-</FrameLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/add_location_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="55dp"
+            android:text="@string/allow_location_services"
+            android:textColor="@color/title_color"
+            android:textSize="14.4sp" />
+
+        <com.suke.widget.SwitchButton
+            android:layout_alignParentRight="true"
+            android:id="@+id/switch_button"
+            app:sb_show_indicator="false"
+            app:sb_checked="true"
+            app:sb_checked_color="@color/dark_blue"
+            android:layout_centerVertical="true"
+            android:layout_width="55dp"
+            android:layout_height="35dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>
