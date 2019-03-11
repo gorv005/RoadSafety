@@ -21,6 +21,7 @@ import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
+import com.app.roadsafety.view.adapter.feed.AdapterFeedList;
 import com.app.roadsafety.view.adapter.incidents.AdapterIncidentList;
 
 import java.util.List;
@@ -94,8 +95,14 @@ public class IncidentListFragment extends BaseFragment implements IIncidentListP
         rvIncident.setHasFixedSize(true);
         rvIncident.addOnScrollListener(recyclerViewOnScrollListener);
 
-        page=1;
-        getAllIncidentList( page);
+        if(incidentDataResList!=null && incidentDataResList.size()>0){
+            adapterIncidentList = new AdapterIncidentList(incidentDataResList, getActivity());
+            rvIncident.setAdapter(adapterIncidentList);
+        }
+        else {
+            getAllIncidentList( page);
+        }
+
     }
     public void gotoIncidentDescription(String id){
         if (mFragmentNavigation != null) {
