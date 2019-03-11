@@ -9,7 +9,21 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/fragment_incident_description">
 
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/tvDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text=""
+        android:textSize="@dimen/slide_title"
+        android:includeFontPadding="true"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:textColor="@color/dark_yellow" />
     <ScrollView
+        android:layout_marginTop="10dp"
         android:scrollbars="none"
         android:fillViewport="true"
         android:layout_width="match_parent"

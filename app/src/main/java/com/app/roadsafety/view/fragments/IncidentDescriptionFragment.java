@@ -76,6 +76,8 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     ImageView ivAddImage;
     @BindView(R.id.tvDescription)
     TextView tvDescription;
+    @BindView(R.id.tvDate)
+    TextView tvDate;
     @BindView(R.id.main_content)
     CoordinatorLayout mainContent;
     Unbinder unbinder;
@@ -254,6 +256,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         if (response != null && response.getData() != null) {
             incidentDetailResponse = response;
             tvDescription.setText(response.getData().getAttributes().getDescription());
+            tvDate.setText(AppUtils.getDate(response.getData().getAttributes().getCreatedAt()));
             latitude = "" + response.getData().getAttributes().getLatitude();
             longitude = "" + response.getData().getAttributes().getLongitude();
             mImageList.clear();
