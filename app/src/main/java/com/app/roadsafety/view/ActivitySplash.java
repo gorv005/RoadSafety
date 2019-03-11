@@ -3,13 +3,14 @@ package com.app.roadsafety.view;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,6 +29,8 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import java.util.Locale;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
@@ -45,6 +48,7 @@ public class ActivitySplash extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_splash);
+        setLocale();
         changeStatusBarColor();
 
     }
@@ -72,15 +76,12 @@ public class ActivitySplash extends AppCompatActivity {
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (checkPermission()) {
-                            gotoMainActivity();
-                            if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN) && !SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
-
-                            }
+                            gotoStartApp();
                         } else {
                             requestPermission();
                         }
                     } else {
-                        gotoMainActivity();
+                       gotoStartApp();
                     }
                 }
 
@@ -88,6 +89,20 @@ public class ActivitySplash extends AppCompatActivity {
 
         }, 4000);
 
+    }
+
+    void gotoStartApp(){
+        if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN) && SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
+            gotoLoginActivity();
+
+        }
+        else if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN) && !SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
+            gotoMainActivity();
+
+        }
+        else {
+            gotoLoginActivity();
+        }
     }
     void gotoLoginActivity() {
         Intent i = new Intent(ActivitySplash.this, UserLoginActivity.class);
@@ -100,6 +115,19 @@ public class ActivitySplash extends AppCompatActivity {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
+    }
+    private void setLocale(){
+        Locale locale = new Locale("pt", "PT");
+        Locale.setDefault(locale);
+        // Create a new configuration object
+        Configuration config = new Configuration();
+        // Set the locale of the new configuration
+        config.locale = locale;
+        // Update the configuration of the Accplication context
+        getResources().updateConfiguration(
+                config,
+                getResources().getDisplayMetrics()
+        );
     }
     public boolean checkPermission() {
 
