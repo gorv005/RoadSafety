@@ -23,7 +23,6 @@
         android:paddingLeft="10dp"
         android:textColor="@color/dark_yellow" />
     <ScrollView
-        android:layout_marginTop="10dp"
         android:scrollbars="none"
         android:fillViewport="true"
         android:layout_width="match_parent"
