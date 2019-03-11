@@ -11,7 +11,7 @@
     <dimen name="heading">22sp</dimen>
     <dimen name="slide_desc">18sp</dimen>
     <dimen name="desc_padding">20dp</dimen>
-    <dimen name="guidelines_image_size">250dp</dimen>
+    <dimen name="guidelines_image_size">300dp</dimen>
     <dimen name="guidelines_image_border">7dp</dimen>
     <dimen name="bottom_tab_text">14sp</dimen>
     <dimen name="margin_left">40dp</dimen>
@@ -28,7 +28,7 @@
     <dimen name="slide_title_min">14sp</dimen>
     <dimen name="bottom_height">240dp</dimen>
     <dimen name="bottom_width">180dp</dimen>
-    <dimen name="view_height">260dp</dimen>
+    <dimen name="view_height">280dp</dimen>
     <dimen name="marker_popup_width">260dp</dimen>
     <dimen name="marker_popup_image_width">120dp</dimen>
     <dimen name="bottom_height_marker_pop_up">160dp</dimen>

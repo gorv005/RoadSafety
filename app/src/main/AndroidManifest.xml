@@ -17,12 +17,18 @@
     <application
         android:name=".application.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/rsa_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/rsa_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.NotificationActivity"></activity>
+        <activity android:name=".view.ActivitySplash" android:screenOrientation="portrait">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
+        <activity android:name=".view.NotificationActivity" />
         <activity android:name=".view.IncidentListReported" />
         <activity android:name=".view.FeedListActivity" />
         <activity
@@ -31,11 +37,7 @@
         <activity
             android:name=".view.UserLoginActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".view.GuidlinesActivity"
@@ -55,8 +57,7 @@
         <activity
             android:name=".view.IncidentMapsActivity"
             android:label="@string/title_activity_incident_maps"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.MainActivity"
             android:screenOrientation="portrait" />

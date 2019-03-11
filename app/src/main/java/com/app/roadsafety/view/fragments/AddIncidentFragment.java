@@ -223,7 +223,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     void init() {
         new ImagePicker.Builder(getActivity())
-                .mode(ImagePicker.Mode.CAMERA)
+                .mode(ImagePicker.Mode.CAMERA_AND_GALLERY)
                 .compressLevel(ImagePicker.ComperesLevel.MEDIUM)
                 .directory(ImagePicker.Directory.DEFAULT)
                 .extension(ImagePicker.Extension.JPG)

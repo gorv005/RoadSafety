@@ -83,6 +83,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static android.support.constraint.Constraints.TAG;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,7 +131,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     private LocationCallback locationCallback;
     private boolean isContinue = false;
     private boolean isGPS = false;
-
+     View bottomSheet2;
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
@@ -157,7 +159,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final View bottomSheet2 = view.findViewById(R.id.bottom_sheet2);
+         bottomSheet2 = view.findViewById(R.id.bottom_sheet2);
         mBottomSheetBehavior2 = BottomSheetBehavior.from(bottomSheet2);
         mBottomSheetBehavior2.setHideable(false);
         mBottomSheetBehavior2.setPeekHeight(170);
@@ -292,7 +294,10 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
+
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mCurrLocationMarker=   mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_icon)));
+
         setGeoFence(latLng);
     }
 
@@ -421,7 +426,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         }*/
             // Adding the circle to the GoogleMap
             circle = mMap.addCircle(circleOptions);
-
+            circle.setVisible(false);
             currentZoomLevel = getZoomLevel(circle);
             animateZomm = currentZoomLevel + 5;
 
@@ -460,6 +465,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             // Adding the circle to the GoogleMap
             circle = mMap.addCircle(circleOptions);
 
+            circle.setVisible(false);
             currentZoomLevel = getZoomLevel(circle);
             animateZomm = currentZoomLevel + 5;
 
@@ -739,9 +745,17 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 }
 
             }
-            adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
-            rvIncident.setAdapter(adapterIncidentList);
-            tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
+            if(incidentDataResList!=null && incidentDataResList.size()>0) {
+                adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
+                rvIncident.setAdapter(adapterIncidentList);
+                tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
+            }
+            else {
+                bottomSheet2.setVisibility(GONE);
+            }
+        }
+        else {
+            bottomSheet2.setVisibility(GONE);
         }
     }
 

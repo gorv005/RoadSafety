@@ -130,6 +130,7 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN,false);
                 gotoStart();
             }
         });

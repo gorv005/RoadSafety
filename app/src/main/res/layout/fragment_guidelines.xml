@@ -8,6 +8,11 @@
     android:paddingRight="@dimen/desc_padding"
     android:background="@color/guideline_1">
 
+    <RelativeLayout
+        android:id="@+id/rlLayout"
+        android:layout_marginBottom="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <TextView
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
@@ -48,16 +53,17 @@
         app:riv_oval="false"
 
         />
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stay_away"
+            android:textAlignment="center"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_desc" />
 
-    <TextView
-        android:id="@+id/tvDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/stay_away"
-        android:textAlignment="center"
-        android:gravity="center_horizontal"
-        android:layout_below="@id/image_guideline"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/slide_desc" />
+    </RelativeLayout>
+
 </RelativeLayout>

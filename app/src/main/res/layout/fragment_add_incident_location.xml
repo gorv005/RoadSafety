@@ -14,6 +14,7 @@
                 android:layout_height="match_parent">
 
 
+
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mapview"
                     android:layout_width="match_parent"
@@ -33,6 +34,20 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/slide_desc" />
+
+                <Button
+                    style="@style/RoundedCornerMaterialButtonBlue"
+                    android:layout_width="match_parent"
+                    android:layout_margin="@dimen/button_margin"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    android:padding="10dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:text="@string/long_press_on_map"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/slide_desc" />
+
             </RelativeLayout>
 
 </RelativeLayout>
