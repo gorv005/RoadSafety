@@ -18,7 +18,7 @@ public interface IIncidentListIntractor {
     }
 
 
-    public void getAllIncidents(String auth_token,String lat,String longi,String distance, String page, OnFinishedListener listener);
+    public void getAllIncidents(String auth_token,String lat,String longi,String distance, String incident_type,String page, OnFinishedListener listener);
 
     public void getIncidentDetails(String auth_token,String id, OnFinishedListener listener);
 

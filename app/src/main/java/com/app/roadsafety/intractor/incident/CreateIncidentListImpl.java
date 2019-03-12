@@ -12,7 +12,7 @@ import retrofit2.Response;
 public class CreateIncidentListImpl implements IIncidentListIntractor {
 
     @Override
-    public void getAllIncidents(String auth_token, String lat, String longi, String distance, String page, final OnFinishedListener listener) {
+    public void getAllIncidents(String auth_token, String lat, String longi, String distance, String incident_type ,String page, final OnFinishedListener listener) {
         try {
             WebServicesWrapper.getInstance().getAllIncidents(new ResponseResolver<IncidentResponse>() {
                 @Override
@@ -34,7 +34,7 @@ public class CreateIncidentListImpl implements IIncidentListIntractor {
                         listener.onError(error.getError());
                     }
                 }
-            }, auth_token,lat,longi,distance,page);
+            }, auth_token,lat,longi,distance,incident_type,page);
         } catch (Exception e) {
             e.printStackTrace();
         }

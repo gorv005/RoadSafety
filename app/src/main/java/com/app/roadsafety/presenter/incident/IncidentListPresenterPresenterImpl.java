@@ -52,10 +52,10 @@ public class IncidentListPresenterPresenterImpl implements IIncidentListPresente
 
 
     @Override
-    public void getAllIncidents(String auth_token, String lat, String longi, String distance, String page) {
+    public void getAllIncidents(String auth_token, String lat, String longi, String distance,String incident_type, String page) {
         if(mView!=null) {
             mView.showProgress();
-            iIncidentListIntractor.getAllIncidents(auth_token,lat,longi,distance,page, this);
+            iIncidentListIntractor.getAllIncidents(auth_token,lat,longi,distance,incident_type,page, this);
         }
     }
 
