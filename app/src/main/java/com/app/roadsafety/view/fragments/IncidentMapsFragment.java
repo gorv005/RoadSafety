@@ -84,7 +84,6 @@ import butterknife.Unbinder;
 
 import static android.support.constraint.Constraints.TAG;
 import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -125,13 +124,17 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     float animateZomm, currentZoomLevel;
     @BindView(R.id.ivCurrentLocation)
     ImageView ivCurrentLocation;
+    @BindView(R.id.tvIncidentType)
+    TextView tvIncidentType;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private boolean isContinue = false;
     private boolean isGPS = false;
-     View bottomSheet2;
+    View bottomSheet2;
+    String incidentType = "";
+
     public IncidentMapsFragment() {
         // Required empty public constructor
     }
@@ -159,7 +162,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-         bottomSheet2 = view.findViewById(R.id.bottom_sheet2);
+        bottomSheet2 = view.findViewById(R.id.bottom_sheet2);
         mBottomSheetBehavior2 = BottomSheetBehavior.from(bottomSheet2);
         mBottomSheetBehavior2.setHideable(false);
         mBottomSheetBehavior2.setPeekHeight(170);
@@ -296,7 +299,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         }
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mCurrLocationMarker=   mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_icon)));
+        mCurrLocationMarker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_icon)));
 
         setGeoFence(latLng);
     }
@@ -474,7 +477,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             latLng = point;
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
-            getAllIncidentList();
+            getAllIncidentList(incidentType);
         }
     }
 
@@ -517,7 +520,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     }
 
-    @OnClick({R.id.llFilterIncident, R.id.ivAddPost,R.id.ivCurrentLocation})
+    @OnClick({R.id.llFilterIncident, R.id.ivAddPost, R.id.ivCurrentLocation})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llFilterIncident:
@@ -536,7 +539,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
             case R.id.ivAddPost:
 
-                      addIncidentDialog();
+                addIncidentDialog();
                 //gotoAddIncident();
                 break;
             case R.id.ivCurrentLocation:
@@ -636,10 +639,10 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         dialog.show();
     }
 
-    void getAllIncidentList() {
+    void getAllIncidentList(String incident_type) {
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
 
-        iIncidentListPresenter.getAllIncidents(auth_token, latitude, longitude, "" + 10, "" + 1);
+        iIncidentListPresenter.getAllIncidents(auth_token, latitude, longitude, "" + 10, incident_type, "" + 1);
     }
 
     void facebookLogin(String token) {
@@ -683,12 +686,44 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         View layout = layoutInflater.inflate(R.layout.incident_pop_up, null);
 
         // Creating the PopupWindow
-        PopupWindow changeStatusPopUp = new PopupWindow(context);
+       final PopupWindow changeStatusPopUp = new PopupWindow(context);
         changeStatusPopUp.setContentView(layout);
         // changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
         //changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         changeStatusPopUp.setFocusable(true);
 
+        TextView tvAccident = (TextView) layout.findViewById(R.id.tvAccident);
+        TextView tvNecessaryIntervention = (TextView) layout.findViewById(R.id.tvNecessaryIntervention);
+        TextView tvAllIncident = (TextView) layout.findViewById(R.id.tvAllIncident);
+
+        tvAccident.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStatusPopUp.dismiss();
+                incidentType="accident";
+                tvIncidentType.setText(getString(R.string.accident));
+                getAllIncidentList(incidentType);
+            }
+        });
+        tvNecessaryIntervention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStatusPopUp.dismiss();
+                tvIncidentType.setText(getString(R.string.necessary_intervention));
+                incidentType="necessary_intervention";
+                getAllIncidentList(incidentType);
+
+            }
+        });
+        tvAllIncident.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeStatusPopUp.dismiss();
+                tvIncidentType.setText(getString(R.string.all_incidents));
+                incidentType="";
+                getAllIncidentList(incidentType);
+            }
+        });
         // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
         int OFFSET_X = 0;
         int OFFSET_Y = 60;
@@ -732,6 +767,9 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     @Override
     public void onSuccessIncidentListResponse(IncidentResponse response) {
+        if(mMap!=null) {
+            mMap.clear();
+        }
         if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
             incidentDataResList = response.getData().getData();
             if (mMap != null) {
@@ -745,16 +783,15 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 }
 
             }
-            if(incidentDataResList!=null && incidentDataResList.size()>0) {
+            if (incidentDataResList != null && incidentDataResList.size() > 0) {
+                bottomSheet2.setVisibility(View.VISIBLE);
                 adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
                 rvIncident.setAdapter(adapterIncidentList);
                 tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
-            }
-            else {
+            } else {
                 bottomSheet2.setVisibility(GONE);
             }
-        }
-        else {
+        } else {
             bottomSheet2.setVisibility(GONE);
         }
     }
@@ -791,7 +828,6 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     public void hideProgress() {
         util.hideDialog();
     }
-
 
 
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {

@@ -3,6 +3,8 @@ package com.app.roadsafety.utility;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import com.app.roadsafety.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class AppUtils {
 
@@ -97,5 +100,25 @@ public class AppUtils {
         }
 
         return formatted;
+    }
+
+    private static Locale locale;
+
+    public static void setLocale(Locale localeIn) {
+        locale = localeIn;
+        if(locale != null) {
+            Locale.setDefault(locale);
+        }
+    }
+    public static void setConfigChange(Context ctx){
+        if(locale != null){
+            Locale.setDefault(locale);
+
+            Configuration configuration = ctx.getResources().getConfiguration();
+            DisplayMetrics displayMetrics = ctx.getResources().getDisplayMetrics();
+            configuration.locale=locale;
+
+            ctx.getResources().updateConfiguration(configuration, displayMetrics);
+        }
     }
 }

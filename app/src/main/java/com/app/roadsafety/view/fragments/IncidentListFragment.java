@@ -21,7 +21,6 @@ import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
-import com.app.roadsafety.view.adapter.feed.AdapterFeedList;
 import com.app.roadsafety.view.adapter.incidents.AdapterIncidentList;
 
 import java.util.List;
@@ -140,7 +139,7 @@ public class IncidentListFragment extends BaseFragment implements IIncidentListP
     void getAllIncidentList(int page){
         String auth_token= SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
 
-        iIncidentListPresenter.getAllIncidents(auth_token,latitude,longitude,AppConstants.DISTANCE,""+page);
+        iIncidentListPresenter.getAllIncidents(auth_token,latitude,longitude,AppConstants.DISTANCE,"",""+page);
     }
     @Override
     public void onDestroyView() {
@@ -151,6 +150,7 @@ public class IncidentListFragment extends BaseFragment implements IIncidentListP
     @Override
     public void onSuccessIncidentListResponse(IncidentResponse response) {
         try {
+
             if (incidentDataResList != null && incidentDataResList.size() > 0 && page != 1) {
                 incidentDataResList.addAll(response.getData().getData());
                 adapterIncidentList.notifyDataSetChanged();

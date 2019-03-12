@@ -7,7 +7,7 @@ import com.app.roadsafety.model.incidents.IncidentResponse;
 public interface IIncidentListPresenter {
 
 
-    public void getAllIncidents(String auth_token,String lat,String longi,String distance, String page);
+    public void getAllIncidents(String auth_token,String lat,String longi,String distance, String incident_type,String page);
 
     public void getIncidentDetails(String auth_token,String id);
 
