@@ -30,7 +30,7 @@
             android:layout_marginLeft="55dp"
             android:text="@string/allow_location_services"
             android:textColor="@color/title_color"
-            android:textSize="14.4sp" />
+            android:textSize="@dimen/slide_title" />
 
         <com.suke.widget.SwitchButton
             android:layout_alignParentRight="true"

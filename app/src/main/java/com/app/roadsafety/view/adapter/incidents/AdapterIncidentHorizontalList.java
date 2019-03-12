@@ -101,7 +101,7 @@ public class AdapterIncidentHorizontalList extends RecyclerView.Adapter<Recycler
     @Override
     public int getItemViewType(int position) {
 
-        if (position == horizontalList.size()) {
+        if (position == 10) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -109,7 +109,7 @@ public class AdapterIncidentHorizontalList extends RecyclerView.Adapter<Recycler
     @Override
     public int getItemCount() {
         if(horizontalList.size()>=10) {
-            return horizontalList.size()+1;
+            return 11;
         }
         else {
             return horizontalList.size();

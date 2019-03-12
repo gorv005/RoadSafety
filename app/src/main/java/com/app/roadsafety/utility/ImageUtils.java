@@ -2,9 +2,13 @@ package com.app.roadsafety.utility;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+
 
 public class ImageUtils {
     public static int getImage(Activity activity, String imageName) {
@@ -21,7 +25,11 @@ public class ImageUtils {
         Glide.with(context)
                 .load(url)
                 //.placeholder(R.drawable.missing)
-               // .error(R.drawable.missing)
+                // .error(R.drawable.missing)
                 .into(imageView);
+
+
     }
+
+
 }

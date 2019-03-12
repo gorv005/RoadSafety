@@ -9,12 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -51,9 +53,15 @@ import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.GpsUtils;
 import com.app.roadsafety.utility.ImageUtils;
+import com.app.roadsafety.utility.MapWrapperLayout;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.incidents.AdapterIncidentHorizontalList;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -73,6 +81,9 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.greenhalolabs.facebooklogin.FacebookLoginActivity;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +145,12 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     private boolean isGPS = false;
     View bottomSheet2;
     String incidentType = "";
+    ImageView ivMarkerimage;
+    TextView tvIncidentDesc, tvHours;
+    Button btnViewMore;
+    private ViewGroup infoWindow;
+    boolean first_time_showing_info_window = true;
+    private OnInfoWindowElemTouchListener infoButtonListener;
 
     public IncidentMapsFragment() {
         // Required empty public constructor
@@ -204,6 +221,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         try {
+            first_time_showing_info_window = true;
             mMap.getUiSettings().setMapToolbarEnabled(false);
             mMap.getUiSettings().setZoomControlsEnabled(false);
 
@@ -224,6 +242,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             if (ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
+                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, true);
+
                 buildGoogleApiClient();
                 //   mMap.setMyLocationEnabled(true);
             }
@@ -231,6 +251,151 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             buildGoogleApiClient();
             //   mMap.setMyLocationEnabled(true);
         }
+        initMap();
+    }
+
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private View view;
+
+        public CustomInfoWindowAdapter() {
+            view = getLayoutInflater().inflate(R.layout.custom_info_window,
+                    null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+
+            if (IncidentMapsFragment.this.marker != null
+                    && IncidentMapsFragment.this.marker.isInfoWindowShown()) {
+                IncidentMapsFragment.this.marker.hideInfoWindow();
+                IncidentMapsFragment.this.marker.showInfoWindow();
+            }
+            return null;
+        }
+
+        @Override
+        public View getInfoWindow(final Marker marker) {
+            Log.e("DEBUG", "pos" + marker.getTitle());
+            IncidentMapsFragment.this.marker = marker;
+
+            final ImageView image = ((ImageView) view.findViewById(R.id.ivIncident));
+            final TextView tvIncidentDesc = ((TextView) view.findViewById(R.id.tvIncidentDesc));
+            final TextView tvHours = ((TextView) view.findViewById(R.id.tvHours));
+            final Button btnViewMore = ((Button) view.findViewById(R.id.btnViewMore));
+            btnViewMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
+                }
+            });
+            tvHours.setText(AppUtils.getDate(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getCreatedAt()));
+            tvIncidentDesc.setText(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getDescription());
+            if (!first_time_showing_info_window) {
+                ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), image);
+
+            } else {
+
+                first_time_showing_info_window = false;
+
+            }
+            //    ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), image);
+            return view;
+        }
+    }
+
+    void initMap() {
+
+        //final MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map);
+        final MapWrapperLayout mapWrapperLayout = (MapWrapperLayout) getActivity().findViewById(R.id.map_relative_layout);
+        //final GoogleMap map = mapFragment.getMap();
+
+        // MapWrapperLayout initialization
+        // 39 - default marker height
+        // 20 - offset between the default InfoWindow bottom edge and it's content bottom edge
+        mapWrapperLayout.init(mMap, getPixelsFromDp(getActivity(), 39 + 20));
+
+        // We want to reuse the info window for all the markers,
+        // so let's create only one class member instance
+        this.infoWindow = (ViewGroup) getLayoutInflater().inflate(R.layout.custom_info_window, null);
+        this.tvIncidentDesc = (TextView) infoWindow.findViewById(R.id.tvIncidentDesc);
+        this.tvHours = (TextView) infoWindow.findViewById(R.id.tvHours);
+        this.btnViewMore = (Button) infoWindow.findViewById(R.id.btnViewMore);
+        this.ivMarkerimage = (ImageView) infoWindow.findViewById(R.id.ivIncident);
+
+        // Setting custom OnTouchListener which deals with the pressed state
+        // so it shows up
+        this.infoButtonListener = new OnInfoWindowElemTouchListener(btnViewMore,
+                null, //btn_default_normal_holo_light
+                null) //btn_default_pressed_holo_light
+        {
+            @Override
+            protected void onClickConfirmed(View v, Marker marker) {
+                // Here we can perform some action triggered after clicking the button
+                // Toast.makeText(getActivity(), marker.getTitle() + "'s button clicked!", Toast.LENGTH_SHORT).show();
+                gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
+
+
+            }
+        };
+        this.btnViewMore.setOnTouchListener(infoButtonListener);
+
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(final Marker marker) {
+                // Setting up the infoWindow with current's marker info
+                tvHours.setText(AppUtils.getDate(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getCreatedAt()));
+                tvIncidentDesc.setText(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getDescription());
+                if (!first_time_showing_info_window) {
+                    ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), ivMarkerimage);
+                    Picasso.with(getActivity()).load(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0)).into(ivMarkerimage);
+
+                } else {
+
+                    first_time_showing_info_window = false;
+                    ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), ivMarkerimage);
+                    Picasso.with(getActivity()).load(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0)).into(ivMarkerimage, new InfoWindowRefresher(marker));
+
+
+                }
+
+                infoButtonListener.setMarker(marker);
+
+                // We must call this to set the current marker and infoWindow references
+                // to the MapWrapperLayout
+                mapWrapperLayout.setMarkerWithInfoWindow(marker, infoWindow);
+                return infoWindow;
+            }
+        });
+
+    }
+
+    private class InfoWindowRefresher implements Callback {
+        private Marker markerToRefresh;
+
+        private InfoWindowRefresher(Marker markerToRefresh) {
+            this.markerToRefresh = markerToRefresh;
+        }
+
+        @Override
+        public void onSuccess() {
+            markerToRefresh.showInfoWindow();
+        }
+
+        @Override
+        public void onError() {
+        }
+    }
+
+    public static int getPixelsFromDp(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 
     void setLocationRequest() {
@@ -246,6 +411,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             public void gpsStatus(boolean isGPSEnable) {
                 // turn on GPS
                 isGPS = isGPSEnable;
+                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, true);
 
             }
         });
@@ -313,10 +479,14 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, true);
+
                     startLocationUpdates();
                     mMap.setMyLocationEnabled(true);
 
                 } else {
+                    SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, false);
+
                     Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -686,7 +856,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         View layout = layoutInflater.inflate(R.layout.incident_pop_up, null);
 
         // Creating the PopupWindow
-       final PopupWindow changeStatusPopUp = new PopupWindow(context);
+        final PopupWindow changeStatusPopUp = new PopupWindow(context);
         changeStatusPopUp.setContentView(layout);
         // changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
         //changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -700,7 +870,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             @Override
             public void onClick(View v) {
                 changeStatusPopUp.dismiss();
-                incidentType="accident";
+                incidentType = "accident";
                 tvIncidentType.setText(getString(R.string.accident));
                 getAllIncidentList(incidentType);
             }
@@ -710,7 +880,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             public void onClick(View v) {
                 changeStatusPopUp.dismiss();
                 tvIncidentType.setText(getString(R.string.necessary_intervention));
-                incidentType="necessary_intervention";
+                incidentType = "necessary_intervention";
                 getAllIncidentList(incidentType);
 
             }
@@ -720,7 +890,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             public void onClick(View v) {
                 changeStatusPopUp.dismiss();
                 tvIncidentType.setText(getString(R.string.all_incidents));
-                incidentType="";
+                incidentType = "";
                 getAllIncidentList(incidentType);
             }
         });
@@ -767,14 +937,14 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     @Override
     public void onSuccessIncidentListResponse(IncidentResponse response) {
-        if(mMap!=null) {
+        if (mMap != null) {
             mMap.clear();
         }
         if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
             incidentDataResList = response.getData().getData();
             if (mMap != null) {
 
-                mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+                //    mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
                 for (int i = 0; i < incidentDataResList.size(); i++) {
                     mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
@@ -830,45 +1000,4 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     }
 
 
-    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-
-        private View view;
-
-        public CustomInfoWindowAdapter() {
-            view = getLayoutInflater().inflate(R.layout.custom_info_window,
-                    null);
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-
-            if (IncidentMapsFragment.this.marker != null
-                    && IncidentMapsFragment.this.marker.isInfoWindowShown()) {
-                IncidentMapsFragment.this.marker.hideInfoWindow();
-                IncidentMapsFragment.this.marker.showInfoWindow();
-            }
-            return null;
-        }
-
-        @Override
-        public View getInfoWindow(final Marker marker) {
-            Log.e("DEBUG", "pos" + marker.getTitle());
-            IncidentMapsFragment.this.marker = marker;
-
-            final ImageView image = ((ImageView) view.findViewById(R.id.ivIncident));
-            final TextView tvIncidentDesc = ((TextView) view.findViewById(R.id.tvIncidentDesc));
-            final TextView tvHours = ((TextView) view.findViewById(R.id.tvHours));
-            final Button btnViewMore = ((Button) view.findViewById(R.id.btnViewMore));
-            btnViewMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
-                }
-            });
-            tvHours.setText(AppUtils.getDate(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getCreatedAt()));
-            tvIncidentDesc.setText(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getDescription());
-            ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), image);
-            return view;
-        }
-    }
 }

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -78,6 +80,8 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     TextView tvDescription;
     @BindView(R.id.tvDate)
     TextView tvDate;
+    @BindView(R.id.tvAddress)
+    TextView tvAddress;
     @BindView(R.id.main_content)
     CoordinatorLayout mainContent;
     Unbinder unbinder;
@@ -265,6 +269,9 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
             }
             vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
             tabLayout.setupWithViewPager(vpAdds, true);
+            Address address=util.getAddress(getActivity(),Double.parseDouble(latitude),Double.parseDouble(longitude));
+            setAddress(address);
+
         } else if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
             String error = "";
             for (int i = 0; i < response.getErrors().size(); i++) {
@@ -274,6 +281,42 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         }
     }
 
+
+    void setAddress(Address locationAddress) {
+        String address = locationAddress.getAddressLine(0);
+        String address1 = locationAddress.getAddressLine(1);
+        String city = locationAddress.getLocality();
+        String state = locationAddress.getAdminArea();
+        String country = locationAddress.getCountryName();
+        String postalCode = locationAddress.getPostalCode();
+
+        String currentLocation;
+
+        if (!TextUtils.isEmpty(address)) {
+            currentLocation = address;
+
+            if (!TextUtils.isEmpty(address1))
+                currentLocation += "\n" + address1;
+
+            if (!TextUtils.isEmpty(city)) {
+                currentLocation += "\n" + city;
+
+                if (!TextUtils.isEmpty(postalCode))
+                    currentLocation += " - " + postalCode;
+            } else {
+                if (!TextUtils.isEmpty(postalCode))
+                    currentLocation += "\n" + postalCode;
+            }
+
+            if (!TextUtils.isEmpty(state))
+                currentLocation += "\n" + state;
+
+            if (!TextUtils.isEmpty(country))
+                currentLocation += "\n" + country;
+
+            tvAddress.setText(currentLocation);
+        }
+    }
     @Override
     public void onSuccessCreateIncidentResponse(CreateIncidentResponse response) {
 

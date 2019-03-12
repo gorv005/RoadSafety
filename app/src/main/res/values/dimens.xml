@@ -38,4 +38,6 @@
     <dimen name="button_margin">28dp</dimen>
     <dimen name="profile_image_size">200dp</dimen>
     <dimen name="abuse_dialog_size">300dp</dimen>
+    <dimen name="success_size">24sp</dimen>
+    <dimen name="success_msg_top">100dp</dimen>
 </resources>

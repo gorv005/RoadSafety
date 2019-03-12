@@ -27,6 +27,7 @@ import com.app.roadsafety.view.fragmentnavigationcontroller.FragNavController;
 import com.app.roadsafety.view.fragments.AddIncidentFragment;
 import com.app.roadsafety.view.fragments.BaseFragment;
 import com.app.roadsafety.view.fragments.FeedListFragment;
+import com.app.roadsafety.view.fragments.FragmentIncidentSuccess;
 import com.app.roadsafety.view.fragments.IncidentListFragment;
 import com.app.roadsafety.view.fragments.IncidentMapsFragment;
 import com.app.roadsafety.view.fragments.NotificationFragment;
@@ -168,33 +169,43 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     @Override
     public void onBackPressed() {
-        if (!mNavController.isRootFragment()) {
-            mNavController.popFragment();
-        } else {
 
-            if (fragmentHistory.isEmpty()) {
-                super.onBackPressed();
+        Fragment fragment=getVisibleFragment();
+        if(fragment!=null && fragment instanceof FragmentIncidentSuccess){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(AppConstants.TAB_SELECTION,1);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        else {
+            if (!mNavController.isRootFragment()) {
+                mNavController.popFragment();
             } else {
 
-
-                if (fragmentHistory.getStackSize() > 1) {
-
-                    int position = fragmentHistory.popPrevious();
-
-                    switchTab(position);
-
-                    updateTabSelection(position);
-
+                if (fragmentHistory.isEmpty()) {
+                    super.onBackPressed();
                 } else {
 
-                    switchTab(0);
 
-                    updateTabSelection(0);
+                    if (fragmentHistory.getStackSize() > 1) {
 
-                    fragmentHistory.emptyStack();
+                        int position = fragmentHistory.popPrevious();
+
+                        switchTab(position);
+
+                        updateTabSelection(position);
+
+                    } else {
+
+                        switchTab(0);
+
+                        updateTabSelection(0);
+
+                        fragmentHistory.emptyStack();
+                    }
                 }
-            }
 
+            }
         }
     }
 

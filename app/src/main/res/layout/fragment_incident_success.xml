@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlGuideLineView"
+    android:paddingLeft="@dimen/desc_padding"
+    android:paddingRight="@dimen/desc_padding"
+    android:background="@drawable/shaded_back">
+
+    />
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="@dimen/profile_image_size"
+        android:layout_height="@dimen/profile_image_size"
+        android:src="@drawable/added_icon"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        />
+
+
+
+    <TextView
+
+        android:id="@+id/tvSuccess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/success_msg_top"
+        android:text="@string/successfully_added"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/ivProfile"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/success_size" />
+
+</RelativeLayout>

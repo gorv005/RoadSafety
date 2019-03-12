@@ -8,8 +8,7 @@
     >
 
     <ImageView
-        android:fitsSystemWindows="true"
-        android:adjustViewBounds="true"
+
         android:id="@+id/iv_adds"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_backdrop_height"

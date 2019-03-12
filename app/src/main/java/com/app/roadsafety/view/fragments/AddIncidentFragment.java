@@ -337,11 +337,11 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             util.resultDialog(getActivity(),error);
         }
         else {
-              Toast.makeText(getActivity(),getString(R.string.incident_created),Toast.LENGTH_LONG).show();
-              Intent intent = new Intent(getActivity(), MainActivity.class);
-              intent.putExtra(AppConstants.TAB_SELECTION,1);
-              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-              startActivity(intent);
+              if (mFragmentNavigation != null) {
+                  mFragmentNavigation.pushFragment(FragmentIncidentSuccess.newInstance(1));
+              }
+           //   Toast.makeText(getActivity(),getString(R.string.incident_created),Toast.LENGTH_LONG).show();
+
           }
     }
 

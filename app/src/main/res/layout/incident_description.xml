@@ -22,6 +22,19 @@
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         android:textColor="@color/dark_yellow" />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tvAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text=""
+        android:textSize="@dimen/slide_title"
+        android:includeFontPadding="true"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:textColor="@color/dark_yellow" />
     <ScrollView
         android:scrollbars="none"
         android:fillViewport="true"
