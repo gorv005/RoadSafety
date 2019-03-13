@@ -46,6 +46,9 @@
     <string name="ok">Ok</string>
     <string name="save">Save</string>
     <string name="next">Next</string>
+
+
+
     <string name="accident">Accident</string>
     <string name="necessary_intervention">Necessary Intervention</string>
     <string name="marcar_local">Marcar Local</string>
@@ -74,4 +77,10 @@
     <string name="are_you_sure_you_want_to_disable_location_services">Are you sure you want to disable your location services?</string>
     <string name="disable">Disable</string>
     <string name="successfully_added">Successfully Added!!!</string>
+    <string name="view_in_map">View in map</string>
+    <string name="share">Share</string>
+    <string name="notification_recieved">A new notification has been received about the incident happened near to you</string>
+    <string name="no_notification_found">No notification found.</string>
+    <string name="incident_resolved">Incident Resolved</string>
+
 </resources>

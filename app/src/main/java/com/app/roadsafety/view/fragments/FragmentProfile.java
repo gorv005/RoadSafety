@@ -113,8 +113,13 @@ public class FragmentProfile extends BaseFragment implements IProfilePresenter.I
             }
             util.resultDialog(getActivity(), error);
         } else {
+            if(response.getData().getLinks().getProfilePicture()==null || response.getData().getLinks().getProfilePicture().equals("")) {
+                ImageUtils.loadImage(getActivity(),"profile_image",ivProfile);
+            }
+            else {
+                ImageUtils.setImage(getActivity(), response.getData().getLinks().getProfilePicture(), ivProfile);
 
-            ImageUtils.setImage(getActivity(), response.getData().getLinks().getProfilePicture(), ivProfile);
+            }
             tvName.setText(response.getData().getAttributes().getName());
             tvEmail.setText(response.getData().getAttributes().getEmail());
 

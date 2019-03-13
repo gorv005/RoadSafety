@@ -48,7 +48,7 @@ public class ActivitySplash extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_splash);
-        setLocale();
+      //  setLocale();
         changeStatusBarColor();
 
     }
@@ -97,12 +97,20 @@ public class ActivitySplash extends AppCompatActivity {
 
         }
         else if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN) && !SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
-            gotoMainActivity();
+
+                gotoGuidelines();
 
         }
         else {
             gotoLoginActivity();
         }
+    }
+
+    void gotoGuidelines() {
+        Intent i = new Intent(ActivitySplash.this, GuidlinesActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
     }
     void gotoLoginActivity() {
         Intent i = new Intent(ActivitySplash.this, UserLoginActivity.class);

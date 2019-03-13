@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/toolbar_color"
+    android:id="@+id/rlParentView"
+    android:background="@color/white"
     android:layout_height="match_parent"
     >
 
     <LinearLayout
-        android:visibility="gone"
+        android:id="@+id/llBack"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -16,24 +18,55 @@
             android:id="@+id/ivBack"
             android:layout_marginLeft="20dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/down_arrow"
+            android:src="@drawable/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             android:gravity="center"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/notifications"
             android:textStyle="bold"
             android:textColor="@color/title_color"
             android:textSize="@dimen/slide_desc" />
     </LinearLayout>
+    <RelativeLayout
+        android:layout_below="@id/llBack"
+        android:id="@+id/rlNoNotification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/ivNoNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_notification_icon"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+            />
+
+
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/no_notification_found"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/ivNoNotification"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/slide_desc" />
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/llBack"
         android:id="@+id/rvNotification"
         android:scrollbars="none"
         android:layout_width="match_parent"

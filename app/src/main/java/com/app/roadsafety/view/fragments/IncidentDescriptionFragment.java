@@ -296,23 +296,23 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
             currentLocation = address;
 
             if (!TextUtils.isEmpty(address1))
-                currentLocation += "\n" + address1;
+                currentLocation += " " + address1;
 
             if (!TextUtils.isEmpty(city)) {
-                currentLocation += "\n" + city;
+                currentLocation += " " + city;
 
                 if (!TextUtils.isEmpty(postalCode))
                     currentLocation += " - " + postalCode;
             } else {
                 if (!TextUtils.isEmpty(postalCode))
-                    currentLocation += "\n" + postalCode;
+                    currentLocation += " " + postalCode;
             }
 
             if (!TextUtils.isEmpty(state))
-                currentLocation += "\n" + state;
+                currentLocation += " " + state;
 
             if (!TextUtils.isEmpty(country))
-                currentLocation += "\n" + country;
+                currentLocation += " " + country;
 
             tvAddress.setText(currentLocation);
         }

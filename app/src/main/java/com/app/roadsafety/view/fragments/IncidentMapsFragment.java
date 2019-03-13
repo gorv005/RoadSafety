@@ -9,14 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -57,11 +55,6 @@ import com.app.roadsafety.utility.MapWrapperLayout;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.incidents.AdapterIncidentHorizontalList;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -83,7 +76,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.greenhalolabs.facebooklogin.FacebookLoginActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -646,7 +638,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             Log.e("Zoom Level Animate:", animateZomm + "");
             latLng = point;
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel+2), 2000, null);
             getAllIncidentList(incidentType);
         }
     }

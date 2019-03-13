@@ -5,19 +5,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.model.feed.Feed;
-import com.app.roadsafety.utility.ImageUtils;
+import com.app.roadsafety.model.notification.NotificationData;
+import com.app.roadsafety.utility.AppUtils;
 
 import java.util.List;
 
 public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
-    private List<Feed> horizontalList;
+    private List<NotificationData> horizontalList;
     Activity context;
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView  tvNotificationDesc,tvDate;
@@ -31,7 +30,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    public AdapterNotificationList(List<Feed> horizontalList, Activity context) {
+    public AdapterNotificationList(List<NotificationData> horizontalList, Activity context) {
         this.horizontalList = horizontalList;
         this.context = context;
     }
@@ -54,8 +53,8 @@ public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tvNotificationDesc.setText(horizontalList.get(position).getDesc());
-
+            itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.notification_recieved));
+            itemViewHolder.tvDate.setText(AppUtils.getDate(horizontalList.get(position).getAttributes().getCreatedAt()));
         }
 
     }

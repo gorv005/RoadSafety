@@ -16,7 +16,6 @@ import android.view.WindowManager;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.Feed;
-import com.app.roadsafety.view.adapter.incidents.AdapterIncidentList;
 import com.app.roadsafety.view.adapter.notification.AdapterNotificationList;
 
 import java.util.ArrayList;
@@ -78,7 +77,7 @@ public class NotificationActivity extends AppCompatActivity {
         feeds.add(g2);
         Feed g3 = new Feed("login_back", getString(R.string.watch_out_big_cars), getString(R.string.feed_desc));
         feeds.add(g3);
-        adapterNotificationList = new AdapterNotificationList(feeds, this);
-        rvNotification.setAdapter(adapterNotificationList);
+    //    adapterNotificationList = new AdapterNotificationList(feeds, this);
+     //   rvNotification.setAdapter(adapterNotificationList);
     }
 }

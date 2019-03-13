@@ -102,7 +102,7 @@ public class FacebookLoginActivity extends Activity {
 
     void onWebDialogComplete(Bundle values,
                              FacebookException error) {
-        Log.e("DEBUG","Data="+values.toString());
+      //  Log.e("DEBUG","Data="+values.toString());
         if (values != null) {
             AccessToken token = AccessToken
                 .createFromWebBundle(permissions, values, AccessTokenSource.WEB_VIEW);
@@ -197,7 +197,7 @@ public class FacebookLoginActivity extends Activity {
     }
 
     private void handleResultOk(Intent data) {
-        Log.e("DEBUG","data="+data.toString());
+      //  Log.e("DEBUG","data="+data.toString());
         Bundle extras = data.getExtras();
         String error = extras.getString("error");
         if (error == null) {

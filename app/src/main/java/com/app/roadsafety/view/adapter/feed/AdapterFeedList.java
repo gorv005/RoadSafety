@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.feed.FeedListData;
+import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.ImageUtils;
 import com.app.roadsafety.view.MainActivity;
 
@@ -21,7 +22,7 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<FeedListData> horizontalList;
     Activity context;
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvFeedTitle, tvFeedDesc;
+        public TextView tvFeedTitle, tvFeedDesc,tvHours;
         public ImageView ivIncident;
         RelativeLayout rlFeed;
 
@@ -31,6 +32,8 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvFeedDesc = (TextView) view.findViewById(R.id.tvFeedDesc);
             ivIncident = (ImageView) view.findViewById(R.id.ivIncident);
             rlFeed = (RelativeLayout) view.findViewById(R.id.rlFeed);
+            tvHours = (TextView) view.findViewById(R.id.tvHours);
+
         }
     }
 
@@ -59,6 +62,8 @@ public class AdapterFeedList extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tvFeedTitle.setText(horizontalList.get(position).getAttributes().getTitle());
             itemViewHolder.tvFeedDesc.setText(horizontalList.get(position).getAttributes().getDescription());
+            itemViewHolder.tvHours.setText(AppUtils.getDate(horizontalList.get(position).getAttributes().getPublishedAt()));
+
             ImageUtils.setImage(context, horizontalList.get(position).getAttributes().getImageUrl(), itemViewHolder.ivIncident);
             itemViewHolder.rlFeed.setOnClickListener(new View.OnClickListener() {
                 @Override

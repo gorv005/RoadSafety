@@ -1,7 +1,6 @@
 package com.app.roadsafety.view;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,11 +11,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.application.App;
 import com.app.roadsafety.model.authentication.FacebookLoginRequest;
 import com.app.roadsafety.model.authentication.LoginResponse;
 import com.app.roadsafety.presenter.authentication.AuthenticationPresenterImpl;
@@ -122,7 +119,7 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
 
     @Override
     public void getFacebookLoginResponse(LoginResponse response) {
-        Log.e("DEBUG", "" + response);
+    //    Log.e("DEBUG", "" + response);
         SharedPreference.getInstance(this).setUser(AppConstants.LOGIN_USER, response);
         SharedPreference.getInstance(this).setBoolean(AppConstants.IS_LOGIN,true);
         SharedPreference.getInstance(this).setBoolean(AppConstants.IS_GUEST_LOGIN,false);
