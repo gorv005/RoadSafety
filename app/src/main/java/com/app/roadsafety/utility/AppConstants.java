@@ -24,10 +24,10 @@ public class AppConstants {
     public static final String TAB_SELECTION = "tab_selection";
     public static final String INCIDENT_ACTION ="incident_action" ;
     public static final String INCIDENT_ACTION_EDIT = "edit";
-    public static final String INCIDENT_ACTION_ADD = "add";
+    public static final String   INCIDENT_ACTION_ADD = "add";
     public static final String INCIDENT_DATA = "incident_data";
-    public static final String AWS_KEY = "AKIAJ6ELWMSDUZ4FCIUQ";
-    public static final String AWS_SECRET = "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";
+    public static final String AWS_KEY = "AKIAJ52JTXIIWTRHCNLQ";
+    public static final String AWS_SECRET = "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";
     public static final String AWS_BUCKET = "anselmo-roadsafety-cognito";
     public static final String AWS_IMAGE_BASE_URL = "https://s3.eu-west-2.amazonaws.com/"+AWS_BUCKET+"/";
     public static final String IS_LOCATION_SERVICES_ON = "location_services";

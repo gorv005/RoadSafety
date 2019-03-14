@@ -6,20 +6,18 @@
     android:background="@color/white"
     tools:context=".view.fragments.SettingsFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
 
         <LinearLayout
+            android:weightSum="5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/rlProfile"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
@@ -56,9 +54,10 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/rlLocationServices"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
@@ -95,9 +94,10 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/rlNotifications"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
@@ -134,9 +134,10 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/rlLinkedAccount"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
@@ -174,9 +175,10 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/rlLogout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
@@ -209,7 +211,6 @@
 
 
         </LinearLayout>
-    </ScrollView>
 
 
 </RelativeLayout>

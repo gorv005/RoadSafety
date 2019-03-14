@@ -14,6 +14,9 @@ public class IncidentDataRes {
     @Expose
     private IncidentAttribute attributes;
 
+    @SerializedName("links")
+    @Expose
+    private IncidentLinks links;
     public String getId() {
         return id;
     }
@@ -36,5 +39,13 @@ public class IncidentDataRes {
 
     public void setAttributes(IncidentAttribute attributes) {
         this.attributes = attributes;
+    }
+
+    public IncidentLinks getLinks() {
+        return links;
+    }
+
+    public void setLinks(IncidentLinks links) {
+        this.links = links;
     }
 }

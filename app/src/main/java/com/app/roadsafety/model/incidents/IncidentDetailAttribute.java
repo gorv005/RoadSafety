@@ -19,6 +19,9 @@ public class IncidentDetailAttribute implements Serializable {
     @SerializedName("longitude")
     @Expose
     private Float longitude;
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("images")
     @Expose
     private List<String> images = null;
@@ -28,7 +31,18 @@ public class IncidentDetailAttribute implements Serializable {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
-
+    @SerializedName("resolved_images")
+    @Expose
+    private List<String> resolvedImages = null;
+    @SerializedName("is_resolved")
+    @Expose
+    private Boolean isResolved;
+    @SerializedName("resolved_text")
+    @Expose
+    private String resolvedText;
+    @SerializedName("resolved_marked_by")
+    @Expose
+    private String resolvedMarkedBy;
     public String getDescription() {
         return description;
     }
@@ -85,4 +99,43 @@ public class IncidentDetailAttribute implements Serializable {
         this.createdAt = createdAt;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public List<String> getResolvedImages() {
+        return resolvedImages;
+    }
+
+    public void setResolvedImages(List<String> resolvedImages) {
+        this.resolvedImages = resolvedImages;
+    }
+
+    public Boolean getResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(Boolean resolved) {
+        isResolved = resolved;
+    }
+
+    public String getResolvedText() {
+        return resolvedText;
+    }
+
+    public void setResolvedText(String resolvedText) {
+        this.resolvedText = resolvedText;
+    }
+
+    public String getResolvedMarkedBy() {
+        return resolvedMarkedBy;
+    }
+
+    public void setResolvedMarkedBy(String resolvedMarkedBy) {
+        this.resolvedMarkedBy = resolvedMarkedBy;
+    }
 }
