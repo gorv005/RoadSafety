@@ -429,6 +429,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             }
             util.resultDialog(getActivity(),error);
         }
+
         else {
             Toast.makeText(getActivity(), getString(R.string.incident_update), Toast.LENGTH_LONG).show();
             getActivity().onBackPressed();
