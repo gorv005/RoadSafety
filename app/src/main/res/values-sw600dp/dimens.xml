@@ -41,4 +41,6 @@
     <dimen name="abuse_dialog_size">350dp</dimen>
     <dimen name="success_size">30sp</dimen>
     <dimen name="success_msg_top">140dp</dimen>
+    <dimen name="add_image_layout_size">200dp</dimen>
+
 </resources>

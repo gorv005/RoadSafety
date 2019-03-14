@@ -3,26 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_backdrop_height"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:expandedTitleTextAppearance="@android:color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
             <android.support.v4.view.ViewPager
@@ -80,11 +71,11 @@
                     android:layout_alignParentRight="true"
                     android:src="@drawable/menu" />
             </RelativeLayout>
-        </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/ivAddImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,8 +84,54 @@
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|center" />
 
-    <include layout="@layout/add_incident_fields" />
+    <LinearLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:visibility="visible"
+        android:orientation="horizontal"
+        android:id="@+id/idllNewImages"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/add_image_layout_size">
 
+        <FrameLayout
+            android:id="@+id/widget_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/image_guideline"
+                android:layout_width="@dimen/add_image_width"
+                android:layout_height="@dimen/add_image_height"
+                android:src="@drawable/login_back"
+                app:riv_mutate_background="true"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="10dip"
+                app:riv_border_width="2dip"
+                app:riv_border_color="#404040"
+                app:riv_oval="false"
+
+                />
+
+            <ImageView
+                android:id="@+id/widget_title_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:adjustViewBounds="true"
+                android:paddingTop="-10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/remove_img_icon" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+    <include  layout="@layout/add_incident_fields" />
+    </LinearLayout>
     <Button
         android:id="@+id/btnDone"
         style="@style/RoundedCornerMaterialButtonBlue"
