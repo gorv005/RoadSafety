@@ -358,6 +358,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
         }
     }
+    public void addImage(){
+        Fragment fragment = getVisibleFragment();
+        if (fragment != null && fragment instanceof AddIncidentFragment) {
+            ((AddIncidentFragment) fragment).init();
+
+        }
+    }
 
     public void gotoIncidentDescription(String id){
         Fragment fragment = getVisibleFragment();

@@ -3,11 +3,14 @@ package com.app.roadsafety.utility;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
+import java.io.File;
 
 
 public class ImageUtils {
@@ -30,6 +33,15 @@ public class ImageUtils {
 
 
     }
+    public static void loadFromInternalStorage(Context context, String url, ImageView imageView){
+        File imgFile = new  File(url);
+        if(imgFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            imageView.setImageBitmap(myBitmap);
 
+        }
+
+
+    }
 
 }

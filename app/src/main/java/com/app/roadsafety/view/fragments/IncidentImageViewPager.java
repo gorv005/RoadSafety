@@ -103,7 +103,7 @@ public class IncidentImageViewPager extends Fragment {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             iv_adds.setImageBitmap(myBitmap);
 
-        };
+        }
     }
 
     void fromRemote(){

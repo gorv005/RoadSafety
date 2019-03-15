@@ -11,6 +11,9 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +47,7 @@ import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.IncidentImageViewPagerAdapter;
+import com.app.roadsafety.view.adapter.incidents.AdapterIncidentImagesList;
 
 import net.alhazmy13.mediapicker.Image.ImagePicker;
 
@@ -90,6 +95,8 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     ImageView ivback;
     @BindView(R.id.tvFeedTitle)
     TextView tvFeedTitle;
+    @BindView(R.id.llNewImages)
+    View llNewImages;
     List<String> mImageList;
     ICreateIncidentPresenter iCreateIncidentPresenter;
     ArrayAdapter<String> spinnerArrayAdapter;
@@ -97,6 +104,8 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     ArrayList<String> type;
     @BindView(R.id.btnDone)
     Button btnDone;
+    @BindView(R.id.rvAddImages)
+    RecyclerView rvAddImages;
     String mType, mCityHallId, incidentAction;
     AppUtils util;
     String latitude, longitude;
@@ -107,6 +116,8 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     TransferUtility transferUtility;
     TransferObserver observer;
     List<String> awsImagesList;
+    GridLayoutManager manager;
+    AdapterIncidentImagesList adapterIncidentImagesList;
     public AddIncidentFragment() {
         // Required empty public constructor
     }
@@ -155,7 +166,9 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getCityHall();
-
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
+        rvAddImages.setLayoutManager(manager);
+        rvAddImages.setHasFixedSize(true);
         latitude = getArguments().getString(AppConstants.LATITUDE);
         longitude = getArguments().getString(AppConstants.LONGITUDE);
         incidentAction = getArguments().getString(AppConstants.INCIDENT_ACTION);
@@ -221,7 +234,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         etLocation.setText("Lati. " + latitude + "   " + "Long. " + longitude);
     }
 
-    void init() {
+  public   void init() {
         new ImagePicker.Builder(getActivity())
                 .mode(ImagePicker.Mode.CAMERA_AND_GALLERY)
                 .compressLevel(ImagePicker.ComperesLevel.MEDIUM)
@@ -388,8 +401,9 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
                 if (state.COMPLETED.equals(observer.getState())) {
                     hideProgress();
                     awsImagesList.add(AppConstants.AWS_IMAGE_BASE_URL+path.substring(path.lastIndexOf("/")+1));
-                    vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
-                    tabLayout.setupWithViewPager(vpAdds, true);
+                   // vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
+                 //   tabLayout.setupWithViewPager(vpAdds, true);
+                    loadImages(1);
                     Toast.makeText(getActivity(), getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -414,6 +428,16 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         });
 
 
+    }
+
+    void loadImages(int isFromInternalStorage){
+
+        appbar.setVisibility(View.GONE);
+        ivAddImage.setVisibility(View.GONE);
+        llNewImages.setVisibility(View.VISIBLE);
+        ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.marcar_local), true);
+        adapterIncidentImagesList=new AdapterIncidentImagesList(mImageList,getActivity());
+        rvAddImages.setAdapter(adapterIncidentImagesList);
     }
     @Override
     public void getResponseError(String response) {

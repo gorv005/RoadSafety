@@ -701,8 +701,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
             case R.id.ivAddPost:
 
-                addIncidentDialog();
-                //gotoAddIncident();
+              //  addIncidentDialog();
+                gotoAddIncident();
                 break;
             case R.id.ivCurrentLocation:
                 circle.remove();
