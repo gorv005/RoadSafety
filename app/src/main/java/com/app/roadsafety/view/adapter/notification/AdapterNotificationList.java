@@ -57,22 +57,25 @@ public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.notification_recieved));
+      //      itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.notification_recieved));
             itemViewHolder.tvDate.setText(AppUtils.getDate(horizontalList.get(position).getAttributes().getCreatedAt()));
             if(horizontalList.get(position).getAttributes().getType().equalsIgnoreCase("incident_reported")){
                 itemViewHolder.ivNotificationType.setImageResource(R.drawable.new_notification_icon);
+                itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.incident_reported_text));
             }
            else if(horizontalList.get(position).getAttributes().getType().equalsIgnoreCase("incident_resolved")){
                 itemViewHolder.ivNotificationType.setImageResource(R.drawable.new_notification_icon);
+                itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.incident_resolved_text));
 
             }
           else   if(horizontalList.get(position).getAttributes().getType().equalsIgnoreCase("Post_reported")){
                 itemViewHolder.ivNotificationType.setImageResource(R.drawable.new_notification_icon);
+                itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.incident_blocked_text));
 
             }
             else {
                 itemViewHolder.ivNotificationType.setImageResource(R.drawable.new_notification_icon);
-
+                itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.notification_recieved));
             }
         }
 
