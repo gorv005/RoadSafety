@@ -390,7 +390,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     }
 
 
-    @OnClick({R.id.ivMenu, R.id.ivback})
+    @OnClick({R.id.ivMenu, R.id.ivback,R.id.llViewInMap})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivMenu:
@@ -415,6 +415,10 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
             case R.id.ivback:
                 getActivity().onBackPressed();
+            case R.id.llViewInMap:
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(MapLocation.newInstance(1,latitude,longitude,incidentDetailResponse));
+                }
 
                 break;
         }

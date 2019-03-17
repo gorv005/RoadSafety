@@ -112,6 +112,7 @@
             android:layout_width="1dp"
             android:layout_height="80dp"/>
         <LinearLayout
+            android:id="@+id/llViewInMap"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
