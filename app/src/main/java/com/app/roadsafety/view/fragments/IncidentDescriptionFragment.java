@@ -167,6 +167,9 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
         MarkResolvedRequest markResolvedRequest  = new MarkResolvedRequest();
         markResolvedRequest.setResolvedText(getString(R.string.this_incident_resolved));
+        List<String> strings=new ArrayList<>();
+        strings.add("http://placehold.it/120x120\\u0026text=image1");
+        markResolvedRequest.setResolvedImages(strings);
         iMarkResolvedPresenter.markResolved(auth_token,id,markResolvedRequest);
     }
     void gotoUpdateIncident() {
