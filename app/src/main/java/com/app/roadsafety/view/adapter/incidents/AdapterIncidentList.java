@@ -23,7 +23,7 @@ public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewH
     Activity context;
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView  tvIncidentDesc,tvHours;
-        public ImageView ivIncident;
+        public ImageView ivIncident,ivIncidentType;
         RelativeLayout rlIncident;
 
         public ItemViewHolder(View view) {
@@ -32,6 +32,8 @@ public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewH
             tvHours = (TextView) view.findViewById(R.id.tvHours);
             ivIncident = (ImageView) view.findViewById(R.id.ivIncident);
             rlIncident = (RelativeLayout) view.findViewById(R.id.rlIncident);
+            ivIncidentType = (ImageView) view.findViewById(R.id.ivIncidentType);
+
         }
     }
 
@@ -71,6 +73,14 @@ public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
             });
+
+            if(horizontalList.get(position).getAttributes().getResolved()){
+                itemViewHolder.ivIncidentType.setVisibility(View.VISIBLE);
+            }
+            else {
+                itemViewHolder.ivIncidentType.setVisibility(View.GONE);
+
+            }
         }
 
     }

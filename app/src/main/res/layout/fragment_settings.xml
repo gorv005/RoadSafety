@@ -101,6 +101,11 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
+                <RelativeLayout
+                    android:layout_centerVertical="true"
+                    android:id="@+id/rlNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
                 <ImageView
                     android:layout_centerVertical="true"
 
@@ -108,13 +113,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/notification" />
+                    <TextView
 
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/black"
+                        android:text=""
+                        android:gravity="center"
+                        android:textSize="10sp"
+                        android:layout_marginTop="-10dp"
+                        android:layout_alignTop="@id/ivNotification"
+                        android:layout_toRightOf="@id/ivNotification"
+                        android:background="@drawable/notification_back"
+                        android:id="@+id/tvNotificationCount"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+                </RelativeLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_left"
-                    android:layout_toRightOf="@id/ivNotification"
+                    android:layout_toRightOf="@id/rlNotification"
                     android:text="@string/notifications"
                     android:textColor="@color/profile_text_color"
                     android:textSize="@dimen/slide_title" />

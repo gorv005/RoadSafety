@@ -15,6 +15,11 @@
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
 
+        <ImageView
+            android:id="@+id/ivNotificationType"
+            android:src="@drawable/new_notification_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <RelativeLayout
 
             android:layout_width="match_parent"

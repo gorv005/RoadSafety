@@ -365,7 +365,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
         }
     }
+    public void removeImage(int pos){
+        Fragment fragment = getVisibleFragment();
+        if (fragment != null && fragment instanceof AddIncidentFragment) {
+            ((AddIncidentFragment) fragment).removeImage(pos);
 
+        }
+    }
     public void gotoIncidentDescription(String id){
         Fragment fragment = getVisibleFragment();
         if (fragment != null && fragment instanceof IncidentMapsFragment) {

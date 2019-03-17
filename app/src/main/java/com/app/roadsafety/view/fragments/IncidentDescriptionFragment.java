@@ -10,13 +10,9 @@ import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,10 +33,14 @@ import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
 import com.app.roadsafety.model.incidents.IncidentDetailResponse;
 import com.app.roadsafety.model.incidents.IncidentResponse;
+import com.app.roadsafety.model.markresolved.MarkResolvedRequest;
+import com.app.roadsafety.model.markresolved.MarkResolvedResponse;
 import com.app.roadsafety.presenter.createIncident.CreateIncidentPresenterImpl;
 import com.app.roadsafety.presenter.createIncident.ICreateIncidentPresenter;
 import com.app.roadsafety.presenter.incident.IIncidentListPresenter;
 import com.app.roadsafety.presenter.incident.IncidentListPresenterPresenterImpl;
+import com.app.roadsafety.presenter.markresolved.IMarkResolvedPresenter;
+import com.app.roadsafety.presenter.markresolved.MarkResolvedPresenterImpl;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
@@ -59,7 +59,7 @@ import okhttp3.ResponseBody;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IncidentDescriptionFragment extends BaseFragment implements IIncidentListPresenter.IIncidentView, ICreateIncidentPresenter.ICreateIncidentView {
+public class IncidentDescriptionFragment extends BaseFragment implements IIncidentListPresenter.IIncidentView, ICreateIncidentPresenter.ICreateIncidentView, IMarkResolvedPresenter.IMrkResolvedView {
 
 
     @BindView(R.id.vp_adds)
@@ -70,10 +70,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     ImageView ivback;
     @BindView(R.id.tvFeedTitle)
     TextView tvFeedTitle;
-    @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout collapsingToolbar;
-    @BindView(R.id.appbar)
-    AppBarLayout appbar;
+
     @BindView(R.id.ivAddImage)
     ImageView ivAddImage;
     @BindView(R.id.tvDescription)
@@ -82,11 +79,11 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     TextView tvDate;
     @BindView(R.id.tvAddress)
     TextView tvAddress;
-    @BindView(R.id.main_content)
-    CoordinatorLayout mainContent;
+
     Unbinder unbinder;
     IIncidentListPresenter iIncidentListPresenter;
     ICreateIncidentPresenter iCreateIncidentPresenter;
+    IMarkResolvedPresenter iMarkResolvedPresenter;
     AppUtils util;
     String incidentId;
     List<String> mImageList;
@@ -123,6 +120,8 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         mImageList = new ArrayList<>();
         iIncidentListPresenter = new IncidentListPresenterPresenterImpl(this, getActivity());
         iCreateIncidentPresenter = new CreateIncidentPresenterImpl(this, getActivity());
+        iMarkResolvedPresenter = new MarkResolvedPresenterImpl(this, getActivity());
+
     }
 
 
@@ -164,6 +163,12 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         iCreateIncidentPresenter.reportAbuseIncident(auth_token, incidentId, reportAbuseIncidentRequest);
     }
 
+    void markResolved(String id){
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        MarkResolvedRequest markResolvedRequest  = new MarkResolvedRequest();
+        markResolvedRequest.setResolvedText(getString(R.string.this_incident_resolved));
+        iMarkResolvedPresenter.markResolved(auth_token,id,markResolvedRequest);
+    }
     void gotoUpdateIncident() {
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1, latitude, longitude, AppConstants.INCIDENT_ACTION_EDIT, incidentDetailResponse));
@@ -207,6 +212,43 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         dialog.show();
     }
 
+    public void incidentResolved() {
+
+        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+        dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Button btnDelete = (Button) dialog.findViewById(R.id.btnDelete);
+        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+        TextView tvMsg = (TextView) dialog.findViewById(R.id.tvMsg);
+        tvMsg.setText(getString(R.string.are_you_sure_you_want_to_reolved_incident));
+        btnDelete.setText(getString(R.string.ok));
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                markResolved(incidentId);
+
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+//to set the message
+        dialog.show();
+    }
 
     public void reportAbuseDialog() {
 
@@ -270,7 +312,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
             vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
             tabLayout.setupWithViewPager(vpAdds, true);
             Address address=util.getAddress(getActivity(),Double.parseDouble(latitude),Double.parseDouble(longitude));
-            setAddress(address);
+            AppUtils.setAddress(address,tvAddress);
 
         } else if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
             String error = "";
@@ -282,41 +324,6 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     }
 
 
-    void setAddress(Address locationAddress) {
-        String address = locationAddress.getAddressLine(0);
-        String address1 = locationAddress.getAddressLine(1);
-        String city = locationAddress.getLocality();
-        String state = locationAddress.getAdminArea();
-        String country = locationAddress.getCountryName();
-        String postalCode = locationAddress.getPostalCode();
-
-        String currentLocation;
-
-        if (!TextUtils.isEmpty(address)) {
-            currentLocation = address;
-
-            if (!TextUtils.isEmpty(address1))
-                currentLocation += " " + address1;
-
-            if (!TextUtils.isEmpty(city)) {
-                currentLocation += " " + city;
-
-                if (!TextUtils.isEmpty(postalCode))
-                    currentLocation += " - " + postalCode;
-            } else {
-                if (!TextUtils.isEmpty(postalCode))
-                    currentLocation += " " + postalCode;
-            }
-
-            if (!TextUtils.isEmpty(state))
-                currentLocation += " " + state;
-
-            if (!TextUtils.isEmpty(country))
-                currentLocation += " " + country;
-
-            tvAddress.setText(currentLocation);
-        }
-    }
     @Override
     public void onSuccessCreateIncidentResponse(CreateIncidentResponse response) {
 
@@ -325,6 +332,13 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     @Override
     public void onSuccessCityHallResponse(CityHallResponse response) {
 
+    }
+
+    @Override
+    public void onSuccessMarkResolved(MarkResolvedResponse response) {
+        Toast.makeText(getActivity(), getString(R.string.incident_has_been_resolved), Toast.LENGTH_LONG).show();
+
+        getActivity().onBackPressed();
     }
 
     @Override
@@ -465,6 +479,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
         TextView tvEdit = (TextView) layout.findViewById(R.id.tvEdit);
         TextView tvDelete = (TextView) layout.findViewById(R.id.tvDelete);
+        TextView tvMarkResolved = (TextView) layout.findViewById(R.id.tvMarkResolved);
 
         tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -482,6 +497,15 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                 Log.e("DEBUG", "DELETE");
                 changeStatusPopUp.dismiss();
                 alertDialog();
+
+            }
+        });
+        tvMarkResolved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("DEBUG", "DELETE");
+                changeStatusPopUp.dismiss();
+                incidentResolved();
 
             }
         });

@@ -6,12 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.app.roadsafety.R;
-import com.app.roadsafety.model.incidents.IncidentDataRes;
-import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.ImageUtils;
 import com.app.roadsafety.view.MainActivity;
 
@@ -23,11 +19,13 @@ public class AdapterIncidentImagesList extends RecyclerView.Adapter<RecyclerView
     private List<String> horizontalList;
     Activity context;
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        public ImageView ivImage;
+        public ImageView ivImage,ivDelete;
 
         public ItemViewHolder(View view) {
             super(view);
             ivImage = (ImageView) view.findViewById(R.id.ivImage);
+            ivDelete = (ImageView) view.findViewById(R.id.ivDelete);
+
         }
     }
     public class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -69,8 +67,15 @@ public class AdapterIncidentImagesList extends RecyclerView.Adapter<RecyclerView
                 final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
                 if (horizontalList.get(position)!= null && horizontalList.size() > 0) {
 
-                    ImageUtils.loadFromInternalStorage(context, horizontalList.get(position), itemViewHolder.ivImage);
+                    ImageUtils.setImage(context, horizontalList.get(position), itemViewHolder.ivImage);
                 }
+                itemViewHolder.ivDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((MainActivity)context).removeImage(position);
+
+                    }
+                });
             }
             else if (holder instanceof FooterViewHolder) {
 

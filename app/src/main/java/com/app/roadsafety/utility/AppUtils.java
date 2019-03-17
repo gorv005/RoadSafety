@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -143,4 +145,76 @@ public class AppUtils {
         return null;
 
     }
+    public  static void setAddress(Address locationAddress, EditText editText) {
+        String address = locationAddress.getAddressLine(0);
+        String address1 = locationAddress.getAddressLine(1);
+        String city = locationAddress.getLocality();
+        String state = locationAddress.getAdminArea();
+        String country = locationAddress.getCountryName();
+        String postalCode = locationAddress.getPostalCode();
+
+        String currentLocation;
+
+        if (!TextUtils.isEmpty(address)) {
+            currentLocation = address;
+
+            if (!TextUtils.isEmpty(address1))
+                currentLocation += " " + address1;
+
+            if (!TextUtils.isEmpty(city)) {
+                currentLocation += " " + city;
+
+                if (!TextUtils.isEmpty(postalCode))
+                    currentLocation += " - " + postalCode;
+            } else {
+                if (!TextUtils.isEmpty(postalCode))
+                    currentLocation += " " + postalCode;
+            }
+
+            if (!TextUtils.isEmpty(state))
+                currentLocation += " " + state;
+
+            if (!TextUtils.isEmpty(country))
+                currentLocation += " " + country;
+
+            editText.setText(currentLocation);
+        }
+    }
+
+    public  static void setAddress(Address locationAddress, TextView textView) {
+        String address = locationAddress.getAddressLine(0);
+        String address1 = locationAddress.getAddressLine(1);
+        String city = locationAddress.getLocality();
+        String state = locationAddress.getAdminArea();
+        String country = locationAddress.getCountryName();
+        String postalCode = locationAddress.getPostalCode();
+
+        String currentLocation;
+
+        if (!TextUtils.isEmpty(address)) {
+            currentLocation = address;
+
+            if (!TextUtils.isEmpty(address1))
+                currentLocation += " " + address1;
+
+            if (!TextUtils.isEmpty(city)) {
+                currentLocation += " " + city;
+
+                if (!TextUtils.isEmpty(postalCode))
+                    currentLocation += " - " + postalCode;
+            } else {
+                if (!TextUtils.isEmpty(postalCode))
+                    currentLocation += " " + postalCode;
+            }
+
+            if (!TextUtils.isEmpty(state))
+                currentLocation += " " + state;
+
+            if (!TextUtils.isEmpty(country))
+                currentLocation += " " + country;
+
+            textView.setText(currentLocation);
+        }
+    }
+
 }

@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.model.notification.NotificationResponse;
+import com.app.roadsafety.presenter.notification.INotificationPresenter;
+import com.app.roadsafety.presenter.notification.NotificationPresenterImpl;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
@@ -29,7 +34,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends BaseFragment {
+public class SettingsFragment extends BaseFragment implements INotificationPresenter.INotificationView {
 
 
     @BindView(R.id.rlProfile)
@@ -43,11 +48,20 @@ public class SettingsFragment extends BaseFragment {
     @BindView(R.id.rlLogout)
     RelativeLayout rlLogout;
     Unbinder unbinder;
+    INotificationPresenter iNotificationPresenter;
+    @BindView(R.id.tvNotificationCount)
+    TextView tvNotificationCount;
 
     public SettingsFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        iNotificationPresenter = new NotificationPresenterImpl(this, getActivity());
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +70,12 @@ public class SettingsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getNotificationList("" + 1);
     }
 
     @Override
@@ -103,11 +123,16 @@ public class SettingsFragment extends BaseFragment {
                 }
                 break;
             case R.id.rlLogout:
-                logoutDialog(getActivity(),getString(R.string.logout_confirm));
+                logoutDialog(getActivity(), getString(R.string.logout_confirm));
                 break;
         }
     }
 
+    void getNotificationList(String page) {
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iNotificationPresenter.getNotification(auth_token, page);
+
+    }
 
     public void logoutDialog(Context context, String msg) {
 
@@ -116,10 +141,10 @@ public class SettingsFragment extends BaseFragment {
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        TextView textView=(TextView)dialog.findViewById(R.id.tvMsg);
+        TextView textView = (TextView) dialog.findViewById(R.id.tvMsg);
         textView.setText(msg);
-        Button btnOk=(Button)dialog.findViewById(R.id.btnOk);
-        ImageView ivCross=(ImageView)dialog.findViewById(R.id.ivCross);
+        Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
         ivCross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,7 +155,7 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN,false);
+                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN, false);
                 gotoStart();
             }
         });
@@ -138,10 +163,38 @@ public class SettingsFragment extends BaseFragment {
         dialog.show();
     }
 
-    void gotoStart(){
+    void gotoStart() {
         Intent intent = new Intent(getActivity(), UserLoginActivity.class);
-        intent.putExtra(AppConstants.TAB_SELECTION,1);
+        intent.putExtra(AppConstants.TAB_SELECTION, 1);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSuccessNotificationResponse(NotificationResponse response) {
+        if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
+            if (response.getData().getMeta() != null && response.getData().getMeta().getPagination() != null) {
+               tvNotificationCount.setText( response.getData().getMeta().getPagination().getTotalEntries());
+                tvNotificationCount.setVisibility(View.VISIBLE);
+
+            }
+        } else {
+            tvNotificationCount.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void getResponseError(String response) {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
     }
 }

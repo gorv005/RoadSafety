@@ -1,11 +1,11 @@
-package com.app.roadsafety.model.incidents;
+package com.app.roadsafety.model.markresolved;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class IncidentAttribute {
+public class MarkResolvedAttribute {
     @SerializedName("description")
     @Expose
     private String description;
@@ -18,9 +18,6 @@ public class IncidentAttribute {
     @SerializedName("longitude")
     @Expose
     private Float longitude;
-    @SerializedName("address")
-    @Expose
-    private String address;
     @SerializedName("images")
     @Expose
     private List<String> images = null;
@@ -42,6 +39,7 @@ public class IncidentAttribute {
     @SerializedName("resolved_marked_by")
     @Expose
     private String resolvedMarkedBy;
+
     public String getDescription() {
         return description;
     }
@@ -98,14 +96,6 @@ public class IncidentAttribute {
         this.createdAt = createdAt;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public List<String> getResolvedImages() {
         return resolvedImages;
     }
@@ -114,12 +104,12 @@ public class IncidentAttribute {
         this.resolvedImages = resolvedImages;
     }
 
-    public Boolean getResolved() {
+    public Boolean getIsResolved() {
         return isResolved;
     }
 
-    public void setResolved(Boolean resolved) {
-        isResolved = resolved;
+    public void setIsResolved(Boolean isResolved) {
+        this.isResolved = isResolved;
     }
 
     public String getResolvedText() {
