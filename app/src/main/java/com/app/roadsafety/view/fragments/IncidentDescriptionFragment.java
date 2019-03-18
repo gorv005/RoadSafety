@@ -121,7 +121,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         iIncidentListPresenter = new IncidentListPresenterPresenterImpl(this, getActivity());
         iCreateIncidentPresenter = new CreateIncidentPresenterImpl(this, getActivity());
         iMarkResolvedPresenter = new MarkResolvedPresenterImpl(this, getActivity());
-
+        incidentId = getArguments().getString(AppConstants.INCIDENT_ID);
     }
 
 
@@ -138,13 +138,14 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        incidentId = getArguments().getString(AppConstants.INCIDENT_ID);
+
         getDetailsOfIncidents();
 
     }
 
 
     void getDetailsOfIncidents() {
+        vpAdds.setAdapter(null);
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
         iIncidentListPresenter.getIncidentDetails(auth_token, incidentId);
     }
@@ -174,7 +175,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     }
     void gotoUpdateIncident() {
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(1, latitude, longitude, AppConstants.INCIDENT_ACTION_EDIT, incidentDetailResponse));
+            mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(2, latitude, longitude, AppConstants.INCIDENT_ACTION_EDIT, incidentDetailResponse));
         }
     }
 
@@ -309,11 +310,16 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
             latitude = "" + response.getData().getAttributes().getLatitude();
             longitude = "" + response.getData().getAttributes().getLongitude();
             mImageList.clear();
+            List<String> strings=new ArrayList<>();
+
             for (int i = 0; i < response.getData().getAttributes().getImages().size(); i++) {
                 mImageList.add(response.getData().getAttributes().getImages().get(i));
+                strings.add(response.getData().getAttributes().getImages().get(i));
             }
-            vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
-            tabLayout.setupWithViewPager(vpAdds, true);
+            vpAdds.removeAllViews();
+
+            vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), strings, AppConstants.IS_FROM_REMOTE));
+            tabLayout.setupWithViewPager(vpAdds, false);
             Address address=util.getAddress(getActivity(),Double.parseDouble(latitude),Double.parseDouble(longitude));
             AppUtils.setAddress(address,tvAddress);
 

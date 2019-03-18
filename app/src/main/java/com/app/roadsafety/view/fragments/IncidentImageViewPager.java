@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.ImageUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -107,7 +108,9 @@ public class IncidentImageViewPager extends Fragment {
     }
 
     void fromRemote(){
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
+
+        ImageUtils.setImage(getActivity(),mParam2,iv_adds);
+   /*     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
                 // You can pass your own memory cache implementation
                 .diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .build();
@@ -143,7 +146,7 @@ public class IncidentImageViewPager extends Fragment {
             }
         });
 
-        imageLoader.displayImage(mParam2,iv_adds,options );
+        imageLoader.displayImage(mParam2,iv_adds,options );*/
     }
 
 }
