@@ -477,7 +477,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
             @Override
             public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                hideProgress();
+
               /*  long _bytesCurrent = bytesCurrent;
                 long _bytesTotal = bytesTotal;
 
