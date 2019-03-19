@@ -398,37 +398,47 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     @Override
     public void onSuccessCreateIncidentResponse(CreateIncidentResponse response) {
-        Log.e("DEBUG", "Incident Created");
-        if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
-            String error = "";
-            for (int i = 0; i < response.getErrors().size(); i++) {
-                error = error + response.getErrors().get(i) + "\n";
-            }
-            util.resultDialog(getActivity(), error);
-        } else {
-            if (mFragmentNavigation != null) {
-                mFragmentNavigation.pushFragment(FragmentIncidentSuccess.newInstance(1));
-            }
-            //   Toast.makeText(getActivity(),getString(R.string.incident_created),Toast.LENGTH_LONG).show();
+        try {
+            Log.e("DEBUG", "Incident Created");
+            if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
+                String error = "";
+                for (int i = 0; i < response.getErrors().size(); i++) {
+                    error = error + response.getErrors().get(i) + "\n";
+                }
+                util.resultDialog(getActivity(), error);
+            } else {
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(FragmentIncidentSuccess.newInstance(1));
+                }
+                //   Toast.makeText(getActivity(),getString(R.string.incident_created),Toast.LENGTH_LONG).show();
 
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onSuccessCityHallResponse(CityHallResponse response) {
-        cityHallResponse = response;
-        for (int i = 0; i < response.getData().getData().size(); i++) {
-            cityHallList.add(response.getData().getData().get(i).getAttributes().getName());
+        try {
+            cityHallResponse = response;
+            for (int i = 0; i < response.getData().getData().size(); i++) {
+                cityHallList.add(response.getData().getData().get(i).getAttributes().getName());
+            }
+            spinnerArrayAdapter = new ArrayAdapter<String>
+                    (getActivity(), android.R.layout.simple_spinner_item,
+                            cityHallList);
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            spninnerCityHall.setAdapter(spinnerArrayAdapter);
+
+            if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
+                setEditValue();
+            }
         }
-        spinnerArrayAdapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_spinner_item,
-                        cityHallList);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spninnerCityHall.setAdapter(spinnerArrayAdapter);
-
-        if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
-            setEditValue();
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -504,15 +514,20 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     @Override
     public void onSuccessUpdateIncidentResponse(CreateIncidentResponse response) {
-        if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
-            String error = "";
-            for (int i = 0; i < response.getErrors().size(); i++) {
-                error = error + response.getErrors().get(i) + "\n";
+        try {
+            if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
+                String error = "";
+                for (int i = 0; i < response.getErrors().size(); i++) {
+                    error = error + response.getErrors().get(i) + "\n";
+                }
+                util.resultDialog(getActivity(), error);
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.incident_update), Toast.LENGTH_LONG).show();
+                getActivity().onBackPressed();
             }
-            util.resultDialog(getActivity(), error);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.incident_update), Toast.LENGTH_LONG).show();
-            getActivity().onBackPressed();
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 

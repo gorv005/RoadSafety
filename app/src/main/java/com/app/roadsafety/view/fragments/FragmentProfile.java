@@ -34,10 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FragmentProfile extends BaseFragment implements IProfilePresenter.IProfileView {
 
 
-    @BindView(R.id.ivback)
-    ImageView ivback;
-    @BindView(R.id.tvFeedTitle)
-    TextView tvFeedTitle;
+
     @BindView(R.id.ivProfile)
     CircleImageView ivProfile;
     @BindView(R.id.tvName)
@@ -105,24 +102,28 @@ public class FragmentProfile extends BaseFragment implements IProfilePresenter.I
 
     @Override
     public void onSuccessProfileResponse(ProfileResponse response) {
-        if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
+        try {
+            if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
 
-            String error = "";
-            for (int i = 0; i < response.getErrors().size(); i++) {
-                error = error + response.getErrors().get(i) + "\n";
-            }
-            util.resultDialog(getActivity(), error);
-        } else {
-            if(response.getData().getLinks().getProfilePicture()==null || response.getData().getLinks().getProfilePicture().equals("")) {
-                ImageUtils.loadImage(getActivity(),"profile_image",ivProfile);
-            }
-            else {
-                ImageUtils.setImage(getActivity(), response.getData().getLinks().getProfilePicture(), ivProfile);
+                String error = "";
+                for (int i = 0; i < response.getErrors().size(); i++) {
+                    error = error + response.getErrors().get(i) + "\n";
+                }
+                util.resultDialog(getActivity(), error);
+            } else {
+                if (response.getData().getLinks().getProfilePicture() == null || response.getData().getLinks().getProfilePicture().equals("")) {
+                    ImageUtils.loadImage(getActivity(), "profile_image", ivProfile);
+                } else {
+                    ImageUtils.setImage(getActivity(), response.getData().getLinks().getProfilePicture(), ivProfile);
+
+                }
+                tvName.setText(response.getData().getAttributes().getName());
+                tvEmail.setText(response.getData().getAttributes().getEmail());
 
             }
-            tvName.setText(response.getData().getAttributes().getName());
-            tvEmail.setText(response.getData().getAttributes().getEmail());
-
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -141,7 +142,7 @@ public class FragmentProfile extends BaseFragment implements IProfilePresenter.I
         util.hideDialog();
     }
 
-    @OnClick(R.id.ivback)
+    @OnClick(R.id.rlBack)
     public void onViewClicked() {
         getActivity().onBackPressed();
     }

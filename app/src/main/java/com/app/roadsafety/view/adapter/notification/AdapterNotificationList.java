@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.notification.NotificationData;
 import com.app.roadsafety.utility.AppUtils;
+import com.app.roadsafety.view.MainActivity;
 
 import java.util.List;
 
@@ -77,6 +78,14 @@ public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.V
                 itemViewHolder.ivNotificationType.setImageResource(R.drawable.new_notification_icon);
                 itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.notification_recieved));
             }
+
+            itemViewHolder.rlNotifications.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity)context).gotoIncidentDescription(horizontalList.get(position).getRelationships().getNotifiable().getData().getId());
+
+                }
+            });
         }
 
     }

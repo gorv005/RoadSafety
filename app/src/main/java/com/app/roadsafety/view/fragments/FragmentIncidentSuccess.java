@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.roadsafety.R;
+import com.app.roadsafety.view.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,5 +33,10 @@ public class FragmentIncidentSuccess extends BaseFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_incident_success, container, false);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.map), false);
 
+    }
 }

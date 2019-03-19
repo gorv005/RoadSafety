@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RoadSafety</string>
+    <string name="app_name">Road Safety</string>
     <string name="title_activity_incident_maps">Map</string>
     <string name="watch_out_big_cars">Watch out for big cars</string>
     <string name="stay_away">Stay away from big cars turning the corners</string>
@@ -88,5 +88,7 @@
     <string name="incident_reported_text">There is a new incident reported in your area</string>
     <string name="incident_resolved_text">The reported incident in your area has been resolved , Click here to view images of the measures taken</string>
     <string name="incident_blocked_text">Your post has been blocked/deleted by the admin</string>
+    <string name="internet_permission">No network connectivity - This App requires an internet connection.</string>
+    <string name="retry">Retry</string>
 
 </resources>

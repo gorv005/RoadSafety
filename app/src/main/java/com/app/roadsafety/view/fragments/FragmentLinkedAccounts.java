@@ -35,10 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FragmentLinkedAccounts extends BaseFragment implements IProfilePresenter.IProfileView {
 
 
-    @BindView(R.id.ivback)
-    ImageView ivback;
-    @BindView(R.id.tvFeedTitle)
-    TextView tvFeedTitle;
+
     @BindView(R.id.ivProfile)
     CircleImageView ivProfile;
     @BindView(R.id.tvName)
@@ -116,23 +113,27 @@ public class FragmentLinkedAccounts extends BaseFragment implements IProfilePres
     }
     @Override
     public void onSuccessProfileResponse(ProfileResponse response) {
-         if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
-             rlNoLinkedAcc.setVisibility(View.VISIBLE);
-             rlLinkedAccount.setVisibility(View.GONE);
-            String error = "";
-            for (int i = 0; i < response.getErrors().size(); i++) {
-                error = error + response.getErrors().get(i) + "\n";
-            }
-            util.resultDialog(getActivity(), error);
-        }
-        else {
-             rlNoLinkedAcc.setVisibility(View.GONE);
-             rlLinkedAccount.setVisibility(View.VISIBLE);
-             ImageUtils.setImage(getActivity(),response.getData().getLinks().getProfilePicture(),ivProfile);
-             tvName.setText(response.getData().getAttributes().getName());
-             tvEmail.setText(response.getData().getAttributes().getEmail());
+        try {
+            if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
+                rlNoLinkedAcc.setVisibility(View.VISIBLE);
+                rlLinkedAccount.setVisibility(View.GONE);
+                String error = "";
+                for (int i = 0; i < response.getErrors().size(); i++) {
+                    error = error + response.getErrors().get(i) + "\n";
+                }
+                util.resultDialog(getActivity(), error);
+            } else {
+                rlNoLinkedAcc.setVisibility(View.GONE);
+                rlLinkedAccount.setVisibility(View.VISIBLE);
+                ImageUtils.setImage(getActivity(), response.getData().getLinks().getProfilePicture(), ivProfile);
+                tvName.setText(response.getData().getAttributes().getName());
+                tvEmail.setText(response.getData().getAttributes().getEmail());
 
-         }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -149,7 +150,7 @@ public class FragmentLinkedAccounts extends BaseFragment implements IProfilePres
         util.hideDialog();
     }
 
-    @OnClick(R.id.ivback)
+    @OnClick(R.id.rlBack)
     public void onViewClicked() {
         getActivity().onBackPressed();
     }

@@ -109,6 +109,9 @@ public class NotificationFragment extends BaseFragment implements INotificationP
         rvNotification.addOnScrollListener(recyclerViewOnScrollListener);
 
         if (notificationData != null && notificationData.size() > 0) {
+            rvNotification.setVisibility(View.VISIBLE);
+            rlNoNotification.setVisibility(View.GONE);
+            rlParentView.setBackgroundColor(Color.WHITE);
             adapterNotificationList = new AdapterNotificationList(notificationData, getActivity());
             rvNotification.setAdapter(adapterNotificationList);
         } else {
@@ -154,7 +157,11 @@ public class NotificationFragment extends BaseFragment implements INotificationP
         //  rvNotification.setAdapter(adapterNotificationList);
     }
 
-
+    public void gotoIncidentDescription(String id){
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1,id));
+        }
+    }
     void getNotificationList(String page) {
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
         iNotificationPresenter.getNotification(auth_token, page);
@@ -172,6 +179,7 @@ public class NotificationFragment extends BaseFragment implements INotificationP
     public void onSuccessNotificationResponse(NotificationResponse response) {
         try {
             if (notificationData != null && notificationData.size() > 0 && page != 1) {
+                rvNotification.setVisibility(View.VISIBLE);
                 notificationData.addAll(response.getData().getData());
                 adapterNotificationList.notifyDataSetChanged();
             } else if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
@@ -183,7 +191,7 @@ public class NotificationFragment extends BaseFragment implements INotificationP
             } else {
                 if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
                     rvNotification.setVisibility(View.VISIBLE);
-                    rlParentView.setVisibility(View.GONE);
+                    rlNoNotification.setVisibility(View.GONE);
                     rlParentView.setBackgroundColor(Color.WHITE);
                     if (response.getData().getMeta() != null && response.getData().getMeta().getPagination() != null) {
                         totalPages = response.getData().getMeta().getPagination().getTotalPages();
@@ -193,7 +201,7 @@ public class NotificationFragment extends BaseFragment implements INotificationP
                     rvNotification.setAdapter(adapterNotificationList);
                 } else {
                     rvNotification.setVisibility(View.GONE);
-                    rlParentView.setVisibility(View.VISIBLE);
+                    rlNoNotification.setVisibility(View.VISIBLE);
                     rlParentView.setBackgroundColor(Color.GRAY);
                 }
             }
@@ -219,7 +227,7 @@ public class NotificationFragment extends BaseFragment implements INotificationP
         util.hideDialog();
     }
 
-    @OnClick(R.id.ivBack)
+    @OnClick(R.id.rlBack)
     public void onViewClicked() {
         getActivity().onBackPressed();
     }

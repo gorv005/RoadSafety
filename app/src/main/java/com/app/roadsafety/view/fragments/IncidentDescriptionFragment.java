@@ -181,112 +181,124 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
 
     public void alertDialog() {
+        try {
+            final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+            dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
+            dialog.setCancelable(true);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            Button btnDelete = (Button) dialog.findViewById(R.id.btnDelete);
+            Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 
-        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
-        dialog.setCancelable(true);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        Button btnDelete = (Button) dialog.findViewById(R.id.btnDelete);
-        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    deleteIncident();
 
-        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                deleteIncident();
-
-            }
-        });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+                }
+            });
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
 
 //to set the message
-        dialog.show();
+            dialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void incidentResolved() {
+        try {
 
-        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
-        dialog.setCancelable(true);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        Button btnDelete = (Button) dialog.findViewById(R.id.btnDelete);
-        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-        TextView tvMsg = (TextView) dialog.findViewById(R.id.tvMsg);
-        tvMsg.setText(getString(R.string.are_you_sure_you_want_to_reolved_incident));
-        btnDelete.setText(getString(R.string.ok));
-        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                markResolved(incidentId);
+            final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+            dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
+            dialog.setCancelable(true);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            Button btnDelete = (Button) dialog.findViewById(R.id.btnDelete);
+            Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+            TextView tvMsg = (TextView) dialog.findViewById(R.id.tvMsg);
+            tvMsg.setText(getString(R.string.are_you_sure_you_want_to_reolved_incident));
+            btnDelete.setText(getString(R.string.ok));
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    markResolved(incidentId);
 
-            }
-        });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+                }
+            });
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
 
 //to set the message
-        dialog.show();
+            dialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void reportAbuseDialog() {
+        try {
+            final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+            dialog.setContentView(R.layout.report_abuse_comment_dailog); //I saved the xml file above as yesnomessage.xml
+            dialog.setCancelable(true);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            final EditText etComment = (EditText) dialog.findViewById(R.id.etComment);
+            Button btnSubmit = (Button) dialog.findViewById(R.id.btnSubmit);
 
-        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.report_abuse_comment_dailog); //I saved the xml file above as yesnomessage.xml
-        dialog.setCancelable(true);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        final EditText etComment = (EditText) dialog.findViewById(R.id.etComment);
-        Button btnSubmit = (Button) dialog.findViewById(R.id.btnSubmit);
-
-        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(etComment.getText().toString().length()>0) {
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     dialog.dismiss();
+                }
+            });
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (etComment.getText().toString().length() > 0) {
+                        dialog.dismiss();
 
-                    reportAbuseIncident(etComment.getText().toString());
+                        reportAbuseIncident(etComment.getText().toString());
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.comment_error), Toast.LENGTH_LONG).show();
+                    }
                 }
-                else {
-                    Toast.makeText(getActivity(),getString(R.string.comment_error),Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+            });
 
 //to set the message
-        dialog.show();
+            dialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -303,32 +315,35 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
     @Override
     public void onSuccessIncidentDetailsResponse(IncidentDetailResponse response) {
-        if (response != null && response.getData() != null) {
-            incidentDetailResponse = response;
-            tvDescription.setText(response.getData().getAttributes().getDescription());
-            tvDate.setText(AppUtils.getDate(response.getData().getAttributes().getCreatedAt()));
-            latitude = "" + response.getData().getAttributes().getLatitude();
-            longitude = "" + response.getData().getAttributes().getLongitude();
-            mImageList.clear();
-            List<String> strings=new ArrayList<>();
+        try {
+            if (response != null && response.getData() != null) {
+                incidentDetailResponse = response;
+                tvDescription.setText(response.getData().getAttributes().getDescription());
+                tvDate.setText(AppUtils.getDate(response.getData().getAttributes().getCreatedAt()));
+                latitude = "" + response.getData().getAttributes().getLatitude();
+                longitude = "" + response.getData().getAttributes().getLongitude();
+                mImageList.clear();
+                vpAdds.removeAllViews();
+                vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
+                tabLayout.setupWithViewPager(vpAdds, false);
+                for (int i = 0; i < response.getData().getAttributes().getImages().size(); i++) {
+                    mImageList.add(response.getData().getAttributes().getImages().get(i));
+                }
+                vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
+                tabLayout.setupWithViewPager(vpAdds, false);
+                Address address = util.getAddress(getActivity(), Double.parseDouble(latitude), Double.parseDouble(longitude));
+                AppUtils.setAddress(address, tvAddress);
 
-            for (int i = 0; i < response.getData().getAttributes().getImages().size(); i++) {
-                mImageList.add(response.getData().getAttributes().getImages().get(i));
-                strings.add(response.getData().getAttributes().getImages().get(i));
+            } else if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
+                String error = "";
+                for (int i = 0; i < response.getErrors().size(); i++) {
+                    error = error + response.getErrors().get(i) + "\n";
+                }
+                util.resultDialog(getActivity(), error);
             }
-            vpAdds.removeAllViews();
-
-            vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), strings, AppConstants.IS_FROM_REMOTE));
-            tabLayout.setupWithViewPager(vpAdds, false);
-            Address address=util.getAddress(getActivity(),Double.parseDouble(latitude),Double.parseDouble(longitude));
-            AppUtils.setAddress(address,tvAddress);
-
-        } else if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
-            String error = "";
-            for (int i = 0; i < response.getErrors().size(); i++) {
-                error = error + response.getErrors().get(i) + "\n";
-            }
-            util.resultDialog(getActivity(), error);
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -362,15 +377,20 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
     @Override
     public void onSuccessReportAbuseIncidentResponse(ReportAbuseIncidentResponse response) {
-        if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
-            String error = "";
-            for (int i = 0; i < response.getErrors().size(); i++) {
-                error = error + response.getErrors().get(i) + "\n";
-            }
-            util.resultDialog(getActivity(), error);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.report_abuse_msg), Toast.LENGTH_LONG).show();
+        try {
+            if (response.getData() == null && response.getErrors() != null && response.getErrors().size() > 0) {
+                String error = "";
+                for (int i = 0; i < response.getErrors().size(); i++) {
+                    error = error + response.getErrors().get(i) + "\n";
+                }
+                util.resultDialog(getActivity(), error);
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.report_abuse_msg), Toast.LENGTH_LONG).show();
 
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -493,7 +513,12 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         TextView tvEdit = (TextView) layout.findViewById(R.id.tvEdit);
         TextView tvDelete = (TextView) layout.findViewById(R.id.tvDelete);
         TextView tvMarkResolved = (TextView) layout.findViewById(R.id.tvMarkResolved);
+        ImageView ivResolve = (ImageView) layout.findViewById(R.id.ivResolve);
 
+        if(incidentDetailResponse!=null && incidentDetailResponse.getData()!=null && incidentDetailResponse.getData().getAttributes()!=null &&incidentDetailResponse.getData().getAttributes().getResolved()){
+            tvMarkResolved.setVisibility(View.GONE);
+            ivResolve.setVisibility(View.GONE);
+        }
         tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

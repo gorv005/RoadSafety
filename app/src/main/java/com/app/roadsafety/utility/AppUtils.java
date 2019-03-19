@@ -1,11 +1,14 @@
 package com.app.roadsafety.utility;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -91,7 +94,8 @@ public class AppUtils {
 
    public static String getDate(String utcDate){
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        SimpleDateFormat output = new SimpleDateFormat("MMM d, yyyy, h:mm a");
+     //   SimpleDateFormat output = new SimpleDateFormat("MMM d, yyyy, h:mm a");
+       SimpleDateFormat output = new SimpleDateFormat("dd/MM/yyyy");
 
         Date d = null;
         String formatted="";
@@ -127,7 +131,15 @@ public class AppUtils {
             ctx.getResources().updateConfiguration(configuration, displayMetrics);
         }
     }
-
+    public static boolean isInternetOn(Activity activity) {
+        ConnectivityManager cm = (ConnectivityManager) activity
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
     public Address getAddress(Context context,double latitude, double longitude)
     {
         Geocoder geocoder;

@@ -172,14 +172,19 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
 
     @Override
     public void onSuccessNotificationResponse(NotificationResponse response) {
-        if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
-            if (response.getData().getMeta() != null && response.getData().getMeta().getPagination() != null) {
-               tvNotificationCount.setText( response.getData().getMeta().getPagination().getTotalEntries());
-                tvNotificationCount.setVisibility(View.VISIBLE);
+        try {
+            if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
+                if (response.getData().getMeta() != null && response.getData().getMeta().getPagination() != null) {
+                    tvNotificationCount.setText("" + response.getData().getMeta().getPagination().getTotalEntries());
+                    tvNotificationCount.setVisibility(View.VISIBLE);
 
+                }
+            } else {
+                tvNotificationCount.setVisibility(View.GONE);
             }
-        } else {
-            tvNotificationCount.setVisibility(View.GONE);
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 

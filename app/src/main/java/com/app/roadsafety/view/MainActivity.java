@@ -382,6 +382,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             ((IncidentListFragment) fragment).gotoIncidentDescription(id);
 
         }
+        else if (fragment != null && fragment instanceof NotificationFragment) {
+            ((NotificationFragment) fragment).gotoIncidentDescription(id);
+
+        }
     }
 
 }

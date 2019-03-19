@@ -43,10 +43,14 @@ import com.app.roadsafety.model.feed.Feed;
 import com.app.roadsafety.model.incidents.IncidentDataRes;
 import com.app.roadsafety.model.incidents.IncidentDetailResponse;
 import com.app.roadsafety.model.incidents.IncidentResponse;
+import com.app.roadsafety.model.region.RegionUpdateRequest;
+import com.app.roadsafety.model.region.User;
 import com.app.roadsafety.presenter.authentication.AuthenticationPresenterImpl;
 import com.app.roadsafety.presenter.authentication.IAuthenticationPresenter;
 import com.app.roadsafety.presenter.incident.IIncidentListPresenter;
 import com.app.roadsafety.presenter.incident.IncidentListPresenterPresenterImpl;
+import com.app.roadsafety.presenter.region.IRegionPresenter;
+import com.app.roadsafety.presenter.region.RegionPresenterImpl;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.GpsUtils;
@@ -92,7 +96,7 @@ import static android.view.View.GONE;
  * A simple {@link Fragment} subclass.
  */
 public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView, IIncidentListPresenter.IIncidentView {
+        GoogleApiClient.OnConnectionFailedListener, IAuthenticationPresenter.IAuthenticationView, IIncidentListPresenter.IIncidentView, IRegionPresenter.IRegionView {
 
     public Marker marker;
     @BindView(R.id.mapview)
@@ -119,6 +123,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     List<Feed> markerInfo;
     IAuthenticationPresenter iAuthenticationPresenter;
     IIncidentListPresenter iIncidentListPresenter;
+    IRegionPresenter iRegionPresenter;
     AppUtils util;
     LatLng latLng;
     String latitude, longitude;
@@ -154,6 +159,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         circleOptions = new CircleOptions();
         iAuthenticationPresenter = new AuthenticationPresenterImpl(this, getActivity());
         iIncidentListPresenter = new IncidentListPresenterPresenterImpl(this, getActivity());
+        iRegionPresenter=new RegionPresenterImpl(this,getActivity());
+
         util = new AppUtils();
 
 
@@ -638,8 +645,9 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             Log.e("Zoom Level Animate:", animateZomm + "");
             latLng = point;
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel+2), 2000, null);
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel+7), 2000, null);
             getAllIncidentList(incidentType);
+            setRegion();
         }
     }
 
@@ -715,90 +723,99 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
 
     public void addIncidentDialog() {
+        try {
+            final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+            dialog.setContentView(R.layout.add_incident_location_pop_up); //I saved the xml file above as yesnomessage.xml
+            dialog.setCancelable(true);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            Button btnAddLocation = (Button) dialog.findViewById(R.id.btnAddLocation);
+            Button btnSelectLocationOnMap = (Button) dialog.findViewById(R.id.btnSelectLocationOnMap);
 
-        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.add_incident_location_pop_up); //I saved the xml file above as yesnomessage.xml
-        dialog.setCancelable(true);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        Button btnAddLocation = (Button) dialog.findViewById(R.id.btnAddLocation);
-        Button btnSelectLocationOnMap = (Button) dialog.findViewById(R.id.btnSelectLocationOnMap);
-
-        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        btnAddLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                isAddLocationOnMap = false;
-                if (SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
-                    loginDialog();
-                } else {
-                    gotoAddIncident();
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
                 }
-            }
-        });
-        btnSelectLocationOnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                isAddLocationOnMap = true;
-
-                if (SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
-                    loginDialog();
-                } else {
-                    gotoAddIncidentOnMap();
+            });
+            btnAddLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    isAddLocationOnMap = false;
+                    if (SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
+                        loginDialog();
+                    } else {
+                        gotoAddIncident();
+                    }
                 }
-            }
-        });
+            });
+            btnSelectLocationOnMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    isAddLocationOnMap = true;
+
+                    if (SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
+                        loginDialog();
+                    } else {
+                        gotoAddIncidentOnMap();
+                    }
+                }
+            });
 
 //to set the message
-        dialog.show();
+            dialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void loginDialog() {
+        try {
+            final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+            dialog.setContentView(R.layout.login_pop_up); //I saved the xml file above as yesnomessage.xml
+            dialog.setCancelable(true);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            Button btnFacebook = (Button) dialog.findViewById(R.id.btnFacebook);
+            Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
 
-        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.login_pop_up); //I saved the xml file above as yesnomessage.xml
-        dialog.setCancelable(true);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        Button btnFacebook = (Button) dialog.findViewById(R.id.btnFacebook);
-        Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            btnFacebook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    String applicationId = getResources().getString(R.string.facebook_app_id);
+                    ArrayList<String> permissions = new ArrayList<String>();
+                    permissions.add("public_profile");
+                    permissions.add("email");
+                    FacebookLoginActivity.launch(getActivity(), applicationId, permissions);
 
-        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
-        ivCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        btnFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                String applicationId = getResources().getString(R.string.facebook_app_id);
-                ArrayList<String> permissions = new ArrayList<String>();
-                permissions.add("public_profile");
-                permissions.add("email");
-                FacebookLoginActivity.launch(getActivity(), applicationId, permissions);
-
-            }
-        });
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+                }
+            });
+            btnClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
 //to set the message
-        dialog.show();
+
     }
 
     void getAllIncidentList(String incident_type) {
@@ -911,7 +928,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     @Override
     public void getFacebookLoginResponse(LoginResponse response) {
-        Log.e("DEBUG", "" + response);
+       // Log.e("DEBUG", "" + response);
         SharedPreference.getInstance(getActivity()).setUser(AppConstants.LOGIN_USER, response);
         SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN, true);
         SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_GUEST_LOGIN, false);
@@ -929,32 +946,38 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     @Override
     public void onSuccessIncidentListResponse(IncidentResponse response) {
-        if (mMap != null) {
-            mMap.clear();
-        }
-        if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
-            incidentDataResList = response.getData().getData();
+        try {
+
             if (mMap != null) {
+                mMap.clear();
+            }
+            if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
+                incidentDataResList = response.getData().getData();
+                if (mMap != null) {
 
-                //    mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+                    //    mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
-                for (int i = 0; i < incidentDataResList.size(); i++) {
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
-                    //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
+                    for (int i = 0; i < incidentDataResList.size(); i++) {
+                        mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
+                        //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
+
+                    }
 
                 }
-
-            }
-            if (incidentDataResList != null && incidentDataResList.size() > 0) {
-                bottomSheet2.setVisibility(View.VISIBLE);
-                adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
-                rvIncident.setAdapter(adapterIncidentList);
-                tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
+                if (incidentDataResList != null && incidentDataResList.size() > 0) {
+                    bottomSheet2.setVisibility(View.VISIBLE);
+                    adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
+                    rvIncident.setAdapter(adapterIncidentList);
+                    tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
+                } else {
+                    bottomSheet2.setVisibility(GONE);
+                }
             } else {
                 bottomSheet2.setVisibility(GONE);
             }
-        } else {
-            bottomSheet2.setVisibility(GONE);
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -964,7 +987,17 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         }
     }
 
-
+    void setRegion() {
+        String reg=SharedPreference.getInstance(getActivity()).getString(AppConstants.REGION);
+        RegionUpdateRequest regionUpdateRequest=new RegionUpdateRequest();
+        User user=new User();
+        user.setRegion(reg);
+        user.setLat(latitude);
+        user.setLng(longitude);
+        regionUpdateRequest.setUser(user);
+        String auth_token= SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iRegionPresenter.setRegion(auth_token,regionUpdateRequest);
+    }
     public void gotoIncidentDescription(String id) {
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1, id));
@@ -973,6 +1006,11 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     @Override
     public void onSuccessIncidentDetailsResponse(IncidentDetailResponse response) {
+
+    }
+
+    @Override
+    public void onSuccessRegionResponse(LoginResponse response) {
 
     }
 

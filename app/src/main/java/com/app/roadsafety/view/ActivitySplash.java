@@ -1,5 +1,7 @@
 package com.app.roadsafety.view;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -14,9 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -48,7 +54,7 @@ public class ActivitySplash extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_splash);
-      //  setLocale();
+        setLocale();
         changeStatusBarColor();
 
     }
@@ -73,7 +79,7 @@ public class ActivitySplash extends AppCompatActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-
+                if (AppUtils.isInternetOn(ActivitySplash.this)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (checkPermission()) {
                             gotoStartApp();
@@ -81,14 +87,53 @@ public class ActivitySplash extends AppCompatActivity {
                             requestPermission();
                         }
                     } else {
-                       gotoStartApp();
+                        gotoStartApp();
                     }
                 }
+                else {
+                    intentCheck(ActivitySplash.this,getString(R.string.internet_permission));
+                }
+            }
 
                 // close this activity
 
         }, 4000);
 
+
+    }
+    public void intentCheck(Context context, String msg) {
+
+        try {
+            final Dialog dialog = new Dialog(context, R.style.FullHeightDialog); //this is a reference to the style above
+            dialog.setContentView(R.layout.result_pop_up); //I saved the xml file above as yesnomessage.xml
+            dialog.setCancelable(true);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            TextView textView = (TextView) dialog.findViewById(R.id.tvMsg);
+            textView.setText(msg);
+            Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+            btnOk.setText(getString(R.string.retry));
+            ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+            ivCross.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    onResume();
+                }
+            });
+//to set the message
+            dialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     void gotoStartApp(){

@@ -58,6 +58,7 @@
 
 
             <ImageView
+                android:id="@+id/ivResolve"
                 android:background="@color/grey"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

@@ -6,33 +6,40 @@
     android:paddingLeft="@dimen/desc_padding"
     android:paddingRight="@dimen/desc_padding"
     android:background="@drawable/shaded_back">
-    <RelativeLayout
-        android:layout_marginTop="20dp"
+    <LinearLayout
+        android:id="@+id/llBack"
+        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ivback"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/back" />
-
+        <RelativeLayout
+            android:id="@+id/rlBack"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/ivBack"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
         <TextView
-            android:id="@+id/tvFeedTitle"
-            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:maxLines="1"
+            android:layout_marginTop="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/linked_acccount"
+            android:textStyle="bold"
             android:textColor="@color/title_color"
-            android:textSize="@dimen/slide_title"
-            />
-
-        />
-    </RelativeLayout>
+            android:textSize="@dimen/slide_desc" />
+    </LinearLayout>
 
     />
     <RelativeLayout
