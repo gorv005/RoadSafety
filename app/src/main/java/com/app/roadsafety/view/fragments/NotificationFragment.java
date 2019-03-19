@@ -160,6 +160,7 @@ public class NotificationFragment extends BaseFragment implements INotificationP
     public void gotoIncidentDescription(String id){
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1,id));
+            readNotification(id);
         }
     }
     void getNotificationList(String page) {
@@ -167,13 +168,22 @@ public class NotificationFragment extends BaseFragment implements INotificationP
         iNotificationPresenter.getNotification(auth_token, page);
 
     }
+  public  void readNotification(String id) {
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iNotificationPresenter.readNotification(auth_token, id);
 
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
+
+    @Override
+    public void onSuccessReadNotificationResponse(NotificationResponse response) {
+
+    }
 
     @Override
     public void onSuccessNotificationResponse(NotificationResponse response) {

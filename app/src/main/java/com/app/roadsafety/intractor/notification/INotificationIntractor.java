@@ -9,6 +9,8 @@ public interface INotificationIntractor {
 
         void onSuccessNotificationResponse(NotificationResponse response);
 
+        void onSuccessReadNotificationResponse(NotificationResponse response);
+
         void onError(String response);
 
         Context getAPPContext();
@@ -17,5 +19,6 @@ public interface INotificationIntractor {
 
     public void getNotification(String auth_token, String page, OnFinishedListener listener);
 
+    public void readNotification(String auth_token, String id, OnFinishedListener listener);
 
 }

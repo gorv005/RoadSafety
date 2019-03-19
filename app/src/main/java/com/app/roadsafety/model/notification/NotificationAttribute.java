@@ -14,7 +14,9 @@ public class NotificationAttribute {
     @SerializedName("notified_by_user_name")
     @Expose
     private String notifiedByUserName;
-
+    @SerializedName("is_read")
+    @Expose
+    private Boolean isRead;
     public String getType() {
         return type;
     }
@@ -37,5 +39,13 @@ public class NotificationAttribute {
 
     public void setNotifiedByUserName(String notifiedByUserName) {
         this.notifiedByUserName = notifiedByUserName;
+    }
+
+    public Boolean getRead() {
+        return isRead;
+    }
+
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 }

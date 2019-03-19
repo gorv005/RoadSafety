@@ -1,6 +1,7 @@
 package com.app.roadsafety.view.adapter.notification;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,6 +87,12 @@ public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.V
 
                 }
             });
+            if(horizontalList.get(position).getAttributes().getRead()){
+                itemViewHolder.tvNotificationDesc.setTextColor(Color.GRAY);
+            }
+           else {
+                itemViewHolder.tvNotificationDesc.setTextColor(context.getResources().getColor(R.color.title_color));
+            }
         }
 
     }

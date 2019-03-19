@@ -36,6 +36,14 @@ public class NotificationPresenterImpl implements INotificationPresenter, INotif
     }
 
     @Override
+    public void onSuccessReadNotificationResponse(NotificationResponse response) {
+        if(mView!=null){
+           // mView.hideProgress();
+            mView.onSuccessReadNotificationResponse(response);
+        }
+    }
+
+    @Override
     public void onError(String response) {
         if(mView!=null){
             mView.hideProgress();
@@ -59,6 +67,14 @@ public class NotificationPresenterImpl implements INotificationPresenter, INotif
         if(mView!=null) {
             mView.showProgress();
             iNotificationIntractor.getNotification(auth_token,page, this);
+        }
+    }
+
+    @Override
+    public void readNotification(String auth_token, String id) {
+        if(mView!=null) {
+           // mView.showProgress();
+            iNotificationIntractor.readNotification(auth_token,id, this);
         }
     }
 

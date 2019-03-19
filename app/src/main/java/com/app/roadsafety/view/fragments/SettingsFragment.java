@@ -171,6 +171,11 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
     }
 
     @Override
+    public void onSuccessReadNotificationResponse(NotificationResponse response) {
+
+    }
+
+    @Override
     public void onSuccessNotificationResponse(NotificationResponse response) {
         try {
             if (response.getData() != null && response.getData().getData() != null && response.getData().getData().size() > 0) {
