@@ -83,17 +83,11 @@ public class AdapterIncidentHorizontalList extends RecyclerView.Adapter<Recycler
             itemViewHolder.rlIncident.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity)context).gotoIncidentDescription(horizontalList.get(position).getId());
+                    ((MainActivity)context).gotoIncidentDescription( position,"",horizontalList.get(position).getId());
 
                 }
             });
-            itemViewHolder.rlIncident.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainActivity)context).gotoIncidentDescription(horizontalList.get(position).getId());
 
-                }
-            });
             if(horizontalList.get(position).getAttributes().getResolved()){
                 itemViewHolder.ivIncidentType.setVisibility(View.VISIBLE);
             }

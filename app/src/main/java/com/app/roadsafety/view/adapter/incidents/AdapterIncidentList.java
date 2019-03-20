@@ -69,7 +69,7 @@ public class AdapterIncidentList extends RecyclerView.Adapter<RecyclerView.ViewH
             itemViewHolder.rlIncident.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity)context).gotoIncidentDescription(horizontalList.get(position).getId());
+                    ((MainActivity)context).gotoIncidentDescription(position,"",horizontalList.get(position).getId());
 
                 }
             });

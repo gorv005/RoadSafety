@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
+import com.app.roadsafety.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
@@ -28,6 +30,14 @@ public class ImageUtils {
         Glide.with(context)
                 .load(url)
                 //.placeholder(R.drawable.missing)
+                // .error(R.drawable.missing)
+                .into(imageView);
+
+
+    }
+    public static void setImage(Context context, String url, int placeholder,ImageView imageView){
+        Glide.with(context)
+                .load(url).apply(new RequestOptions().placeholder(placeholder))
                 // .error(R.drawable.missing)
                 .into(imageView);
 

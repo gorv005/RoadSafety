@@ -78,7 +78,7 @@ public class GuidelinesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rlGuideLineView.setBackgroundColor(Color.parseColor(colorCode[pos]));
         // ImageUtils.loadImage(getActivity(),guidelines.getImage(),imageGuideline);
-        ImageUtils.setImage(getActivity(), guidelines.getLinks().getOriginalImage(), imageGuideline);
+        ImageUtils.setImage(getActivity(), guidelines.getLinks().getOriginalImage(),R.drawable.loader_image_a, imageGuideline);
         tvTitle.setText(guidelines.getAttributes().getTitle());
         tvDesc.setText(guidelines.getAttributes().getDescription());
     }

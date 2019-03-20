@@ -97,26 +97,28 @@ public class MapLocation extends BaseFragment implements OnMapReadyCallback {
             if (!success) {
                 Log.e("DEBUG", "Style parsing failed.");
             }
-        } catch (Resources.NotFoundException e) {
-            Log.e("DEBUG", "Can't find style. Error: ", e);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    mMap.setMyLocationEnabled(true);
+                }
+            } else {
                 mMap.setMyLocationEnabled(true);
             }
-        } else {
-            mMap.setMyLocationEnabled(true);
+            mMap.clear();
+            LatLng latLng = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.add_location_icon)));
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15.0f).build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+            mMap.moveCamera(cameraUpdate);
         }
-        mMap.clear();
-        LatLng latLng=new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude));
-        mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.add_location_icon)));
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15.0f).build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        mMap.moveCamera(cameraUpdate);
+        catch (Exception e) {
+            Log.e("DEBUG", "Can't find style. Error: ", e);
+        }
     }
 
     @Override

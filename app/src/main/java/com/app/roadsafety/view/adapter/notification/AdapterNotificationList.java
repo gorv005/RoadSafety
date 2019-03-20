@@ -70,7 +70,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.V
                 itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.incident_resolved_text));
 
             }
-          else   if(horizontalList.get(position).getAttributes().getType().equalsIgnoreCase("Post_reported")){
+          else   if(horizontalList.get(position).getAttributes().getType().equalsIgnoreCase("incident_disapproved")){
                 itemViewHolder.ivNotificationType.setImageResource(R.drawable.new_notification_icon);
                 itemViewHolder.tvNotificationDesc.setText(context.getString(R.string.incident_blocked_text));
 
@@ -83,12 +83,14 @@ public class AdapterNotificationList extends RecyclerView.Adapter<RecyclerView.V
             itemViewHolder.rlNotifications.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((MainActivity)context).gotoIncidentDescription(horizontalList.get(position).getRelationships().getNotifiable().getData().getId());
+                    ((MainActivity)context).gotoIncidentDescription(position,horizontalList.get(position).getId(),horizontalList.get(position).getRelationships().getNotifiable().getData().getId());
 
                 }
             });
             if(horizontalList.get(position).getAttributes().getRead()){
                 itemViewHolder.tvNotificationDesc.setTextColor(Color.GRAY);
+                itemViewHolder.ivNotificationType.setImageResource(0);
+
             }
            else {
                 itemViewHolder.tvNotificationDesc.setTextColor(context.getResources().getColor(R.color.title_color));

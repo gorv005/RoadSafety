@@ -372,18 +372,18 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
         }
     }
-    public void gotoIncidentDescription(String id){
+    public void gotoIncidentDescription(int pos,String noti_id,String incident_id){
         Fragment fragment = getVisibleFragment();
         if (fragment != null && fragment instanceof IncidentMapsFragment) {
-            ((IncidentMapsFragment) fragment).gotoIncidentDescription(id);
+            ((IncidentMapsFragment) fragment).gotoIncidentDescription(incident_id);
 
         }
        else if (fragment != null && fragment instanceof IncidentListFragment) {
-            ((IncidentListFragment) fragment).gotoIncidentDescription(id);
+            ((IncidentListFragment) fragment).gotoIncidentDescription(incident_id);
 
         }
         else if (fragment != null && fragment instanceof NotificationFragment) {
-            ((NotificationFragment) fragment).gotoIncidentDescription(id);
+            ((NotificationFragment) fragment).readNotification(pos,noti_id,incident_id);
 
         }
     }

@@ -163,6 +163,13 @@ public class NotificationFragment extends BaseFragment implements INotificationP
             readNotification(id);
         }
     }
+    public void readNotification(int pos,String noti_id,String incident_id){
+        notificationData.get(pos).getAttributes().setRead(true);
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1,incident_id));
+            readNotification(noti_id);
+        }
+    }
     void getNotificationList(String page) {
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
         iNotificationPresenter.getNotification(auth_token, page);
