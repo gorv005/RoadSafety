@@ -74,7 +74,7 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
             } else {
                 String errorMessage = data.getStringExtra(FacebookLoginActivity.EXTRA_ERROR_MESSAGE);
                 //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
-                Log.e("DEBUG", errorMessage);
+              //  Log.e("DEBUG", errorMessage);
             }
             //  gotoSelectRegion();
         }

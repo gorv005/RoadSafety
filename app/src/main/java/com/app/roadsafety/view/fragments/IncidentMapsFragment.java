@@ -508,7 +508,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             } else {
                 String errorMessage = data.getStringExtra(FacebookLoginActivity.EXTRA_ERROR_MESSAGE);
                 //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
-                Log.e("DEBUG", errorMessage);
+            //    Log.e("DEBUG", errorMessage);
             }
             //  gotoSelectRegion();
         } else if (resultCode == Activity.RESULT_OK) {
