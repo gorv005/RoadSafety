@@ -123,7 +123,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
                 }
                 break;
             case R.id.rlLogout:
-                logoutDialog(getActivity(), getString(R.string.logout_confirm));
+                alertDialog(getString(R.string.logout_confirm));
                 break;
         }
     }
@@ -132,6 +132,46 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
         iNotificationPresenter.getNotification(auth_token, page);
 
+    }
+    public void alertDialog(String msg) {
+
+        final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
+        dialog.setContentView(R.layout.alert_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Button btnDelete = (Button) dialog.findViewById(R.id.btnDelete);
+        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+        TextView tvMsg = (TextView) dialog.findViewById(R.id.tvMsg);
+        tvMsg.setText(msg);
+        btnDelete.setText(getString(R.string.ok));
+        btnCancel.setText(getString(R.string.cancel));
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN, false);
+                gotoStart();
+
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+
+//to set the message
+        dialog.show();
     }
 
     public void logoutDialog(Context context, String msg) {
