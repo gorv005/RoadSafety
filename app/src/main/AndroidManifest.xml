@@ -68,6 +68,9 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="8cc901a5e7a4a0b09e3a21db971c4c2e96c035cb" />
     </application>
 
 </manifest>
