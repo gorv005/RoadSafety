@@ -137,15 +137,15 @@ public class ActivitySplash extends AppCompatActivity {
     }
 
     void gotoStartApp(){
-        if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN) && SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
-            gotoLoginActivity();
+        if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN)){
+            gotoGuidelines();
 
         }
-        else if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN) && !SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
+      /*  else if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN) && !SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_GUEST_LOGIN)){
 
                 gotoGuidelines();
 
-        }
+        }*/
         else {
             gotoLoginActivity();
         }

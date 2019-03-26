@@ -441,6 +441,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
             case R.id.ivback:
                 getActivity().onBackPressed();
+                break;
             case R.id.llViewInMap:
                 if (mFragmentNavigation != null) {
                     mFragmentNavigation.pushFragment(MapLocation.newInstance(1,latitude,longitude,incidentDetailResponse));

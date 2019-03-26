@@ -9,7 +9,7 @@
     <dimen name="img_width_height">150dp</dimen>
     <dimen name="slide_title">22sp</dimen>
     <dimen name="heading">26sp</dimen>
-
+    <dimen name="action_title">25sp</dimen>
     <dimen name="slide_desc">22sp</dimen>
     <dimen name="desc_padding">20dp</dimen>
     <dimen name="guidelines_image_size">400dp</dimen>

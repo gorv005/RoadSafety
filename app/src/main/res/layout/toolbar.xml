@@ -18,6 +18,6 @@
         android:layout_toRightOf="@id/ivProfile"
         android:text="@string/profile_picture"
         android:textColor="@color/profile_text_color"
-        android:textSize="@dimen/slide_title" />
+        android:textSize="@dimen/action_title" />
 </android.support.v7.widget.Toolbar>
 

@@ -141,6 +141,7 @@
 
     </LinearLayout>
     <View
+        android:visibility="gone"
         android:layout_marginTop="10dp"
         android:background="@color/grey"
         android:layout_width="match_parent"

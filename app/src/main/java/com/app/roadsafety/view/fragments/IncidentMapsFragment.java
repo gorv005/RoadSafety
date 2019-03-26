@@ -250,7 +250,9 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             buildGoogleApiClient();
             //   mMap.setMyLocationEnabled(true);
         }
-        initMap();
+        if(mMap!=null) {
+            initMap();
+        }
     }
 
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -312,67 +314,73 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         // MapWrapperLayout initialization
         // 39 - default marker height
         // 20 - offset between the default InfoWindow bottom edge and it's content bottom edge
-        mapWrapperLayout.init(mMap, getPixelsFromDp(getActivity(), 39 + 20));
+        if(mapWrapperLayout!=null) {
+            mapWrapperLayout.init(mMap, getPixelsFromDp(getActivity(), 39 + 20));
 
-        // We want to reuse the info window for all the markers,
-        // so let's create only one class member instance
-        this.infoWindow = (ViewGroup) getLayoutInflater().inflate(R.layout.custom_info_window, null);
-        this.tvIncidentDesc = (TextView) infoWindow.findViewById(R.id.tvIncidentDesc);
-        this.tvHours = (TextView) infoWindow.findViewById(R.id.tvHours);
-        this.btnViewMore = (Button) infoWindow.findViewById(R.id.btnViewMore);
-        this.ivMarkerimage = (ImageView) infoWindow.findViewById(R.id.ivIncident);
+            // We want to reuse the info window for all the markers,
+            // so let's create only one class member instance
+            this.infoWindow = (ViewGroup) getLayoutInflater().inflate(R.layout.custom_info_window, null);
+            this.tvIncidentDesc = (TextView) infoWindow.findViewById(R.id.tvIncidentDesc);
+            this.tvHours = (TextView) infoWindow.findViewById(R.id.tvHours);
+            this.btnViewMore = (Button) infoWindow.findViewById(R.id.btnViewMore);
+            this.ivMarkerimage = (ImageView) infoWindow.findViewById(R.id.ivIncident);
 
-        // Setting custom OnTouchListener which deals with the pressed state
-        // so it shows up
-        this.infoButtonListener = new OnInfoWindowElemTouchListener(btnViewMore,
-                null, //btn_default_normal_holo_light
-                null) //btn_default_pressed_holo_light
-        {
-            @Override
-            protected void onClickConfirmed(View v, Marker marker) {
-                // Here we can perform some action triggered after clicking the button
-                // Toast.makeText(getActivity(), marker.getTitle() + "'s button clicked!", Toast.LENGTH_SHORT).show();
-                gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
-
-
-            }
-        };
-        this.btnViewMore.setOnTouchListener(infoButtonListener);
-
-
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(final Marker marker) {
-                // Setting up the infoWindow with current's marker info
-                tvHours.setText(AppUtils.getDate(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getCreatedAt()));
-                tvIncidentDesc.setText(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getDescription());
-                if (!first_time_showing_info_window) {
-                    ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), ivMarkerimage);
-                    Picasso.with(getActivity()).load(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0)).into(ivMarkerimage);
-
-                } else {
-
-                    first_time_showing_info_window = false;
-                    ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), ivMarkerimage);
-                    Picasso.with(getActivity()).load(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0)).into(ivMarkerimage, new InfoWindowRefresher(marker));
+            // Setting custom OnTouchListener which deals with the pressed state
+            // so it shows up
+            this.infoButtonListener = new OnInfoWindowElemTouchListener(btnViewMore,
+                    null, //btn_default_normal_holo_light
+                    null) //btn_default_pressed_holo_light
+            {
+                @Override
+                protected void onClickConfirmed(View v, Marker marker) {
+                    // Here we can perform some action triggered after clicking the button
+                    // Toast.makeText(getActivity(), marker.getTitle() + "'s button clicked!", Toast.LENGTH_SHORT).show();
+                    gotoIncidentDescription(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getId());
 
 
                 }
+            };
+            this.btnViewMore.setOnTouchListener(infoButtonListener);
 
-                infoButtonListener.setMarker(marker);
 
-                // We must call this to set the current marker and infoWindow references
-                // to the MapWrapperLayout
-                mapWrapperLayout.setMarkerWithInfoWindow(marker, infoWindow);
-                return infoWindow;
-            }
-        });
+            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                @Override
+                public View getInfoWindow(Marker marker) {
+                    return null;
+                }
 
+                @Override
+                public View getInfoContents(final Marker marker) {
+                    if (marker.getTitle() == null) {
+                        marker.hideInfoWindow();
+                    } else {
+                        // Setting up the infoWindow with current's marker info
+                        tvHours.setText(AppUtils.getDate(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getCreatedAt()));
+                        tvIncidentDesc.setText(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getDescription());
+                        if (!first_time_showing_info_window) {
+                            ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), ivMarkerimage);
+                            Picasso.with(getActivity()).load(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0)).into(ivMarkerimage);
+
+                        } else {
+
+                            first_time_showing_info_window = false;
+                            ImageUtils.setImage(getActivity(), incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0), ivMarkerimage);
+                            Picasso.with(getActivity()).load(incidentDataResList.get(Integer.parseInt(marker.getTitle())).getAttributes().getImages().get(0)).into(ivMarkerimage, new InfoWindowRefresher(marker));
+
+
+                        }
+
+                        infoButtonListener.setMarker(marker);
+
+                        // We must call this to set the current marker and infoWindow references
+                        // to the MapWrapperLayout
+                        mapWrapperLayout.setMarkerWithInfoWindow(marker, infoWindow);
+                        return infoWindow;
+                    }
+                    return null;
+                }
+            });
+        }
     }
 
     private class InfoWindowRefresher implements Callback {
@@ -605,8 +613,8 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             Log.e("Zoom Level:", currentZoomLevel + "");
             Log.e("Zoom Level Animate:", animateZomm + "");
             latLng = point;
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 20));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
         }
     }
