@@ -31,4 +31,5 @@ public class AppConstants {
     public static final String AWS_BUCKET = "anselmo-roadsafety-cognito";
     public static final String AWS_IMAGE_BASE_URL = "https://s3.eu-west-2.amazonaws.com/"+AWS_BUCKET+"/";
     public static final String IS_LOCATION_SERVICES_ON = "location_services";
+
 }
