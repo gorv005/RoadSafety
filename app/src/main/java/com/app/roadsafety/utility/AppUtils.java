@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
@@ -228,5 +229,21 @@ public class AppUtils {
             textView.setText(currentLocation);
         }
     }
+    public static boolean isLocationServiceEnabled(Context  context){
+        LocationManager locationManager = null;
+        boolean gps_enabled= false,network_enabled = false;
 
+        if(locationManager ==null)
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        try{
+            gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }catch(Exception ex){
+            //do nothing...
+        }
+
+
+
+        return gps_enabled;
+
+    }
 }

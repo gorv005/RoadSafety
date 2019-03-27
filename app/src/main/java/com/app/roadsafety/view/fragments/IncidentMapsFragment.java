@@ -241,7 +241,6 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             if (ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
-                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, true);
 
                 buildGoogleApiClient();
                 //   mMap.setMyLocationEnabled(true);
@@ -412,17 +411,16 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         locationRequest.setFastestInterval(5 * 1000);
     }
 
-    void GpsEnable() {
-        new GpsUtils(getActivity()).turnGPSOn(new GpsUtils.onGpsListener() {
-            @Override
-            public void gpsStatus(boolean isGPSEnable) {
-                // turn on GPS
-                isGPS = isGPSEnable;
-                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, true);
+        void GpsEnable() {
+            new GpsUtils(getActivity()).turnGPSOn(new GpsUtils.onGpsListener() {
+                @Override
+                public void gpsStatus(boolean isGPSEnable) {
+                    // turn on GPS
+                    isGPS = isGPSEnable;
 
-            }
-        });
-    }
+                }
+            });
+        }
 
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -486,13 +484,11 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, true);
 
                     startLocationUpdates();
                     mMap.setMyLocationEnabled(true);
 
                 } else {
-                    SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOCATION_SERVICES_ON, false);
 
                     Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
                 }
