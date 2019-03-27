@@ -81,6 +81,7 @@
     <string name="notification_recieved">A new notification has been received about the incident happened near to you</string>
     <string name="no_notification_found">No notification found.</string>
     <string name="incident_resolved">Incident Resolved</string>
+
     <string name="are_you_sure_you_want_to_reolved_incident">Are you sure you want to resolve this incident?</string>
     <string name="this_incident_resolved">this incident is resolved</string>
     <string name="incident_has_been_resolved">Incident has been resolved</string>
@@ -90,5 +91,6 @@
     <string name="incident_blocked_text">Your post has been blocked/deleted by the admin</string>
     <string name="internet_permission">No network connectivity - This App requires an internet connection.</string>
     <string name="retry">Retry</string>
+    <string name="done">Done</string>
 
 </resources>

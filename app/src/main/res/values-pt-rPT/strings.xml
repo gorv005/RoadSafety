@@ -88,4 +88,7 @@
     <string name="incident_reported_text">There is a new incident reported in your area</string>
     <string name="incident_resolved_text">The reported incident in your area has been resolved , Click here to view images of the measures taken</string>
     <string name="incident_blocked_text">Your post has been blocked/deleted by the admin</string>
+    <string name="internet_permission">No network connectivity - This App requires an internet connection.</string>
+    <string name="retry">Retry</string>
+    <string name="done">Done</string>
 </resources>
