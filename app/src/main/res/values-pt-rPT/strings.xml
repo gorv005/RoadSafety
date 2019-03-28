@@ -82,7 +82,6 @@
     <string name="no_notification_found">Nenhuma notificação encontrada</string>
     <string name="incident_resolved">Situação resolvida </string>
 
-
     <string name="are_you_sure_you_want_to_reolved_incident">Tem a certeza que quer marcar o local como resolvido?</string>
     <string name="this_incident_resolved">A marcação foi resolvida</string>
     <string name="incident_has_been_resolved">Esta marcação já foi resolvida</string>
