@@ -90,7 +90,8 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         unbinder.unbind();
     }
 
-    @OnClick({R.id.rlProfile, R.id.rlLocationServices, R.id.rlNotifications, R.id.rlLinkedAccount, R.id.rlLogout})
+    @OnClick({R.id.rlProfile, R.id.rlLocationServices,
+            R.id.rlNotifications, R.id.rlLinkedAccount, R.id.rlLogout,R.id.rlTerms,R.id.rlPrivacy,R.id.rlContactUs})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -124,6 +125,19 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
                 break;
             case R.id.rlLogout:
                 alertDialog(getString(R.string.logout_confirm));
+                break;
+            case R.id.rlTerms:
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1,1));
+                }
+                break;
+            case R.id.rlPrivacy:
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1,2));
+                }
+                break;
+            case R.id.rlContactUs:
+                contactUs(getActivity(),getString(R.string.email));
                 break;
         }
     }
@@ -174,17 +188,29 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         dialog.show();
     }
 
-    public void logoutDialog(Context context, String msg) {
+    public void contactUs(Context context, String msg) {
 
         final Dialog dialog = new Dialog(context, R.style.FullHeightDialog); //this is a reference to the style above
-        dialog.setContentView(R.layout.result_pop_up); //I saved the xml file above as yesnomessage.xml
+        dialog.setContentView(R.layout.contact_us_pop_up); //I saved the xml file above as yesnomessage.xml
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         TextView textView = (TextView) dialog.findViewById(R.id.tvMsg);
         textView.setText(msg);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                String[] recipients={getString(R.string.email)};
+                intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+                intent.setType("text/plain");
+                startActivity(intent);
+            }
+        });
         Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+        btnOk.setText(getString(R.string.cancel));
         ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+        ivCross.setVisibility(View.GONE);
         ivCross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,8 +221,6 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN, false);
-                gotoStart();
             }
         });
 //to set the message

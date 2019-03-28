@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="@dimen/slide_desc"
         android:includeFontPadding="true"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
@@ -34,6 +35,7 @@
 
     <EditText
         android:layout_marginTop="20dp"
+        android:textSize="@dimen/slide_desc"
 
         android:id="@+id/etDescription"
         android:layout_width="match_parent"
@@ -45,11 +47,17 @@
         android:textColorHint="@color/title_color"
         android:hint="@string/description"
         android:textColor="@color/title_color" />
-    <Spinner
+    <EditText
         android:layout_marginTop="10dp"
         android:includeFontPadding="true"
-        android:id="@+id/spninnerCityHall"
+        android:id="@+id/etCityHall"
         android:paddingBottom="20dp"
+        android:paddingLeft="13dp"
+        android:focusable="false"
+        android:clickable="true"
+        android:textSize="@dimen/slide_desc"
+        android:textColor="@color/title_color"
+        android:hint="@string/select_city_hall"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,6 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="@dimen/slide_desc"
+
         android:editable="false"
         android:enabled="false"
         android:paddingLeft="10dp"
@@ -73,6 +83,7 @@
         android:paddingBottom="20dp"
         android:layout_marginTop="20dp"
         android:id="@+id/spninnerType"
+        android:textSize="@dimen/slide_desc"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

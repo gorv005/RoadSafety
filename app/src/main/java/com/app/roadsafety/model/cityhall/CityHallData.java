@@ -3,7 +3,9 @@ package com.app.roadsafety.model.cityhall;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CityHallData {
+import java.io.Serializable;
+
+public class CityHallData implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;

@@ -34,6 +34,8 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.app.roadsafety.R;
+import com.app.roadsafety.SearchCityHallActivity;
+import com.app.roadsafety.model.cityhall.CityHallData;
 import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
@@ -72,8 +74,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     @BindView(R.id.etDescription)
     EditText etDescription;
-    @BindView(R.id.spninnerCityHall)
-    Spinner spninnerCityHall;
+
     @BindView(R.id.etLocation)
     EditText etLocation;
     @BindView(R.id.spninnerType)
@@ -113,6 +114,10 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     EditText etAddress;
     @BindView(R.id.rlView)
     RelativeLayout rlView;
+    @BindView(R.id.etCityHall)
+    EditText etCityHall;
+    @BindView(R.id.profile_layout)
+    RelativeLayout profileLayout;
 
     public AddIncidentFragment() {
         // Required empty public constructor
@@ -159,7 +164,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getCityHall();
+       // getCityHall();
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
         rvAddImages.setLayoutManager(manager);
         rvAddImages.setHasFixedSize(true);
@@ -169,8 +174,14 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         if (incidentAction.endsWith(AppConstants.INCIDENT_ACTION_EDIT)) {
             incidentDetailResponse = (IncidentDetailResponse) getArguments().getSerializable(AppConstants.INCIDENT_DATA);
         }
-
-        spninnerCityHall.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        etCityHall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchCityHallActivity.class);
+                startActivityForResult(intent, AppConstants.CITY_HALL_REQUEST_CODE);
+            }
+        });
+        /*spninnerCityHall.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -182,6 +193,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
             }
         });
+        */
         spninnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -198,6 +210,9 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             }
         });
         initValues();
+        if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
+            setEditValue();
+        }
     }
 
     void setEditValue() {
@@ -234,15 +249,14 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     }
 
-    void setView(){
-        if(awsImagesList!=null && awsImagesList.size()>0){
+    void setView() {
+        if (awsImagesList != null && awsImagesList.size() > 0) {
             rlView.setVisibility(View.GONE);
             ivAddImage.setVisibility(View.GONE);
             llNewImages.setVisibility(View.VISIBLE);
             ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.marcar_local), true);
 
-        }
-        else {
+        } else {
             rlView.setVisibility(View.VISIBLE);
             ivAddImage.setVisibility(View.VISIBLE);
             llNewImages.setVisibility(View.GONE);
@@ -250,6 +264,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
         }
     }
+
     public void init() {
         new ImagePicker.Builder(getActivity())
                 .mode(ImagePicker.Mode.CAMERA_AND_GALLERY)
@@ -271,6 +286,17 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             //  awsImagesList.add(mPaths.get(0));
             uploadImage(mPaths.get(0));
             //Your Code
+        } else if (requestCode == AppConstants.CITY_HALL_REQUEST_CODE && resultCode==RESULT_OK) {
+            try {
+                if (data != null && data.getSerializableExtra(AppConstants.CityHallData) != null) {
+                    CityHallData cityHallData = (CityHallData) data.getSerializableExtra(AppConstants.CityHallData);
+                    etCityHall.setText(cityHallData.getAttributes().getName());
+                    mCityHallId = cityHallData.getId();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -298,16 +324,22 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
                 break;
             case R.id.btnDone:
                 if (etDescription.getText().toString().length() > 0) {
-                    if (awsImagesList != null && awsImagesList.size() > 0) {
+                    if (etCityHall.getText().toString().length() > 0) {
+                        if (awsImagesList != null && awsImagesList.size() > 0) {
 
-                        if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
-                            updateIncident();
+                            if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
+                                updateIncident();
+                            } else {
+                                createIncident();
+
+                            }
                         } else {
-                            createIncident();
+                            Toast.makeText(getActivity(), getString(R.string.image_error), Toast.LENGTH_LONG).show();
 
                         }
-                    } else {
-                        Toast.makeText(getActivity(), getString(R.string.image_error), Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(getActivity(), getString(R.string.please_select_city_hall), Toast.LENGTH_LONG).show();
 
                     }
                 } else {
@@ -413,15 +445,14 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
                 //   Toast.makeText(getActivity(),getString(R.string.incident_created),Toast.LENGTH_LONG).show();
 
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void onSuccessCityHallResponse(CityHallResponse response) {
-        try {
+       /* try {
             cityHallResponse = response;
             for (int i = 0; i < response.getData().getData().size(); i++) {
                 cityHallList.add(response.getData().getData().get(i).getAttributes().getName());
@@ -432,14 +463,13 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             spninnerCityHall.setAdapter(spinnerArrayAdapter);
-
+            spninnerCityHall.setEnabled(false);
             if (incidentAction.equals(AppConstants.INCIDENT_ACTION_EDIT)) {
                 setEditValue();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     void uploadImage(final String path) {
@@ -525,8 +555,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
                 Toast.makeText(getActivity(), getString(R.string.incident_update), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

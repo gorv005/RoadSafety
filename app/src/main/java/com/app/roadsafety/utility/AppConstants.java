@@ -32,4 +32,7 @@ public class AppConstants {
     public static final String AWS_IMAGE_BASE_URL = "https://s3.eu-west-2.amazonaws.com/"+AWS_BUCKET+"/";
     public static final String IS_LOCATION_SERVICES_ON = "location_services";
 
+    public static final String TYPE ="type" ;
+    public static final int CITY_HALL_REQUEST_CODE = 10;
+    public static final String CityHallData = "CityhallData";
 }

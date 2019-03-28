@@ -8,7 +8,7 @@
 
 
         <LinearLayout
-            android:weightSum="5"
+            android:weightSum="8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -176,6 +176,128 @@
                     android:layout_marginLeft="@dimen/margin_left"
                     android:layout_toRightOf="@id/ivLinkedAccount"
                     android:text="@string/linked_acccount"
+                    android:textColor="@color/profile_text_color"
+                    android:textSize="@dimen/slide_title" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line" />
+            <RelativeLayout
+                android:layout_weight="1"
+                android:id="@+id/rlTerms"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/ivTerms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/terms_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_left"
+                    android:layout_toRightOf="@id/ivTerms"
+                    android:text="@string/terms"
+                    android:textColor="@color/profile_text_color"
+                    android:textSize="@dimen/slide_title" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line" />
+            <RelativeLayout
+                android:layout_weight="1"
+                android:id="@+id/rlPrivacy"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/ivPrivacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/linked_account" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_left"
+                    android:layout_toRightOf="@id/ivPrivacy"
+                    android:text="@string/privacy"
+                    android:textColor="@color/profile_text_color"
+                    android:textSize="@dimen/slide_title" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line" />
+
+
+            <RelativeLayout
+                android:layout_weight="1"
+                android:id="@+id/rlContactUs"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/ivContactUS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/linked_account" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_left"
+                    android:layout_toRightOf="@id/ivContactUS"
+                    android:text="@string/contact_us"
                     android:textColor="@color/profile_text_color"
                     android:textSize="@dimen/slide_title" />
 

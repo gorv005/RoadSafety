@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/facebook_app_id" />
@@ -23,13 +22,18 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/rsa_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".view.ActivitySplash" android:screenOrientation="portrait">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".SearchCityHallActivity" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.ActivitySplash"
+            android:screenOrientation="portrait">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.NotificationActivity" />
         <activity android:name=".view.IncidentListReported" />
         <activity android:name=".view.FeedListActivity" />
@@ -38,9 +42,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.UserLoginActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.GuidlinesActivity"
             android:screenOrientation="portrait" />
@@ -59,7 +61,7 @@
         <activity
             android:name=".view.IncidentMapsActivity"
             android:label="@string/title_activity_incident_maps"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.MainActivity"
             android:screenOrientation="portrait" />
@@ -68,6 +70,7 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8cc901a5e7a4a0b09e3a21db971c4c2e96c035cb" />
