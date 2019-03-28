@@ -26,8 +26,8 @@ public class AppConstants {
     public static final String INCIDENT_ACTION_EDIT = "edit";
     public static final String   INCIDENT_ACTION_ADD = "add";
     public static final String INCIDENT_DATA = "incident_data";
-    public static final String AWS_KEY = "AKIAJ52JTXIIWTRHCNLQ";
-    public static final String AWS_SECRET = "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";
+    public static final String AWS_KEY = "AKIAVCY7IJX5AQQ2XOB3";
+    public static final String AWS_SECRET = "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";
     public static final String AWS_BUCKET = "anselmo-roadsafety-cognito";
     public static final String AWS_IMAGE_BASE_URL = "https://s3.eu-west-2.amazonaws.com/"+AWS_BUCKET+"/";
     public static final String IS_LOCATION_SERVICES_ON = "location_services";
