@@ -152,10 +152,19 @@ public class ActivitySplash extends AppCompatActivity {
     }
 
     void gotoGuidelines() {
-        Intent i = new Intent(ActivitySplash.this, GuidlinesActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
-        finish();
+
+        if(SharedPreference.getInstance(this).getString(AppConstants.REGION)==null){
+            Intent i = new Intent(ActivitySplash.this, SelectRegionActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();
+        }
+        else {
+            Intent i = new Intent(ActivitySplash.this, GuidlinesActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();
+        }
     }
     void gotoLoginActivity() {
         Intent i = new Intent(ActivitySplash.this, UserLoginActivity.class);

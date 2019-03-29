@@ -172,6 +172,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
             public void onClick(View view) {
                 dialog.dismiss();
                 SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN, false);
+                SharedPreference.getInstance(getActivity()).setString(AppConstants.REGION, null);
                 gotoStart();
 
             }
