@@ -46,6 +46,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class ActivitySplash extends AppCompatActivity {
     public static final int RequestPermissionCode = 1;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +55,11 @@ public class ActivitySplash extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_splash);
-       //  setLocale();
+        //  setLocale();
         changeStatusBarColor();
 
     }
+
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -65,6 +67,7 @@ public class ActivitySplash extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -89,18 +92,18 @@ public class ActivitySplash extends AppCompatActivity {
                     } else {
                         gotoStartApp();
                     }
-                }
-                else {
-                    intentCheck(ActivitySplash.this,getString(R.string.internet_permission));
+                } else {
+                    intentCheck(ActivitySplash.this, getString(R.string.internet_permission));
                 }
             }
 
-                // close this activity
+            // close this activity
 
         }, 4000);
 
 
     }
+
     public void intentCheck(Context context, String msg) {
 
         try {
@@ -130,14 +133,13 @@ public class ActivitySplash extends AppCompatActivity {
             });
 //to set the message
             dialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    void gotoStartApp(){
-        if(SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN)){
+    void gotoStartApp() {
+        if (SharedPreference.getInstance(getApplicationContext()).getBoolean(AppConstants.IS_LOGIN)) {
             gotoGuidelines();
 
         }
@@ -153,32 +155,34 @@ public class ActivitySplash extends AppCompatActivity {
 
     void gotoGuidelines() {
 
-        if(SharedPreference.getInstance(this).getString(AppConstants.REGION)==null){
+        if (SharedPreference.getInstance(this).getString(AppConstants.REGION) == null) {
             Intent i = new Intent(ActivitySplash.this, SelectRegionActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
             finish();
-        }
-        else {
+        } else {
             Intent i = new Intent(ActivitySplash.this, GuidlinesActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
             finish();
         }
     }
+
     void gotoLoginActivity() {
         Intent i = new Intent(ActivitySplash.this, UserLoginActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
     }
+
     void gotoMainActivity() {
         Intent i = new Intent(ActivitySplash.this, MainActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
     }
-    private void setLocale(){
+
+    private void setLocale() {
         Locale locale = new Locale("pt", "PT");
         Locale.setDefault(locale);
         // Create a new configuration object
@@ -191,6 +195,7 @@ public class ActivitySplash extends AppCompatActivity {
                 getResources().getDisplayMetrics()
         );
     }
+
     public boolean checkPermission() {
 
         int FirstPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
