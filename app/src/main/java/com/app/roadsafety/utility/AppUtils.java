@@ -193,6 +193,21 @@ public class AppUtils {
             editText.setText(currentLocation);
         }
     }
+    public  static String getCountry(Address locationAddress) {
+        try {
+            if (locationAddress != null) {
+                String country = locationAddress.getCountryName();
+
+                return country;
+            } else {
+                return "";
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     public  static void setAddress(Address locationAddress, TextView textView) {
         String address = locationAddress.getAddressLine(0);

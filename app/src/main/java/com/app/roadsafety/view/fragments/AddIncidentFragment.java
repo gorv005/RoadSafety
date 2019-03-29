@@ -218,6 +218,9 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     void setEditValue() {
         etDescription.setText(incidentDetailResponse.getData().getAttributes().getDescription());
         etLocation.setText("Lati. " + latitude + "   " + "Long. " + longitude);
+        etCityHall.setText(incidentDetailResponse.getData().getAttributes().getCityHall().getName());
+        mCityHallId = ""+incidentDetailResponse.getData().getAttributes().getCityHall().getId();
+
         if (incidentDetailResponse.getData().getAttributes().getType().equals("accident")) {
             spninnerType.setSelection(0);
         } else {

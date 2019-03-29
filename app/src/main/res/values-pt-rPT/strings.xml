@@ -92,4 +92,14 @@
     <string name="internet_permission">Sem conectividade. Esta aplicação requer uma ligação para a internet.</string>
     <string name="retry">Tente novamente</string>
     <string name="done">feito</string>
+
+    <string name="contact_us">Contact Us</string>
+    <string name="terms">Terms</string>
+    <string name="privacy">Privacy</string>
+    <string name="please_share_your_thought">Please share your thought on following email.</string>
+    <string name="email">email.id@yourdomain.com</string>
+    <string name="city_hall_search">Search city hall</string>
+    <string name="city_halls">City halls</string>
+    <string name="select_city_hall">Select city hall</string>
+    <string name="please_select_city_hall">Please select city hall</string>
 </resources>

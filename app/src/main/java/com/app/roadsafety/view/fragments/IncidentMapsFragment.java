@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,11 +67,13 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -616,42 +619,67 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     }
 
     void setGeoFence(LatLng point) {
-        if (circle == null) {
-            // Specifying the center of the circle
-            circleOptions.center(point);
+        try {
+            if (circle == null) {
+                // Specifying the center of the circle
+                circleOptions.center(point);
 
-            // Radius of the circle
-            circleOptions.radius(16.0934 * 1609.34);// Converting Miles into Meters...
+                // Radius of the circle
+                circleOptions.radius(16.0934 * 1609.34);// Converting Miles into Meters...
 
-            // Border color of the circle
-            circleOptions.strokeColor(Color.parseColor("#fff0f5"));
+                // Border color of the circle
+                circleOptions.strokeColor(Color.parseColor("#fff0f5"));
 
-            // Fill color of the circle
-            // 0x represents, this is an hexadecimal code
-            // 55 represents percentage of transparency. For 100% transparency, specify 00.
-            // For 0% transparency ( ie, opaque ) , specify ff
-            // The remaining 6 characters(00ff00) specify the fill color
-            //circleOptions.fillColor(Color.parseColor("#F8F4E3"));
+                // Fill color of the circle
+                // 0x represents, this is an hexadecimal code
+                // 55 represents percentage of transparency. For 100% transparency, specify 00.
+                // For 0% transparency ( ie, opaque ) , specify ff
+                // The remaining 6 characters(00ff00) specify the fill color
+                //circleOptions.fillColor(Color.parseColor("#F8F4E3"));
 
-            // Border width of the circle
-            circleOptions.strokeWidth(150);
+                // Border width of the circle
+                circleOptions.strokeWidth(150);
 
            /* circle.remove();
         }*/
-            // Adding the circle to the GoogleMap
-            circle = mMap.addCircle(circleOptions);
+                // Adding the circle to the GoogleMap
+                circle = mMap.addCircle(circleOptions);
 
-            circle.setVisible(false);
-            currentZoomLevel = getZoomLevel(circle);
-            animateZomm = currentZoomLevel + 5;
+                circle.setVisible(false);
+                currentZoomLevel = getZoomLevel(circle);
+                animateZomm = currentZoomLevel + 5;
 
-            Log.e("Zoom Level:", currentZoomLevel + "");
-            Log.e("Zoom Level Animate:", animateZomm + "");
-            latLng = point;
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel+7), 2000, null);
-            getAllIncidentList(incidentType);
-            setRegion();
+                Log.e("Zoom Level:", currentZoomLevel + "");
+                Log.e("Zoom Level Animate:", animateZomm + "");
+                latLng = point;
+                String reg = SharedPreference.getInstance(getActivity()).getString(AppConstants.REGION_SELECTION);
+                Address address = util.getAddress(getActivity(), point.latitude, point.longitude);
+                String country = AppUtils.getCountry(address);
+                Log.e("DEBUG", "Country" + country);
+                if (reg.equalsIgnoreCase(country)) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, animateZomm));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel + 7), 2000, null);
+                } else {
+                    if (reg.equalsIgnoreCase(AppConstants.BRASIL)) {
+                        LatLng latLng = new LatLng(-15.77972, -47.92972);
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(2.0f).build();
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                        mMap.moveCamera(cameraUpdate);
+                    } else {
+                        LatLng latLng = new LatLng(39.557191, -7.8536599);
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(2.0f).build();
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                        mMap.moveCamera(cameraUpdate);
+                    }
+                }
+
+
+                getAllIncidentList(incidentType);
+                setRegion();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 

@@ -21,7 +21,7 @@ public class IncidentDetailAttribute implements Serializable {
     private Float longitude;
     @SerializedName("address")
     @Expose
-    private String address;
+    private Object address;
     @SerializedName("images")
     @Expose
     private List<String> images = null;
@@ -33,16 +33,20 @@ public class IncidentDetailAttribute implements Serializable {
     private String createdAt;
     @SerializedName("resolved_images")
     @Expose
-    private List<String> resolvedImages = null;
+    private List<Object> resolvedImages = null;
     @SerializedName("is_resolved")
     @Expose
     private Boolean isResolved;
     @SerializedName("resolved_text")
     @Expose
-    private String resolvedText;
+    private Object resolvedText;
     @SerializedName("resolved_marked_by")
     @Expose
-    private String resolvedMarkedBy;
+    private Object resolvedMarkedBy;
+    @SerializedName("city_hall")
+    @Expose
+    private CityHall cityHall;
+
     public String getDescription() {
         return description;
     }
@@ -75,6 +79,14 @@ public class IncidentDetailAttribute implements Serializable {
         this.longitude = longitude;
     }
 
+    public Object getAddress() {
+        return address;
+    }
+
+    public void setAddress(Object address) {
+        this.address = address;
+    }
+
     public List<String> getImages() {
         return images;
     }
@@ -99,19 +111,11 @@ public class IncidentDetailAttribute implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public List<String> getResolvedImages() {
+    public List<Object> getResolvedImages() {
         return resolvedImages;
     }
 
-    public void setResolvedImages(List<String> resolvedImages) {
+    public void setResolvedImages(List<Object> resolvedImages) {
         this.resolvedImages = resolvedImages;
     }
 
@@ -119,23 +123,31 @@ public class IncidentDetailAttribute implements Serializable {
         return isResolved;
     }
 
-    public void setResolved(Boolean resolved) {
-        isResolved = resolved;
+    public void setResolved(Boolean isResolved) {
+        this.isResolved = isResolved;
     }
 
-    public String getResolvedText() {
+    public Object getResolvedText() {
         return resolvedText;
     }
 
-    public void setResolvedText(String resolvedText) {
+    public void setResolvedText(Object resolvedText) {
         this.resolvedText = resolvedText;
     }
 
-    public String getResolvedMarkedBy() {
+    public Object getResolvedMarkedBy() {
         return resolvedMarkedBy;
     }
 
-    public void setResolvedMarkedBy(String resolvedMarkedBy) {
+    public void setResolvedMarkedBy(Object resolvedMarkedBy) {
         this.resolvedMarkedBy = resolvedMarkedBy;
+    }
+
+    public CityHall getCityHall() {
+        return cityHall;
+    }
+
+    public void setCityHall(CityHall cityHall) {
+        this.cityHall = cityHall;
     }
 }

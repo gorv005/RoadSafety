@@ -8,7 +8,7 @@
 
 
         <LinearLayout
-            android:weightSum="8"
+            android:weightSum="7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -99,7 +99,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin">
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                >
 
                 <RelativeLayout
                     android:layout_centerVertical="true"
@@ -235,6 +237,7 @@
             <RelativeLayout
                 android:layout_weight="1"
                 android:id="@+id/rlPrivacy"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
@@ -269,6 +272,7 @@
             </RelativeLayout>
 
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line" />
@@ -289,7 +293,7 @@
                     android:id="@+id/ivContactUS"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/linked_account" />
+                    android:src="@drawable/contact_us" />
 
                 <TextView
                     android:layout_width="wrap_content"

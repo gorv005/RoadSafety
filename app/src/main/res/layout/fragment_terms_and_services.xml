@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:maxLines="1"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="@string/marcar_local"
         android:textColor="@color/title_color"
         android:textSize="@dimen/action_title"
@@ -50,7 +50,7 @@
         android:maxLines="1"
         android:scrollbars="vertical"
         android:layout_marginTop="50dp"
-        android:text="@string/marcar_local"
+        android:text=""
         android:textColor="@color/title_color"
         android:textSize="@dimen/action_title"
         />

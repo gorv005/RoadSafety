@@ -35,4 +35,8 @@ public class AppConstants {
     public static final String TYPE ="type" ;
     public static final int CITY_HALL_REQUEST_CODE = 10;
     public static final String CityHallData = "CityhallData";
+    public static final String BRASIL = "Brasil";
+    public static final String REGION_SELECTION ="region_selection" ;
+    public static String portugal="portugal";
+    public static String brazil="brazil";
 }

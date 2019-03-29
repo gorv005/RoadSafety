@@ -14,7 +14,6 @@
 
         <RelativeLayout
             android:id="@+id/rlBack"
-            android:layout_marginLeft="20dp"
             android:layout_gravity="center_vertical"
             android:layout_width="50dp"
             android:layout_height="50dp">
