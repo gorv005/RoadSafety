@@ -93,7 +93,14 @@ public class FragmentTermsAndServices extends BaseFragment implements ITermsPres
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.settings), false);
+        if(type==1){
+            ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.terms), true);
+        }
+        else {
+            ((MainActivity) getActivity()).updateToolbarTitle(getString(R.string.privacy), true);
+
+        }
+
     }
 
     @Override

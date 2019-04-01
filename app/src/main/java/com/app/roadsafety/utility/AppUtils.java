@@ -208,6 +208,19 @@ public class AppUtils {
         }
         return "";
     }
+    public static void setLocale(Context context){
+        Locale locale = new Locale("pt");
+        Locale.setDefault(locale);
+        // Create a new configuration object
+        Configuration config = new Configuration();
+        // Set the locale of the new configuration
+        config.locale = locale;
+        // Update the configuration of the Accplication context
+        context.getResources().updateConfiguration(
+                config,
+                context.getResources().getDisplayMetrics()
+        );
+    }
 
     public  static void setAddress(Address locationAddress, TextView textView) {
         String address = locationAddress.getAddressLine(0);

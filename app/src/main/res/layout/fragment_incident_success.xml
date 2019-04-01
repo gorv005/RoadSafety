@@ -31,5 +31,18 @@
         android:layout_below="@id/ivProfile"
         android:textColor="@android:color/white"
         android:textSize="@dimen/success_size" />
+    <Button
+        android:layout_below="@id/tvSuccess"
+        android:id="@+id/btnShowIncidents"
+        style="@style/RoundedCornerMaterialButtonYellow"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/button_margin"
+        android:layout_height="@dimen/button_height"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="@string/goto_incidents"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/slide_desc" />
 
 </RelativeLayout>

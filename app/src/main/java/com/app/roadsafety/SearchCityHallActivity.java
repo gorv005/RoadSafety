@@ -25,6 +25,7 @@ import com.app.roadsafety.presenter.createIncident.CreateIncidentPresenterImpl;
 import com.app.roadsafety.presenter.createIncident.ICreateIncidentPresenter;
 import com.app.roadsafety.utility.AppConstants;
 import com.app.roadsafety.utility.AppUtils;
+import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.adapter.cityhall.CityHallAdapter;
 
 import java.util.List;
@@ -109,7 +110,8 @@ public class SearchCityHallActivity extends Activity implements ICreateIncidentP
     }
 
     void getCityHall() {
-        iCreateIncidentPresenter.getCityHall();
+        String auth_token = SharedPreference.getInstance(this).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iCreateIncidentPresenter.getCityHall(auth_token,"-1");
 
     }
 

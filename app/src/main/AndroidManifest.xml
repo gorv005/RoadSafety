@@ -24,9 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <activity android:name=".view.TermsActivity"></activity>
 
-        <activity android:name=".SearchCityHallActivity" android:screenOrientation="portrait"></activity>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity
+            android:name=".SearchCityHallActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.ActivitySplash"
             android:screenOrientation="portrait">
@@ -44,7 +50,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.UserLoginActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.GuidlinesActivity"
             android:screenOrientation="portrait" />

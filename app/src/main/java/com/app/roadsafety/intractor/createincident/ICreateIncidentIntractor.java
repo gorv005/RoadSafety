@@ -28,7 +28,7 @@ public interface ICreateIncidentIntractor {
         Context getAPPContext();
     }
 
-    public void getCityHall(OnFinishedListener listener);
+    public void getCityHall(String auth_token,String page,OnFinishedListener listener);
 
     public void createIncident(String auth_token, CreateIncidentRequest createIncidentRequest, OnFinishedListener listener);
 

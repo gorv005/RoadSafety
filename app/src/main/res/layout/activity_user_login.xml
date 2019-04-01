@@ -106,7 +106,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginRight="3dp"
                         android:text="@string/terms_of_service"
-
+                        android:id="@+id/tvTermsAndServices"
                         android:textColor="@color/blue"
                         android:textSize="@dimen/slide_title" />
 
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/and"
-
+                        android:visibility="gone"
                         android:textColor="@color/white"
                         android:textSize="@dimen/slide_title" />
 
@@ -124,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
+                        android:visibility="gone"
                         android:text="@string/privacy_policy"
                         android:textColor="@color/blue"
                         android:textSize="@dimen/slide_title" />

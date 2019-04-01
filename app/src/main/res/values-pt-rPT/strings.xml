@@ -10,7 +10,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="guest_login"><u>Entrar sem registo</u></string>
     <string name="by_sign_up">Ao registar-me aceito as condições</string>
-    <string name="terms_of_service"><u>Condições de Serviço</u></string>
+    <string name="terms_of_service"><u>Ao registar-me aceito os Termos e Condições</u></string>
     <string name="and"><![CDATA[&]]></string>
     <string name="privacy_policy"><u>Política de Privacidade</u></string>
     <string name="sign_in_with_fb">Login Facebook</string>
@@ -91,15 +91,17 @@
     <string name="incident_blocked_text">A sua marcação foi bloqueada pelo administrador do sistema</string>
     <string name="internet_permission">Sem conectividade. Esta aplicação requer uma ligação para a internet.</string>
     <string name="retry">Tente novamente</string>
-    <string name="done">feito</string>
-
-    <string name="contact_us">Contact Us</string>
-    <string name="terms">Terms</string>
-    <string name="privacy">Privacy</string>
-    <string name="please_share_your_thought">Please share your thought on following email.</string>
-    <string name="email">email.id@yourdomain.com</string>
-    <string name="city_hall_search">Search city hall</string>
-    <string name="city_halls">City halls</string>
-    <string name="select_city_hall">Select city hall</string>
-    <string name="please_select_city_hall">Please select city hall</string>
+    <string name="done">Gravar</string>
+    <string name="contact_us">Contacte-nos</string>
+    <string name="terms">Termos e Condições</string>
+    <string name="privacy">Privacidade</string>
+    <string name="please_share_your_thought">Contacte-nos pelo seguinte e-mail:</string>
+    <string name="email">atencaoaopeao@gmail.com</string>
+    <string name="city_hall_search">Procurar Câmara Municipal</string>
+    <string name="city_halls">Câmaras Municipais</string>
+    <string name="select_city_hall">Selecione Câmara Municipal</string>
+    <string name="please_select_city_hall">Por favor selecione Câmara Municipal</string>
+    <string name="incidents_reported">Locais Reportados</string>
+    <string name="allow_location_services_">Permitir serviço de localização</string>
+    <string name="goto_incidents">mostrar locais</string>
 </resources>

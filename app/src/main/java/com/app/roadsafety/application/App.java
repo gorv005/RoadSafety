@@ -3,6 +3,7 @@ package com.app.roadsafety.application;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.FontsOverride;
 
 import com.crashlytics.android.Crashlytics;
@@ -18,20 +19,7 @@ public class App extends Application {
         FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/calibri.ttf");
         FontsOverride.setDefaultFont(this, "SERIF", "fonts/calibri.ttf");
         FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/calibri.ttf");
-        setLocale();
+        AppUtils.setLocale(getApplicationContext());
 
-    }
-    private void setLocale(){
-         Locale locale = new Locale("pt", "PT");
-        Locale.setDefault(locale);
-        // Create a new configuration object
-        Configuration config = new Configuration();
-        // Set the locale of the new configuration
-        config.locale = locale;
-        // Update the configuration of the Accplication context
-        getResources().updateConfiguration(
-                config,
-                getResources().getDisplayMetrics()
-        );
     }
 }

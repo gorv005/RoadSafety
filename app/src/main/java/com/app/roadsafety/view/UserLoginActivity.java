@@ -35,6 +35,8 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
     Button facebookButton;
     @BindView(R.id.tvGhuestLogin)
     TextView tvGhuestLogin;
+    @BindView(R.id.tvTermsAndServices)
+    TextView tvTermsAndServices;
     AppUtils util;
     IAuthenticationPresenter iAuthenticationPresenter;
 
@@ -92,7 +94,7 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
         finish();
     }
 
-    @OnClick({R.id.facebook_button, R.id.tvGhuestLogin})
+    @OnClick({R.id.facebook_button, R.id.tvGhuestLogin,R.id.tvTermsAndServices})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.facebook_button:
@@ -107,9 +109,18 @@ public class UserLoginActivity extends AppCompatActivity implements IAuthenticat
                 //  gotoSelectRegion();
                 guestLogin();
                 break;
+            case R.id.tvTermsAndServices:
+                //  gotoSelectRegion();
+                gotoTerms();
+                break;
         }
     }
 
+    void gotoTerms(){
+        Intent intent = new Intent(this, TermsActivity.class);
+        intent.putExtra(AppConstants.TYPE,1);
+        startActivity(intent);
+    }
 
     void guestLogin() {
         iAuthenticationPresenter.guestLogin();

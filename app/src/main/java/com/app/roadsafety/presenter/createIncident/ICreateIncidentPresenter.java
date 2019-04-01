@@ -11,7 +11,7 @@ import okhttp3.ResponseBody;
 
 public interface ICreateIncidentPresenter {
 
-    public void getCityHall();
+    public void getCityHall(String auth_token,String page);
 
     public void createIncident(String auth_token, CreateIncidentRequest createIncidentRequest);
     public void updateIncident(String auth_token,String id, CreateIncidentRequest createIncidentRequest);

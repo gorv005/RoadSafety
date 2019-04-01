@@ -16,7 +16,7 @@ import retrofit2.Response;
 public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
 
     @Override
-    public void getCityHall(final OnFinishedListener listener) {
+    public void getCityHall(  String auth_token,String page,final OnFinishedListener listener) {
         try {
             WebServicesWrapper.getInstance().getCityHall(new ResponseResolver<CityHallResponse>() {
                 @Override
@@ -38,7 +38,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
                         listener.onError(error.getError());
                     }
                 }
-            });
+            },auth_token,page);
         } catch (Exception e) {
             e.printStackTrace();
         }

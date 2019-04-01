@@ -44,6 +44,7 @@ import com.app.roadsafety.model.feed.Feed;
 import com.app.roadsafety.model.incidents.IncidentDataRes;
 import com.app.roadsafety.model.incidents.IncidentDetailResponse;
 import com.app.roadsafety.model.incidents.IncidentResponse;
+import com.app.roadsafety.model.incidents.Result;
 import com.app.roadsafety.model.region.RegionUpdateRequest;
 import com.app.roadsafety.model.region.User;
 import com.app.roadsafety.presenter.authentication.AuthenticationPresenterImpl;
@@ -57,6 +58,7 @@ import com.app.roadsafety.utility.AppUtils;
 import com.app.roadsafety.utility.GpsUtils;
 import com.app.roadsafety.utility.ImageUtils;
 import com.app.roadsafety.utility.MapWrapperLayout;
+import com.app.roadsafety.utility.RenderClusterImage;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.adapter.incidents.AdapterIncidentHorizontalList;
@@ -80,6 +82,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.greenhalolabs.facebooklogin.FacebookLoginActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -814,7 +817,16 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             Button btnFacebook = (Button) dialog.findViewById(R.id.btnFacebook);
             Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
-
+            TextView tvTermsAndServices = (TextView) dialog.findViewById(R.id.tvTermsAndServices);
+            tvTermsAndServices.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    if (mFragmentNavigation != null) {
+                        mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1,1));
+                    }
+                }
+            });
             ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
             ivCross.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -853,7 +865,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     void getAllIncidentList(String incident_type) {
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
 
-        iIncidentListPresenter.getAllIncidents(auth_token, latitude, longitude, "" + 10, incident_type, "" + 1);
+        iIncidentListPresenter.getAllIncidents(auth_token, latitude, longitude, "" + 10, incident_type, "-1");
     }
 
     void facebookLogin(String token) {
@@ -988,8 +1000,20 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 if (mMap != null) {
 
                     //    mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
-
-                    for (int i = 0; i < incidentDataResList.size(); i++) {
+                 /*   ClusterManager<Result> clusterManager = new ClusterManager<Result>(getActivity(), mMap);
+                    clusterManager.setRenderer(new RenderClusterImage(getActivity(), mMap, clusterManager));
+                    ArrayList<Result> results = new ArrayList<>();*/
+                 int size=0;
+                 if(incidentDataResList.size()>100){
+                     size=100;
+                 }
+                 else {
+                     size=incidentDataResList.size();
+                 }
+                    for (int i = 0; i < size; i++) {
+                      //  Result result=new Result();
+                     //   result.setId(i);
+                    //    results.add(result);
                         mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
                         //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
 
@@ -1000,7 +1024,13 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                     bottomSheet2.setVisibility(View.VISIBLE);
                     adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
                     rvIncident.setAdapter(adapterIncidentList);
-                    tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
+                    if(incidentDataResList.size()==1) {
+                        tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
+                    }
+                   else if(incidentDataResList.size()>1) {
+                        tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incidents_reported));
+
+                    }
                 } else {
                     bottomSheet2.setVisibility(GONE);
                 }

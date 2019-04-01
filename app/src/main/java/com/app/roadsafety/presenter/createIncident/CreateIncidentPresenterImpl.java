@@ -85,10 +85,10 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
 
 
     @Override
-    public void getCityHall() {
+    public void getCityHall(String auth_token,String page) {
         if(mView!=null) {
             mView.showProgress();
-            iCreateIncidentIntractor.getCityHall(this);
+            iCreateIncidentIntractor.getCityHall(auth_token,page,this);
         }
     }
 

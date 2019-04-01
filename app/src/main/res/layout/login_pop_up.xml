@@ -118,7 +118,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginRight="3dp"
                                 android:text="@string/terms_of_service"
-
+                                android:id="@+id/tvTermsAndServices"
                                 android:textColor="@color/blue"
                                 android:textSize="@dimen/slide_title_dialog" />
 
@@ -127,11 +127,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:text="@string/and"
-
+                                android:visibility="gone"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/slide_title_dialog" />
 
                             <TextView
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"

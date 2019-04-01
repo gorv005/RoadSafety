@@ -102,5 +102,8 @@
     <string name="city_halls">City halls</string>
     <string name="select_city_hall">Select city hall</string>
     <string name="please_select_city_hall">Please select city hall</string>
+    <string name="incidents_reported">incidents reported</string>
+    <string name="allow_location_services_">Allow location services</string>
+    <string name="goto_incidents">Show incidents</string>
 
 </resources>

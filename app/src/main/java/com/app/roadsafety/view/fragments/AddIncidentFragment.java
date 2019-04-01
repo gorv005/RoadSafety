@@ -355,7 +355,8 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
 
     void getCityHall() {
-        iCreateIncidentPresenter.getCityHall();
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iCreateIncidentPresenter.getCityHall(auth_token,"-1");
 
     }
 

@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="55dp"
-            android:text="@string/allow_location_services"
+            android:text="@string/allow_location_services_"
             android:textColor="@color/title_color"
             android:textSize="@dimen/slide_title" />
 
