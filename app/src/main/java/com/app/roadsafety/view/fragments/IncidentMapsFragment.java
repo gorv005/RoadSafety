@@ -165,7 +165,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         circleOptions = new CircleOptions();
         iAuthenticationPresenter = new AuthenticationPresenterImpl(this, getActivity());
         iIncidentListPresenter = new IncidentListPresenterPresenterImpl(this, getActivity());
-        iRegionPresenter=new RegionPresenterImpl(this,getActivity());
+        iRegionPresenter = new RegionPresenterImpl(this, getActivity());
 
         util = new AppUtils();
 
@@ -255,7 +255,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             buildGoogleApiClient();
             //   mMap.setMyLocationEnabled(true);
         }
-        if(mMap!=null) {
+        if (mMap != null) {
             initMap();
         }
     }
@@ -319,7 +319,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         // MapWrapperLayout initialization
         // 39 - default marker height
         // 20 - offset between the default InfoWindow bottom edge and it's content bottom edge
-        if(mapWrapperLayout!=null) {
+        if (mapWrapperLayout != null) {
             mapWrapperLayout.init(mMap, getPixelsFromDp(getActivity(), 39 + 20));
 
             // We want to reuse the info window for all the markers,
@@ -417,16 +417,16 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
         locationRequest.setFastestInterval(5 * 1000);
     }
 
-        void GpsEnable() {
-            new GpsUtils(getActivity()).turnGPSOn(new GpsUtils.onGpsListener() {
-                @Override
-                public void gpsStatus(boolean isGPSEnable) {
-                    // turn on GPS
-                    isGPS = isGPSEnable;
+    void GpsEnable() {
+        new GpsUtils(getActivity()).turnGPSOn(new GpsUtils.onGpsListener() {
+            @Override
+            public void gpsStatus(boolean isGPSEnable) {
+                // turn on GPS
+                isGPS = isGPSEnable;
 
-                }
-            });
-        }
+            }
+        });
+    }
 
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -518,7 +518,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             } else {
                 String errorMessage = data.getStringExtra(FacebookLoginActivity.EXTRA_ERROR_MESSAGE);
                 //Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
-            //    Log.e("DEBUG", errorMessage);
+                //    Log.e("DEBUG", errorMessage);
             }
             //  gotoSelectRegion();
         } else if (resultCode == Activity.RESULT_OK) {
@@ -680,8 +680,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 getAllIncidentList(incidentType);
                 setRegion();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -745,7 +744,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             case R.id.ivAddPost:
 
                 addIncidentDialog();
-              //  gotoAddIncident();
+                //  gotoAddIncident();
                 break;
             case R.id.ivCurrentLocation:
                 circle.remove();
@@ -802,8 +801,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
 //to set the message
             dialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -823,7 +821,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 public void onClick(View view) {
                     dialog.dismiss();
                     if (mFragmentNavigation != null) {
-                        mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1,1));
+                        mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1, 1));
                     }
                 }
             });
@@ -853,8 +851,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                 }
             });
             dialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -972,7 +969,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
 
     @Override
     public void getFacebookLoginResponse(LoginResponse response) {
-       // Log.e("DEBUG", "" + response);
+        // Log.e("DEBUG", "" + response);
         SharedPreference.getInstance(getActivity()).setUser(AppConstants.LOGIN_USER, response);
         SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_LOGIN, true);
         SharedPreference.getInstance(getActivity()).setBoolean(AppConstants.IS_GUEST_LOGIN, false);
@@ -1003,17 +1000,16 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                  /*   ClusterManager<Result> clusterManager = new ClusterManager<Result>(getActivity(), mMap);
                     clusterManager.setRenderer(new RenderClusterImage(getActivity(), mMap, clusterManager));
                     ArrayList<Result> results = new ArrayList<>();*/
-                 int size=0;
-                 if(incidentDataResList.size()>100){
-                     size=100;
-                 }
-                 else {
-                     size=incidentDataResList.size();
-                 }
+                    int size = 0;
+                    if (incidentDataResList.size() > 100) {
+                        size = 100;
+                    } else {
+                        size = incidentDataResList.size();
+                    }
                     for (int i = 0; i < size; i++) {
-                      //  Result result=new Result();
-                     //   result.setId(i);
-                    //    results.add(result);
+                        //  Result result=new Result();
+                        //   result.setId(i);
+                        //    results.add(result);
                         mMap.addMarker(new MarkerOptions().position(new LatLng(incidentDataResList.get(i).getAttributes().getLatitude(), incidentDataResList.get(i).getAttributes().getLongitude())).title("" + i).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
                         //    markers.put(hamburg.getId(), "http://img.india-forums.com/images/100x100/37525-a-still-image-of-akshay-kumar.jpg");
 
@@ -1024,10 +1020,9 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
                     bottomSheet2.setVisibility(View.VISIBLE);
                     adapterIncidentList = new AdapterIncidentHorizontalList(incidentDataResList, getActivity());
                     rvIncident.setAdapter(adapterIncidentList);
-                    if(incidentDataResList.size()==1) {
+                    if (incidentDataResList.size() == 1) {
                         tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incident_reported));
-                    }
-                   else if(incidentDataResList.size()>1) {
+                    } else if (incidentDataResList.size() > 1) {
                         tvIncidentCount.setText("" + incidentDataResList.size() + " " + getString(R.string.incidents_reported));
 
                     }
@@ -1037,8 +1032,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
             } else {
                 bottomSheet2.setVisibility(GONE);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1050,16 +1044,17 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     }
 
     void setRegion() {
-        String reg=SharedPreference.getInstance(getActivity()).getString(AppConstants.REGION);
-        RegionUpdateRequest regionUpdateRequest=new RegionUpdateRequest();
-        User user=new User();
+        String reg = SharedPreference.getInstance(getActivity()).getString(AppConstants.REGION);
+        RegionUpdateRequest regionUpdateRequest = new RegionUpdateRequest();
+        User user = new User();
         user.setRegion(reg);
         user.setLat(latitude);
         user.setLng(longitude);
         regionUpdateRequest.setUser(user);
-        String auth_token= SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
-        iRegionPresenter.setRegion(auth_token,regionUpdateRequest);
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iRegionPresenter.setRegion(auth_token, regionUpdateRequest);
     }
+
     public void gotoIncidentDescription(String id) {
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(IncidentDescriptionFragment.newInstance(1, id));
