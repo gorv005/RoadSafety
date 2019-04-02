@@ -19,7 +19,7 @@ public class App extends Application {
         FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/calibri.ttf");
         FontsOverride.setDefaultFont(this, "SERIF", "fonts/calibri.ttf");
         FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/calibri.ttf");
-        AppUtils.setLocale(getApplicationContext());
+       // AppUtils.setLocale(getApplicationContext());
 
     }
 }
