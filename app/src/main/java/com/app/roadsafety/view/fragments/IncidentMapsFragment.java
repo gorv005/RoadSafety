@@ -862,7 +862,7 @@ public class IncidentMapsFragment extends BaseFragment implements OnMapReadyCall
     void getAllIncidentList(String incident_type) {
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
 
-        iIncidentListPresenter.getAllIncidents(auth_token, latitude, longitude, "" + 10, incident_type, "-1");
+        iIncidentListPresenter.getAllIncidents(auth_token, latitude, longitude, AppConstants.DISTANCE, incident_type, "-1");
     }
 
     void facebookLogin(String token) {

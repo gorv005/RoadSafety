@@ -19,7 +19,7 @@ public class AppConstants {
     public static final String URL = "url";
     public static final String LATITUDE ="latitude" ;
     public static final String LONGITUDE ="longitude" ;
-    public static final String DISTANCE ="10" ;
+    public static final String DISTANCE ="50" ;
     public static final String INCIDENT_ID ="incidentId" ;
     public static final String TAB_SELECTION = "tab_selection";
     public static final String INCIDENT_ACTION ="incident_action" ;
