@@ -81,8 +81,8 @@ public class TermsActivity extends AppCompatActivity implements ITermsPresenter.
 
     }
     void getTermsAndServices(String name) {
-        String auth_token = SharedPreference.getInstance(this).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
-        iTermsPresenter.termsAndServices(auth_token, name);
+       // String auth_token = SharedPreference.getInstance(this).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iTermsPresenter.termsAndServices("", name);
 
     }
     private void changeStatusBarColor() {

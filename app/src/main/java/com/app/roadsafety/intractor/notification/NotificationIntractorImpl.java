@@ -29,6 +29,7 @@ public class NotificationIntractorImpl implements INotificationIntractor {
                             listener.onSuccessNotificationResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -37,6 +38,7 @@ public class NotificationIntractorImpl implements INotificationIntractor {
             }, auth_token,page);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 
@@ -58,14 +60,17 @@ public class NotificationIntractorImpl implements INotificationIntractor {
                             listener.onSuccessReadNotificationResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
+
                     }
                 }
             }, auth_token,id);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }

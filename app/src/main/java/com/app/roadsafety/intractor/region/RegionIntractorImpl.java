@@ -32,6 +32,7 @@ public class RegionIntractorImpl implements IRegionIntractor {
                             listener.onSuccessRegionResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -40,6 +41,7 @@ public class RegionIntractorImpl implements IRegionIntractor {
             }, auth_token,regionUpdateRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }

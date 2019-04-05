@@ -29,6 +29,7 @@ public class CreateIncidentListImpl implements IIncidentListIntractor {
                             listener.onSuccessIncidentListResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -37,6 +38,8 @@ public class CreateIncidentListImpl implements IIncidentListIntractor {
             }, auth_token,lat,longi,distance,incident_type,page);
         } catch (Exception e) {
             e.printStackTrace();
+
+            listener.onError("");
         }
     }
 
@@ -58,6 +61,7 @@ public class CreateIncidentListImpl implements IIncidentListIntractor {
                             listener.onSuccessIncidentDetailsResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -66,6 +70,7 @@ public class CreateIncidentListImpl implements IIncidentListIntractor {
             }, auth_token,id);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }

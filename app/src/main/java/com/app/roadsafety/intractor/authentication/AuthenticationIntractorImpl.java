@@ -28,6 +28,7 @@ public class AuthenticationIntractorImpl implements IAuthenticationIntractor {
                             listener.onSuccessFacebookResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -36,6 +37,7 @@ public class AuthenticationIntractorImpl implements IAuthenticationIntractor {
             }, loginRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
 
     }
@@ -58,6 +60,7 @@ public class AuthenticationIntractorImpl implements IAuthenticationIntractor {
                             listener.onSuccessFacebookResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -66,6 +69,7 @@ public class AuthenticationIntractorImpl implements IAuthenticationIntractor {
             }, auth_token,loginRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
 
     }
@@ -88,6 +92,7 @@ public class AuthenticationIntractorImpl implements IAuthenticationIntractor {
                             listener.onSuccessGuestUserResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -96,6 +101,7 @@ public class AuthenticationIntractorImpl implements IAuthenticationIntractor {
             });
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
 
     }

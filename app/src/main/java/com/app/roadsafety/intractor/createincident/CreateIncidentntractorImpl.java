@@ -33,6 +33,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
                             listener.onSuccessCityHallResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -41,6 +42,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
             },auth_token,page);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 
@@ -62,6 +64,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
                             listener.onSuccessCreateIncidentResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -70,6 +73,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
             }, auth_token,createIncidentRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 
@@ -91,6 +95,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
                             listener.onSuccessUpdateIncidentResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -99,6 +104,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
             }, auth_token,id,createIncidentRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 
@@ -120,6 +126,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
                             listener.onSuccessCreateIncidentResponse(response);*/
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -128,6 +135,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
             }, auth_token,id);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 
@@ -149,6 +157,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
                             listener.onSuccessReportAbuseIncidentResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -157,6 +166,7 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
             }, auth_token,id,reportAbuseIncidentRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }

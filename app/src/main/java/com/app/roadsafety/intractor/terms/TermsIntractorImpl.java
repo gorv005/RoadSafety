@@ -33,6 +33,7 @@ public class TermsIntractorImpl implements ITermsIntractor {
                             listener.onSuccessTermsResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -41,6 +42,7 @@ public class TermsIntractorImpl implements ITermsIntractor {
             }, auth_token,name);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
 
     }

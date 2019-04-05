@@ -31,6 +31,7 @@ public class GuidelinesIntractorImpl implements IGuidelinesIntractor {
                             listener.onSuccessGuidelinesResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -39,6 +40,7 @@ public class GuidelinesIntractorImpl implements IGuidelinesIntractor {
             }, pageNo);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }

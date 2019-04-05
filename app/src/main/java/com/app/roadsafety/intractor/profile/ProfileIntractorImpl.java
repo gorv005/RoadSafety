@@ -28,6 +28,7 @@ public class ProfileIntractorImpl implements IProfileIntractor {
                             listener.onSuccessProfileResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -36,6 +37,7 @@ public class ProfileIntractorImpl implements IProfileIntractor {
             }, auth_token,id);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }

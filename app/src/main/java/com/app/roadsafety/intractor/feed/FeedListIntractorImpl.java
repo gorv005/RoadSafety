@@ -30,6 +30,7 @@ public class FeedListIntractorImpl implements IFeedListIntractor {
                             listener.onSuccessFeedListResponse(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -38,6 +39,7 @@ public class FeedListIntractorImpl implements IFeedListIntractor {
             }, auth_token,pageNo,country);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }

@@ -55,7 +55,7 @@ public class ActivitySplash extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_splash);
-     //   AppUtils.setLocale(ActivitySplash.this);
+        AppUtils.setLocale(ActivitySplash.this);
         changeStatusBarColor();
 
     }

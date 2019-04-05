@@ -86,8 +86,8 @@ public class FragmentTermsAndServices extends BaseFragment implements ITermsPres
     }
 
     void getTermsAndServices(String name) {
-        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
-        iTermsPresenter.termsAndServices(auth_token, name);
+      //  String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iTermsPresenter.termsAndServices("", name);
 
     }
     @Override

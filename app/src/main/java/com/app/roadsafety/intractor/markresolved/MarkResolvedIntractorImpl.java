@@ -30,6 +30,7 @@ public class MarkResolvedIntractorImpl implements IMarkResolvedIntractor {
                             listener.onSuccessMarkResolved(response);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            listener.onError("");
                         }
                     } else {
                         listener.onError(error.getError());
@@ -38,6 +39,7 @@ public class MarkResolvedIntractorImpl implements IMarkResolvedIntractor {
             }, auth_token,id,markResolvedRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            listener.onError("");
         }
     }
 }
