@@ -91,7 +91,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
     }
 
     @OnClick({R.id.rlProfile, R.id.rlLocationServices,
-            R.id.rlNotifications, R.id.rlLinkedAccount, R.id.rlLogout,R.id.rlTerms,R.id.rlPrivacy,R.id.rlContactUs})
+            R.id.rlNotifications, R.id.rlLinkedAccount, R.id.rlLogout, R.id.rlTerms, R.id.rlPrivacy, R.id.rlContactUs})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -128,16 +128,16 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
                 break;
             case R.id.rlTerms:
                 if (mFragmentNavigation != null) {
-                    mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1,1));
+                    mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1, 1));
                 }
                 break;
             case R.id.rlPrivacy:
                 if (mFragmentNavigation != null) {
-                    mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1,2));
+                    mFragmentNavigation.pushFragment(FragmentTermsAndServices.newInstance(1, 2));
                 }
                 break;
             case R.id.rlContactUs:
-                contactUs(getActivity(),getString(R.string.email));
+                contactUs(getActivity(), getString(R.string.email));
                 break;
         }
     }
@@ -147,6 +147,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         iNotificationPresenter.getNotification(auth_token, page);
 
     }
+
     public void alertDialog(String msg) {
 
         final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
@@ -201,8 +202,8 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_SEND);
-                String[] recipients={getString(R.string.email)};
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                String[] recipients = {getString(R.string.email)};
                 intent.putExtra(Intent.EXTRA_EMAIL, recipients);
                 intent.setType("text/plain");
                 startActivity(intent);
@@ -252,8 +253,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
             } else {
                 tvNotificationCount.setVisibility(View.GONE);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
