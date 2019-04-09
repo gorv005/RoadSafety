@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:id="@+id/rlLayout"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="130dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <TextView
@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:text="@string/stay_away"
             android:textAlignment="center"
+            android:maxLines="3"
             android:layout_alignParentBottom="true"
             android:gravity="center_horizontal"
             android:textColor="@android:color/black"
