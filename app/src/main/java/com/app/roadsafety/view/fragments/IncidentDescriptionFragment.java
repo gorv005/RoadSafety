@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +92,12 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     ImageView ivMenu;
     String latitude, longitude;
     IncidentDetailResponse incidentDetailResponse;
+    @BindView(R.id.ivLeft)
+    ImageView ivLeft;
+    @BindView(R.id.ivRight)
+    ImageView ivRight;
+    @BindView(R.id.rlImageScroll)
+    RelativeLayout rlImageScroll;
 
     public IncidentDescriptionFragment() {
         // Required empty public constructor
@@ -164,15 +171,16 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         iCreateIncidentPresenter.reportAbuseIncident(auth_token, incidentId, reportAbuseIncidentRequest);
     }
 
-    void markResolved(String id){
+    void markResolved(String id) {
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
-        MarkResolvedRequest markResolvedRequest  = new MarkResolvedRequest();
+        MarkResolvedRequest markResolvedRequest = new MarkResolvedRequest();
         markResolvedRequest.setResolvedText(getString(R.string.this_incident_resolved));
-        List<String> strings=new ArrayList<>();
+        List<String> strings = new ArrayList<>();
         strings.add("http://placehold.it/120x120\\u0026text=image1");
         markResolvedRequest.setResolvedImages(strings);
-        iMarkResolvedPresenter.markResolved(auth_token,id,markResolvedRequest);
+        iMarkResolvedPresenter.markResolved(auth_token, id, markResolvedRequest);
     }
+
     void gotoUpdateIncident() {
         if (mFragmentNavigation != null) {
             mFragmentNavigation.pushFragment(AddIncidentFragment.newInstance(2, latitude, longitude, AppConstants.INCIDENT_ACTION_EDIT, incidentDetailResponse));
@@ -214,8 +222,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
 //to set the message
             dialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -257,8 +264,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
 //to set the message
             dialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -295,8 +301,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
 //to set the message
             dialog.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -341,8 +346,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                 }
                 util.resultDialog(getActivity(), error);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -388,8 +392,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                 Toast.makeText(getActivity(), getString(R.string.report_abuse_msg), Toast.LENGTH_LONG).show();
 
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -416,7 +419,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     }
 
 
-    @OnClick({R.id.ivMenu, R.id.ivback,R.id.llViewInMap})
+    @OnClick({R.id.ivMenu, R.id.ivback, R.id.llViewInMap})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivMenu:
@@ -432,7 +435,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                 point.y = location[1];
                 String id = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getId();
 
-                if (id.equals(""+incidentDetailResponse.getData().getAttributes().getUserId())) {
+                if (id.equals("" + incidentDetailResponse.getData().getAttributes().getUserId())) {
                     showCrudPopup(getActivity(), point);
                 } else {
                     showReportAbusePopup(getActivity(), point);
@@ -444,7 +447,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                 break;
             case R.id.llViewInMap:
                 if (mFragmentNavigation != null) {
-                    mFragmentNavigation.pushFragment(MapLocation.newInstance(1,latitude,longitude,incidentDetailResponse));
+                    mFragmentNavigation.pushFragment(MapLocation.newInstance(1, latitude, longitude, incidentDetailResponse));
                 }
 
                 break;
@@ -516,7 +519,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         TextView tvMarkResolved = (TextView) layout.findViewById(R.id.tvMarkResolved);
         ImageView ivResolve = (ImageView) layout.findViewById(R.id.ivResolve);
 
-        if(incidentDetailResponse!=null && incidentDetailResponse.getData()!=null && incidentDetailResponse.getData().getAttributes()!=null &&incidentDetailResponse.getData().getAttributes().getResolved()){
+        if (incidentDetailResponse != null && incidentDetailResponse.getData() != null && incidentDetailResponse.getData().getAttributes() != null && incidentDetailResponse.getData().getAttributes().getResolved()) {
             tvMarkResolved.setVisibility(View.GONE);
             ivResolve.setVisibility(View.GONE);
         }
