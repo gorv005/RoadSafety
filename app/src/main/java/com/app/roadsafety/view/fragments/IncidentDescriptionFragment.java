@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -93,11 +94,15 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     String latitude, longitude;
     IncidentDetailResponse incidentDetailResponse;
     @BindView(R.id.ivLeft)
-    ImageView ivLeft;
+    RelativeLayout ivLeft;
     @BindView(R.id.ivRight)
-    ImageView ivRight;
+    RelativeLayout ivRight;
     @BindView(R.id.rlImageScroll)
     RelativeLayout rlImageScroll;
+    @BindView(R.id.llViewInMap)
+    LinearLayout llViewInMap;
+    @BindView(R.id.profile_layout)
+    RelativeLayout profileLayout;
 
     public IncidentDescriptionFragment() {
         // Required empty public constructor
@@ -147,6 +152,37 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
         super.onViewCreated(view, savedInstanceState);
 
         getDetailsOfIncidents();
+        vpAdds.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                try {
+                    if (mImageList != null && mImageList.size() > 0)
+                        if (vpAdds.getCurrentItem() == 0) {
+                            ivLeft.setVisibility(View.GONE);
+                            ivRight.setVisibility(View.VISIBLE);
+                        } else if (vpAdds.getCurrentItem() == mImageList.size() - 1) {
+                            ivLeft.setVisibility(View.VISIBLE);
+                            ivRight.setVisibility(View.GONE);
+                        } else if (vpAdds.getCurrentItem() > 0 && vpAdds.getCurrentItem() < mImageList.size() - 1) {
+                            ivLeft.setVisibility(View.VISIBLE);
+                            ivRight.setVisibility(View.VISIBLE);
+                        }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
     }
 
@@ -336,6 +372,12 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                 }
                 vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_REMOTE));
                 tabLayout.setupWithViewPager(vpAdds, false);
+                if (mImageList != null && mImageList.size() == 1) {
+                    rlImageScroll.setVisibility(View.GONE);
+                }
+                else if (mImageList != null && mImageList.size() >0) {
+                    ivLeft.setVisibility(View.GONE);
+                }
                 Address address = util.getAddress(getActivity(), Double.parseDouble(latitude), Double.parseDouble(longitude));
                 AppUtils.setAddress(address, tvAddress);
 
@@ -419,7 +461,7 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
     }
 
 
-    @OnClick({R.id.ivMenu, R.id.ivback, R.id.llViewInMap})
+    @OnClick({R.id.ivMenu, R.id.ivback, R.id.llViewInMap, R.id.ivLeft, R.id.ivRight})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivMenu:
@@ -450,6 +492,22 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
                     mFragmentNavigation.pushFragment(MapLocation.newInstance(1, latitude, longitude, incidentDetailResponse));
                 }
 
+                break;
+            case R.id.ivLeft:
+                Log.e("DEBUG", "left==" + vpAdds.getCurrentItem());
+                if (mImageList != null && mImageList.size() > 0) {
+                    if (vpAdds.getCurrentItem() > 0 && vpAdds.getCurrentItem() <= mImageList.size() - 1) {
+                        vpAdds.setCurrentItem(vpAdds.getCurrentItem() - 1);
+                    }
+                }
+                break;
+            case R.id.ivRight:
+                Log.e("DEBUG", "Right" + vpAdds.getCurrentItem());
+                if (mImageList != null && mImageList.size() > 0) {
+                    if (vpAdds.getCurrentItem() >= 0 && vpAdds.getCurrentItem() < mImageList.size() - 1) {
+                        vpAdds.setCurrentItem(vpAdds.getCurrentItem() + 1);
+                    }
+                }
                 break;
         }
     }
@@ -554,5 +612,6 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 
 
     }
+
 
 }
