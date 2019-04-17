@@ -19,9 +19,13 @@ import android.widget.TextView;
 
 import com.app.roadsafety.R;
 import com.app.roadsafety.model.notification.NotificationResponse;
+import com.app.roadsafety.model.profile.ProfileResponse;
 import com.app.roadsafety.presenter.notification.INotificationPresenter;
 import com.app.roadsafety.presenter.notification.NotificationPresenterImpl;
+import com.app.roadsafety.presenter.profile.IProfilePresenter;
+import com.app.roadsafety.presenter.profile.ProfilePresenterImpl;
 import com.app.roadsafety.utility.AppConstants;
+import com.app.roadsafety.utility.ImageUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.UserLoginActivity;
@@ -34,7 +38,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends BaseFragment implements INotificationPresenter.INotificationView {
+public class SettingsFragment extends BaseFragment implements INotificationPresenter.INotificationView, IProfilePresenter.IProfileView {
 
 
     @BindView(R.id.rlProfile)
@@ -51,6 +55,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
     INotificationPresenter iNotificationPresenter;
     @BindView(R.id.tvNotificationCount)
     TextView tvNotificationCount;
+    IProfilePresenter iProfilePresenter;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -60,6 +65,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         iNotificationPresenter = new NotificationPresenterImpl(this, getActivity());
+        iProfilePresenter = new ProfilePresenterImpl(this, getActivity());
 
     }
 
@@ -75,7 +81,8 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getNotificationList("" + 1);
+       // getNotificationList("" + 1);
+        getProfile();
     }
 
     @Override
@@ -147,7 +154,11 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         iNotificationPresenter.getNotification(auth_token, page);
 
     }
-
+    void getProfile() {
+        String id = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getId();
+        String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+        iProfilePresenter.getProfile(auth_token, id);
+    }
     public void alertDialog(String msg) {
 
         final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
@@ -255,6 +266,24 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSuccessProfileResponse(ProfileResponse response) {
+        try {
+            if (response.getData() != null && response.getData().getAttributes() != null && response.getData().getAttributes().getUnreadNotificationsCount() > 0) {
+
+                    tvNotificationCount.setText("" + response.getData().getAttributes().getUnreadNotificationsCount());
+                    tvNotificationCount.setVisibility(View.VISIBLE);
+
+            } else {
+                tvNotificationCount.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            tvNotificationCount.setVisibility(View.GONE);
         }
     }
 

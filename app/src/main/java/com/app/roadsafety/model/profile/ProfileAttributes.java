@@ -22,7 +22,12 @@ public class ProfileAttributes {
     @SerializedName("fb_id")
     @Expose
     private String fbId;
-
+    @SerializedName("unread_notifications_count")
+    @Expose
+    private Integer unreadNotificationsCount;
+    @SerializedName("read_notifications_count")
+    @Expose
+    private Integer readNotificationsCount;
     public String getName() {
         return name;
     }
@@ -69,5 +74,21 @@ public class ProfileAttributes {
 
     public void setFbId(String fbId) {
         this.fbId = fbId;
+    }
+
+    public Integer getUnreadNotificationsCount() {
+        return unreadNotificationsCount;
+    }
+
+    public void setUnreadNotificationsCount(Integer unreadNotificationsCount) {
+        this.unreadNotificationsCount = unreadNotificationsCount;
+    }
+
+    public Integer getReadNotificationsCount() {
+        return readNotificationsCount;
+    }
+
+    public void setReadNotificationsCount(Integer readNotificationsCount) {
+        this.readNotificationsCount = readNotificationsCount;
     }
 }
