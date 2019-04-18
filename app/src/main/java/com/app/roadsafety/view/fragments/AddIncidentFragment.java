@@ -28,9 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.app.roadsafety.R;
@@ -553,12 +551,19 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     @Override
     public void onSuccessUploadPic(UploadPicResponse response) {
-        awsImagesList.add(response.getPublicUrl());
-        // vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
-        //   tabLayout.setupWithViewPager(vpAdds, true);
+        try {
+            if (response != null && response.getPublicUrl() != null) {
+                awsImagesList.add(response.getPublicUrl());
+                // vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
+                //   tabLayout.setupWithViewPager(vpAdds, true);
 
-        loadImages();
-        Toast.makeText(getActivity(), getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
+                loadImages();
+                Toast.makeText(getActivity(), getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

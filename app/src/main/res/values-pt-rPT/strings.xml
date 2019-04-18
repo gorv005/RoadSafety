@@ -104,4 +104,5 @@
     <string name="incidents_reported">Locais Reportados</string>
     <string name="allow_location_services_">Permitir serviço de localização</string>
     <string name="goto_incidents">mostrar locais</string>
+    <string name="instruction">Utilize o Mapa para marcar ou consultar locais que necessitam de intervenção. Clique em + para indicar o local, adicione até 3 fotografias, uma descrição e indique qual a Camâra Municipal que deve ser informada. Após validação, essa informação será enviada. Será notificado quando o estado da mesma evoluir. Participe para o bem de todos. Obrigado.</string>
 </resources>

@@ -25,7 +25,6 @@ import com.app.roadsafety.presenter.notification.NotificationPresenterImpl;
 import com.app.roadsafety.presenter.profile.IProfilePresenter;
 import com.app.roadsafety.presenter.profile.ProfilePresenterImpl;
 import com.app.roadsafety.utility.AppConstants;
-import com.app.roadsafety.utility.ImageUtils;
 import com.app.roadsafety.utility.sharedprefrences.SharedPreference;
 import com.app.roadsafety.view.MainActivity;
 import com.app.roadsafety.view.UserLoginActivity;
@@ -105,11 +104,11 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
 
 
             case R.id.rlProfile:
-                if (!SharedPreference.getInstance(getActivity()).getBoolean(AppConstants.IS_GUEST_LOGIN)) {
+
                     if (mFragmentNavigation != null) {
-                        mFragmentNavigation.pushFragment(FragmentProfile.newInstance(1));
+                        mFragmentNavigation.pushFragment(FragmentInstruction.newInstance(1));
                     }
-                }
+
                 break;
             case R.id.rlLocationServices:
                 if (mFragmentNavigation != null) {
