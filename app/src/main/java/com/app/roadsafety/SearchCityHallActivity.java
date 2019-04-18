@@ -21,6 +21,7 @@ import com.app.roadsafety.model.cityhall.CityHallData;
 import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.model.createIncident.UploadPicResponse;
 import com.app.roadsafety.presenter.createIncident.CreateIncidentPresenterImpl;
 import com.app.roadsafety.presenter.createIncident.ICreateIncidentPresenter;
 import com.app.roadsafety.utility.AppConstants;
@@ -150,6 +151,11 @@ public class SearchCityHallActivity extends Activity implements ICreateIncidentP
 
     @Override
     public void onSuccessDeleteIncidentResponse(ResponseBody response) {
+
+    }
+
+    @Override
+    public void onSuccessUploadPic(UploadPicResponse Response) {
 
     }
 

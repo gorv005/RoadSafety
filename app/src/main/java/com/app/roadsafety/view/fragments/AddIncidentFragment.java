@@ -40,6 +40,7 @@ import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.model.createIncident.UploadPicResponse;
 import com.app.roadsafety.model.incidents.IncidentDetailResponse;
 import com.app.roadsafety.presenter.createIncident.CreateIncidentPresenterImpl;
 import com.app.roadsafety.presenter.createIncident.ICreateIncidentPresenter;
@@ -59,6 +60,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 import static android.app.Activity.RESULT_OK;
@@ -476,60 +480,33 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         }*/
     }
 
-    void uploadImage(final String path) {
-        credentials = new BasicAWSCredentials(AppConstants.AWS_KEY, AppConstants.AWS_SECRET);
-        s3 = new AmazonS3Client(credentials);
-        transferUtility = new TransferUtility(s3, getActivity());
 
 
-        File file = new File(path);
-        if (!file.exists()) {
-            Toast.makeText(getActivity(), getString(R.string.file_not_found), Toast.LENGTH_SHORT).show();
-            return;
+    void uploadImage(String path) {
+        try {
+
+
+
+            if (path != null) {
+                //   File file = new File(getRealPathFromURI(fileUri));
+
+                // File file = new File(fileUri.getPath());
+
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"),new File(path));
+
+                //  RequestBody requestFile = RequestBody.create(MediaType.parse(getActivity().getContentResolver().getType(fileUri)), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", path.substring(path.lastIndexOf("/") + 1), requestFile);
+
+                String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
+
+                iCreateIncidentPresenter.uploadPic(auth_token, body);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        observer = transferUtility.upload(
-                AppConstants.AWS_BUCKET,
-                path.substring(path.lastIndexOf("/") + 1),
-                file
-        );
-
-        showProgress();
-        observer.setTransferListener(new TransferListener() {
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-
-                if (state.COMPLETED.equals(observer.getState())) {
-                    hideProgress();
-                    awsImagesList.add(AppConstants.AWS_IMAGE_BASE_URL + path.substring(path.lastIndexOf("/") + 1));
-                    // vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
-                    //   tabLayout.setupWithViewPager(vpAdds, true);
-
-                    loadImages();
-                    Toast.makeText(getActivity(), getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-
-              /*  long _bytesCurrent = bytesCurrent;
-                long _bytesTotal = bytesTotal;
-
-                float percentage =  ((float)_bytesCurrent /(float)_bytesTotal * 100);
-                Log.d("percentage","" +percentage);
-                pb.setProgress((int) percentage);
-                _status.setText(percentage + "%");*/
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                hideProgress();
-                Toast.makeText(getActivity(), "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
     }
+
+
 
     void loadImages() {
         rlView.setVisibility(View.GONE);
@@ -572,6 +549,16 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     @Override
     public void onSuccessDeleteIncidentResponse(ResponseBody response) {
 
+    }
+
+    @Override
+    public void onSuccessUploadPic(UploadPicResponse response) {
+        awsImagesList.add(response.getPublicUrl());
+        // vpAdds.setAdapter(new IncidentImageViewPagerAdapter(getActivity().getSupportFragmentManager(), mImageList, AppConstants.IS_FROM_INTERNAL_STORAGE));
+        //   tabLayout.setupWithViewPager(vpAdds, true);
+
+        loadImages();
+        Toast.makeText(getActivity(), getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
     }
 
     @Override

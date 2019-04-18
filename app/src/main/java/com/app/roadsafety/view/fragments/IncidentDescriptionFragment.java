@@ -33,6 +33,7 @@ import com.app.roadsafety.model.cityhall.CityHallResponse;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.model.createIncident.UploadPicResponse;
 import com.app.roadsafety.model.incidents.IncidentDetailResponse;
 import com.app.roadsafety.model.incidents.IncidentResponse;
 import com.app.roadsafety.model.markresolved.MarkResolvedRequest;
@@ -448,6 +449,11 @@ public class IncidentDescriptionFragment extends BaseFragment implements IIncide
 //        intent.putExtra(AppConstants.TAB_SELECTION,1);
 //        startActivity(intent);
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void onSuccessUploadPic(UploadPicResponse Response) {
+
     }
 
     @Override

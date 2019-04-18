@@ -6,7 +6,9 @@ import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.model.createIncident.UploadPicResponse;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 
 public interface ICreateIncidentPresenter {
@@ -17,6 +19,7 @@ public interface ICreateIncidentPresenter {
     public void updateIncident(String auth_token,String id, CreateIncidentRequest createIncidentRequest);
     public void reportAbuseIncident(String auth_token, String id, ReportAbuseIncidentRequest reportAbuseIncidentRequest);
     public void deleteIncident(String auth_token,String id);
+    public void uploadPic(String token, MultipartBody.Part part);
 
 
     void onDestroy();
@@ -34,5 +37,6 @@ public interface ICreateIncidentPresenter {
 
         void onSuccessDeleteIncidentResponse(ResponseBody response);
 
+        void onSuccessUploadPic(UploadPicResponse Response);
     }
 }

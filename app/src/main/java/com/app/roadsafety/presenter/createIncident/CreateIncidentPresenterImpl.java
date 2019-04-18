@@ -9,7 +9,9 @@ import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.model.createIncident.UploadPicResponse;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 
 public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, ICreateIncidentIntractor.OnFinishedListener {
@@ -68,6 +70,14 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
     }
 
     @Override
+    public void onSuccessUploadPic(UploadPicResponse Response) {
+        if(mView!=null){
+            mView.hideProgress();
+            mView.onSuccessUploadPic(Response);
+        }
+    }
+
+    @Override
     public void onError(String response) {
         if(mView!=null){
             mView.hideProgress();
@@ -121,6 +131,14 @@ public class CreateIncidentPresenterImpl implements ICreateIncidentPresenter, IC
         if(mView!=null) {
             mView.showProgress();
             iCreateIncidentIntractor.deleteIncident(auth_token,id,this);
+        }
+    }
+
+    @Override
+    public void uploadPic(String token, MultipartBody.Part part) {
+        if(mView!=null) {
+            mView.showProgress();
+            iCreateIncidentIntractor.uploadPic(token,part,this);
         }
     }
 

@@ -8,8 +8,10 @@ import com.app.roadsafety.model.createIncident.CreateIncidentRequest;
 import com.app.roadsafety.model.createIncident.CreateIncidentResponse;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentRequest;
 import com.app.roadsafety.model.createIncident.ReportAbuseIncidentResponse;
+import com.app.roadsafety.model.createIncident.UploadPicResponse;
 import com.google.gson.Gson;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -164,6 +166,37 @@ public class CreateIncidentntractorImpl implements ICreateIncidentIntractor {
                     }
                 }
             }, auth_token,id,reportAbuseIncidentRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            listener.onError("");
+        }
+    }
+
+    @Override
+    public void uploadPic(String token, MultipartBody.Part part, final OnFinishedListener listener) {
+        try {
+            WebServicesWrapper.getInstance().uploadPic(new ResponseResolver<UploadPicResponse>() {
+                @Override
+                public void onSuccess(UploadPicResponse loginResponse, Response response) {
+                    listener.onSuccessUploadPic(loginResponse);
+                }
+
+                @Override
+                public void onFailure(RestError error, String msg) {
+                    if (error == null || error.getError() == null) {
+                        try {
+                            Gson gson = new Gson();
+                            UploadPicResponse response = gson.fromJson(msg, UploadPicResponse.class);
+                            listener.onSuccessUploadPic(response);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            listener.onError("");
+                        }
+                    } else {
+                        listener.onError(error.getError());
+                    }
+                }
+            }, token,part);
         } catch (Exception e) {
             e.printStackTrace();
             listener.onError("");
