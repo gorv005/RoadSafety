@@ -282,7 +282,6 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         }
         catch (Exception e){
             e.printStackTrace();
-            tvNotificationCount.setVisibility(View.GONE);
         }
     }
 
