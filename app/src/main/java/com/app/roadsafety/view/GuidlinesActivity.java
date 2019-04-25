@@ -61,11 +61,11 @@ public class GuidlinesActivity extends AppCompatActivity implements IGuidelinesP
         util = new AppUtils();
         iGuidelinesPresenter=new GuidelinesPresenterImpl(this,this);
         String page=SharedPreference.getInstance(this).getString(AppConstants.GUIDELINES_PAGE);
-        if(page!=null &&!page.equalsIgnoreCase("4")) {
+        if(page!=null &&!page.equalsIgnoreCase("6")) {
             int p=Integer.parseInt(page)+1;
             getGuidelines(""+p);
         }
-       else if(page!=null &&page.equalsIgnoreCase("4")) {
+       else if(page!=null &&page.equalsIgnoreCase("6")) {
             getGuidelines(""+ 1);
 
         }
