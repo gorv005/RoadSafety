@@ -39,7 +39,6 @@ import butterknife.Unbinder;
  */
 public class SettingsFragment extends BaseFragment implements INotificationPresenter.INotificationView, IProfilePresenter.IProfileView {
 
-
     @BindView(R.id.rlProfile)
     RelativeLayout rlProfile;
     @BindView(R.id.rlLocationServices)
@@ -80,7 +79,7 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // getNotificationList("" + 1);
+        // getNotificationList("" + 1);
         getProfile();
     }
 
@@ -105,9 +104,9 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
 
             case R.id.rlProfile:
 
-                    if (mFragmentNavigation != null) {
-                        mFragmentNavigation.pushFragment(FragmentInstruction.newInstance(1));
-                    }
+                if (mFragmentNavigation != null) {
+                    mFragmentNavigation.pushFragment(FragmentInstruction.newInstance(1));
+                }
 
                 break;
             case R.id.rlLocationServices:
@@ -153,11 +152,13 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         iNotificationPresenter.getNotification(auth_token, page);
 
     }
+
     void getProfile() {
         String id = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getId();
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
         iProfilePresenter.getProfile(auth_token, id);
     }
+
     public void alertDialog(String msg) {
 
         final Dialog dialog = new Dialog(getActivity(), R.style.FullHeightDialog); //this is a reference to the style above
@@ -273,14 +274,13 @@ public class SettingsFragment extends BaseFragment implements INotificationPrese
         try {
             if (response.getData() != null && response.getData().getAttributes() != null && response.getData().getAttributes().getUnreadNotificationsCount() > 0) {
 
-                    tvNotificationCount.setText("" + response.getData().getAttributes().getUnreadNotificationsCount());
-                    tvNotificationCount.setVisibility(View.VISIBLE);
+                tvNotificationCount.setText("" + response.getData().getAttributes().getUnreadNotificationsCount());
+                tvNotificationCount.setVisibility(View.VISIBLE);
 
             } else {
                 tvNotificationCount.setVisibility(View.GONE);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
