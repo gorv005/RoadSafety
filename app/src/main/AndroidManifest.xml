@@ -49,7 +49,7 @@
             android:name=".view.SelectRegionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.d"
+            android:name=".view.UserLoginActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.GuidlinesActivity"
