@@ -166,7 +166,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // getCityHall();
+        // getCityHall();
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
         rvAddImages.setLayoutManager(manager);
         rvAddImages.setHasFixedSize(true);
@@ -221,7 +221,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
         etDescription.setText(incidentDetailResponse.getData().getAttributes().getDescription());
         etLocation.setText("Lati. " + latitude + "   " + "Long. " + longitude);
         etCityHall.setText(incidentDetailResponse.getData().getAttributes().getCityHall().getName());
-        mCityHallId = ""+incidentDetailResponse.getData().getAttributes().getCityHall().getId();
+        mCityHallId = "" + incidentDetailResponse.getData().getAttributes().getCityHall().getId();
 
         if (incidentDetailResponse.getData().getAttributes().getType().equals("accident")) {
             spninnerType.setSelection(0);
@@ -291,15 +291,14 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             //  awsImagesList.add(mPaths.get(0));
             uploadImage(mPaths.get(0));
             //Your Code
-        } else if (requestCode == AppConstants.CITY_HALL_REQUEST_CODE && resultCode==RESULT_OK) {
+        } else if (requestCode == AppConstants.CITY_HALL_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
                 if (data != null && data.getSerializableExtra(AppConstants.CityHallData) != null) {
                     CityHallData cityHallData = (CityHallData) data.getSerializableExtra(AppConstants.CityHallData);
                     etCityHall.setText(cityHallData.getAttributes().getName());
                     mCityHallId = cityHallData.getId();
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -342,8 +341,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
                             Toast.makeText(getActivity(), getString(R.string.image_error), Toast.LENGTH_LONG).show();
 
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getActivity(), getString(R.string.please_select_city_hall), Toast.LENGTH_LONG).show();
 
                     }
@@ -358,7 +356,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
     void getCityHall() {
         String auth_token = SharedPreference.getInstance(getActivity()).getUser(AppConstants.LOGIN_USER).getData().getAttributes().getAuthToken();
-        iCreateIncidentPresenter.getCityHall(auth_token,"-1");
+        iCreateIncidentPresenter.getCityHall(auth_token, "-1");
 
     }
 
@@ -479,10 +477,8 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
     }
 
 
-
     void uploadImage(String path) {
         try {
-
 
 
             if (path != null) {
@@ -490,7 +486,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
 
                 // File file = new File(fileUri.getPath());
 
-                RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"),new File(path));
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), new File(path));
 
                 //  RequestBody requestFile = RequestBody.create(MediaType.parse(getActivity().getContentResolver().getType(fileUri)), file);
                 MultipartBody.Part body = MultipartBody.Part.createFormData("file", path.substring(path.lastIndexOf("/") + 1), requestFile);
@@ -503,7 +499,6 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
             e.printStackTrace();
         }
     }
-
 
 
     void loadImages() {
@@ -560,8 +555,7 @@ public class AddIncidentFragment extends BaseFragment implements ICreateIncident
                 loadImages();
                 Toast.makeText(getActivity(), getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
